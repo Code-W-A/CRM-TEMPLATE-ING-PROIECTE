@@ -1,0 +1,478 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+
+    --radius: 0.5rem;
+
+    --modal-z-index: 50;
+    --calendar-z-index: 1000;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Adăugăm stilul pentru backdrop blur */
+[data-state="open"] > .backdrop-blur-sm {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* Ensure modals are properly stacked */
+[data-radix-dialog-overlay] {
+  z-index: var(--modal-z-index);
+}
+
+[data-radix-dialog-content] {
+  z-index: calc(var(--modal-z-index) + 1);
+}
+
+/* Prevent interaction with background elements when modal is open */
+html.modal-open {
+  overflow: hidden;
+}
+
+/* Fix for iOS Safari */
+html.modal-open body {
+  position: fixed;
+  width: 100%;
+}
+
+/* Custom scrollbar styles */
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+}
+
+/* Fix for iOS Safari position fixed issues */
+.fixed-ios {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Fix for modal overlay issues */
+.modal-open {
+  overflow: hidden;
+}
+
+/* Ensure popovers are above other elements */
+.popover-content {
+  z-index: 100;
+}
+
+/* Ensure time selector scrolls properly */
+.time-selector-scroll {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* Simple calendar styling */
+.calendar-popover-content {
+  z-index: 9999 !important;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+/* Fix z-index issues */
+[data-radix-popper-content-wrapper] {
+  z-index: var(--calendar-z-index) !important;
+}
+
+/* Popover styling for calendar */
+[role="dialog"][data-state="open"] {
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Calendar month transition animations */
+@keyframes slideInLeft {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutLeft {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.slide-in-left {
+  animation: slideInLeft 0.3s forwards;
+}
+
+.slide-in-right {
+  animation: slideInRight 0.3s forwards;
+}
+
+.slide-out-left {
+  animation: slideOutLeft 0.3s forwards;
+}
+
+.slide-out-right {
+  animation: slideOutRight 0.3s forwards;
+}
+
+/* Fix for mobile scrolling */
+html,
+body {
+  height: 100%;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 768px) {
+  .container {
+    width: 100%;
+    max-width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* Fix for calendar in modals */
+.modal-calendar-fix [data-radix-popper-content-wrapper] {
+  z-index: calc(var(--modal-z-index) + 100) !important;
+}
+
+/* Fix for calendar positioning in modals */
+.modal-calendar-container .rdp {
+  position: relative;
+}
+
+/* Ensure calendar is visible in modals */
+[data-radix-dialog-content] [data-radix-popper-content-wrapper] {
+  z-index: 9999 !important;
+}
+
+/* Ensure calendar is properly positioned */
+.calendar-popover {
+  position: relative !important;
+}
+
+/* Custom date picker styles */
+.custom-date-picker {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.date-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.date-cell {
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 50%;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.date-cell:hover:not(.date-cell-selected):not(.date-cell-disabled) {
+  background-color: hsl(var(--accent));
+}
+
+.date-cell-selected {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
+
+.date-cell-today:not(.date-cell-selected) {
+  border: 1px solid hsl(var(--primary));
+}
+
+.date-cell-disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.date-cell-outside {
+  opacity: 0.5;
+}
+
+/* Custom calendar styles */
+.calendar-container {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  padding: 0.5rem;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.calendar-day:hover:not(.calendar-day-selected):not(.calendar-day-disabled) {
+  background-color: hsl(var(--accent));
+}
+
+.calendar-day-selected {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
+
+.calendar-day-today:not(.calendar-day-selected) {
+  border: 1px solid hsl(var(--primary));
+}
+
+.calendar-day-outside {
+  opacity: 0.5;
+}
+
+.calendar-day-disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Animation for month transitions */
+.calendar-month-animate {
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* Animație pentru linia de scanare */
+@keyframes scanLine {
+  0% {
+    top: 0%;
+  }
+  50% {
+    top: 100%;
+  }
+  100% {
+    top: 0%;
+  }
+}
+
+.animate-scan-line {
+  animation: scanLine 2s linear infinite;
+  position: absolute;
+  top: 0;
+}
+
+/* Mobile dialog improvements */
+@media (max-width: 640px) {
+  [data-radix-dialog-content] {
+    max-width: 95vw !important;
+    padding: 1rem !important;
+  }
+
+  [data-radix-dialog-title] {
+    font-size: 1.1rem !important;
+  }
+
+  [data-radix-dialog-description] {
+    font-size: 0.85rem !important;
+  }
+}
+
+/* Ensure dialog content is scrollable on small screens */
+.dialog-content-scrollable {
+  width: 100%;
+  padding-bottom: 1rem;
+  -webkit-overflow-scrolling: touch; /* For smooth scrolling on iOS */
+}
+
+/* Ensure the modal doesn't exceed viewport height */
+[data-radix-dialog-content] {
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* Improve scrollbar appearance */
+[data-radix-dialog-content]::-webkit-scrollbar {
+  width: 6px;
+}
+
+[data-radix-dialog-content]::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+[data-radix-dialog-content]::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+}
+
+/* Fix for iOS input zooming */
+@media screen and (max-width: 640px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* Improve dialog positioning on mobile */
+@supports (-webkit-touch-callout: none) {
+  [data-radix-dialog-content] {
+    transform: translateY(-3%);
+  }
+}
+
+/* Custom scan line animation */
+@keyframes scan-line {
+  0% {
+    top: 0%;
+  }
+  100% {
+    top: 100%;
+  }
+}
+
+.animate-scan-line {
+  animation: scan-line 2s linear infinite;
+}
