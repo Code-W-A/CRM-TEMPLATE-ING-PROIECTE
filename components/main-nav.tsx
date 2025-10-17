@@ -173,18 +173,7 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
             <span>Integrări</span>
           </Link>
         )}
-        {!isTechnician && (
-          <Link
-            href="/dashboard/tasks"
-            className={cn(
-              "flex items-center gap-1 text-sm font-medium transition-colors hover:text-primary",
-              pathname === "/dashboard/tasks" ? "text-primary" : "text-muted-foreground",
-            )}
-          >
-            <ClipboardList className="h-4 w-4" />
-            <span>Tasks</span>
-          </Link>
-        )}
+      
     
         {isAdmin && (
           <>

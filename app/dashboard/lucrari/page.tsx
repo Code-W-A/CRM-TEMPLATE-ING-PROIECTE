@@ -1944,20 +1944,7 @@ export default function Lucrari() {
               </Tooltip>
             )}
             <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="h-8 w-8 text-green-600 border-green-200 hover:bg-green-50"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    handleGenerateReport(row.original)
-                  }}
-                  aria-label="Generează raport"
-                >
-                  <FileText className="h-4 w-4" />
-                </Button>
-              </TooltipTrigger>
+        
               <TooltipContent>Raport</TooltipContent>
             </Tooltip>
             {/* Buton de reatribuire pentru dispeceri/admini când lucrarea are situații critice */}
@@ -2528,14 +2515,7 @@ export default function Lucrari() {
                                     <Pencil className="mr-2 h-4 w-4" /> Editează
                                   </DropdownMenuItem>
                                 )}
-                                <DropdownMenuItem
-                                  onClick={(e) => {
-                                    e.stopPropagation()
-                                    handleGenerateReport(lucrare)
-                                  }}
-                                >
-                                  <FileText className="mr-2 h-4 w-4" /> Generează Raport
-                                </DropdownMenuItem>
+                             
                                 {/* Opțiune de reatribuire pentru dispeceri/admini când lucrarea are situații critice */}
                                 {!isTechnician && needsReassignment(lucrare) && (
                                   <DropdownMenuItem

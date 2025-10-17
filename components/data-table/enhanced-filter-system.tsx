@@ -591,7 +591,7 @@ export function EnhancedFilterSystem<TData>({ table, persistenceKey }: EnhancedF
     const groups: Record<string, typeof filterableColumns> = {
       Date: [],
       "Informații Client": [],
-      "Detalii Lucrare": [],
+      "Detalii proiect": [],
       Status: [],
       Altele: [],
     }
@@ -604,7 +604,7 @@ export function EnhancedFilterSystem<TData>({ table, persistenceKey }: EnhancedF
       } else if (headerText.includes("client") || headerText.includes("contact") || headerText.includes("telefon")) {
         groups["Informații Client"].push(column)
       } else if (headerText.includes("lucrare") || headerText.includes("descriere") || headerText.includes("tip")) {
-        groups["Detalii Lucrare"].push(column)
+        groups["Detalii proiect"].push(column)
       } else if (headerText.includes("status")) {
         groups["Status"].push(column)
       } else {

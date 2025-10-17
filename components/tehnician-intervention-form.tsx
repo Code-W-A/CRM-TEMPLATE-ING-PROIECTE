@@ -313,6 +313,38 @@ export function TehnicianInterventionForm({
     }
   }
 
+  const handleFinalizeProject = async () => {
+    try {
+      setIsSaving(true)
+
+      // Construim un set minim de date relevante pentru finalizare proiect
+      const updateData: any = {
+        constatareLaLocatie,
+        descriereInterventie,
+        statusFinalizareInterventie,
+        notaInternaTehnician,
+        statusLucrare: "Finalizat",
+      }
+
+      // Pentru proiectele în garanție păstrăm confirmarea dacă există
+      if (isWarrantyWork) {
+        updateData.tehnicianConfirmaGarantie = tehnicianConfirmaGarantie
+      }
+
+      await updateLucrare(lucrareId, updateData)
+
+      toast({ title: "Proiect finalizat", description: "Statusul proiectului a fost actualizat." })
+
+      // Reîmprospătăm datele fără a părăsi tabul curent
+      onUpdate(true)
+    } catch (error) {
+      console.error(error)
+      toast({ title: "Eroare", description: "Nu s-a putut finaliza proiectul.", variant: "destructive" })
+    } finally {
+      setIsSaving(false)
+    }
+  }
+
   const handleToggleOferta = (checked: boolean) => {
     setNecesitaOferta(checked)
     // If turning off the offer requirement, clear the comments
@@ -419,7 +451,7 @@ export function TehnicianInterventionForm({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Formular intervenție specialist</CardTitle>
+        <CardTitle>Jurnal proiect (specialist)</CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={(e) => {
@@ -427,10 +459,10 @@ export function TehnicianInterventionForm({
         }}>
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="constatareLaLocatie">Constatare la locație</Label>
+              <Label htmlFor="constatareLaLocatie">Observații pe șantier / constatări</Label>
               <Textarea
                 id="constatareLaLocatie"
-                placeholder="Descrieți ce ați constatat la locație..."
+                placeholder="Note despre măsurători, discuții cu beneficiarul, clarificări, restricții, contexte relevante pentru proiectare..."
                 value={constatareLaLocatie}
                 onChange={(e) => setConstatareLaLocatie(e.target.value)}
                 onKeyDown={(e) => {
@@ -445,10 +477,10 @@ export function TehnicianInterventionForm({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="descriereInterventie">Descriere intervenție</Label>
+              <Label htmlFor="descriereInterventie">Progres proiect / soluții tehnice propuse</Label>
               <Textarea
                 id="descriereInterventie"
-                placeholder="Descrieți intervenția efectuată..."
+                placeholder="Ce ai lucrat azi (disciplină/fază), ipoteze/verificări, soluții tehnice propuse, decizii luate sau de validat..."
                 value={descriereInterventie}
                 onChange={(e) => setDescriereInterventie(e.target.value)}
                 onKeyDown={(e) => {
@@ -468,7 +500,7 @@ export function TehnicianInterventionForm({
 
 
             <div className="space-y-2">
-              <Label htmlFor="statusFinalizareInterventie">Status finalizare intervenție</Label>
+              <Label htmlFor="statusFinalizareInterventie">Status finalizare proiect</Label>
               <Select value={statusFinalizareInterventie} onValueChange={(value) => setStatusFinalizareInterventie(value as "FINALIZAT" | "NEFINALIZAT")} disabled={formDisabled}>
                 <SelectTrigger id="statusFinalizareInterventie" className={formDisabled ? "opacity-70 cursor-not-allowed" : ""}>
                   <SelectValue placeholder="Selectați statusul finalizării intervenției" />
@@ -589,14 +621,7 @@ export function TehnicianInterventionForm({
                 </div>
               )}
 
-              {necesitaOferta && (
-                <Alert variant="default" className="mt-3">
-                  <Info className="h-4 w-4" />
-                  <AlertDescription>
-                    Dispecerul va fi notificat că această lucrare necesită o ofertă pentru client.
-                  </AlertDescription>
-                </Alert>
-              )}
+           
             </div>
 
             {/* Secțiunea pentru încărcarea imaginilor defectelor - disponibilă oricând */}
@@ -612,6 +637,8 @@ export function TehnicianInterventionForm({
               }}
               onImageDeleted={handleImageMarkedForDeletion}
               isUploading={isGeneratingReport || isSaving} // Loading state din componenta părinte
+              title="Anexe proiect (planșe, măsurători, fotografii șantier)"
+              description="Încarcă materiale vizuale relevante pentru procesul de proiectare (maxim 4 imagini, comprimare automată)."
             />
 
             {/* Notă internă specialist */}
@@ -639,15 +666,7 @@ export function TehnicianInterventionForm({
               <div className="flex justify-end space-x-2">
                 <Button
                   type="button"
-                  onClick={async () => {
-                    await handleSave()
-                    try {
-                      await updateLucrare(lucrareId, { statusLucrare: "Finalizat" })
-                      toast({ title: "Proiect finalizat", description: "Statusul proiectului a fost actualizat." })
-                    } catch (e) {
-                      console.error(e)
-                    }
-                  }}
+                  onClick={handleFinalizeProject}
                   disabled={isSaving || formDisabled}
                   className="bg-blue-600 hover:bg-blue-700"
                 >

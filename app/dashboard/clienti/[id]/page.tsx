@@ -269,7 +269,7 @@ export default function ClientPage({ params }: { params: { id: string } }) {
 
           {/* Secțiunea pentru locații și echipamente */}
           <div>
-            <h3 className="font-medium text-gray-500 mb-4">Locații și Echipamente</h3>
+            <h3 className="font-medium text-gray-500 mb-4">Locații</h3>
             {client?.locatii && client.locatii.length > 0 ? (
               <Accordion type="multiple" className="w-full">
                 {client.locatii.map((locatie, index) => (
@@ -349,7 +349,7 @@ export default function ClientPage({ params }: { params: { id: string } }) {
                           </Card>
                         )}
 
-                        {/* Echipamente */}
+                        {/* Echipamente - ascuns */}
                         <Card className="border-l-4 border-l-purple-500">
                           <CardContent className="pt-4">
                             <div className="flex items-center gap-2 mb-3">

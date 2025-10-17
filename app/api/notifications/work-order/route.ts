@@ -272,7 +272,7 @@ export async function POST(request: NextRequest) {
             </div>
           `;
         }).join('')
-      : '<div style="color: #666; font-style: italic;">Nu sunt tehnicieni asignați</div>';
+      : '<div style="color: #666; font-style: italic;">Nu sunt Specialisti asignați</div>';
 
     // Prepare email content for client
     const clientWorkOrderInfo = isPostponed

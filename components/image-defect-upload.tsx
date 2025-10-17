@@ -20,9 +20,11 @@ interface ImageDefectUploadProps {
   onImagesChange: (images: File[], previews: string[]) => void // Callback pentru imaginile selectate local
   onImageDeleted?: (deletedImageIndex: number) => void // Callback pentru imaginile uplodate șterse
   isUploading?: boolean // Loading state controlat de component părinte
+  title?: string
+  description?: string
 }
 
-export function ImageDefectUpload({ lucrareId, lucrare, selectedImages, imagePreviews, imagesToDelete, onImagesChange, onImageDeleted, isUploading = false }: ImageDefectUploadProps) {
+export function ImageDefectUpload({ lucrareId, lucrare, selectedImages, imagePreviews, imagesToDelete, onImagesChange, onImageDeleted, isUploading = false, title, description }: ImageDefectUploadProps) {
   const { userData } = useAuth()
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -206,10 +208,10 @@ export function ImageDefectUpload({ lucrareId, lucrare, selectedImages, imagePre
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Camera className="h-5 w-5" />
-          Imagini defecte constatate
+          {title || "Imagini defecte constatate"}
         </CardTitle>
         <CardDescription>
-          Încărcați imagini cu defectele constatate (maxim {maxImages} imagini, comprimare automată)
+          {description || `Încărcați imagini cu defectele constatate (maxim ${maxImages} imagini, comprimare automată)`}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">

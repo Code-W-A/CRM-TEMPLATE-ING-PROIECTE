@@ -82,7 +82,8 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
   const [activeTab, setActiveTab] = useState("detalii")
   const [isReinterventionReasonDialogOpen, setIsReinterventionReasonDialogOpen] = useState(false)
 
-  const [equipmentVerified, setEquipmentVerified] = useState(false)
+  // Verificare echipament eliminată în noul flux
+  const [equipmentVerified, setEquipmentVerified] = useState(true)
   const [locationAddress, setLocationAddress] = useState<string | null>(null)
   const [isUpdating, setIsUpdating] = useState(false)
   const [isOfferEditorOpen, setIsOfferEditorOpen] = useState(false)
@@ -734,12 +735,7 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
           <Button variant="outline" onClick={() => router.push(userData?.role === "client" ? "/portal" : (fromArhivate ? "/dashboard/arhivate" : "/dashboard/lucrari"))}>
             <ChevronLeft className="mr-2 h-4 w-4" /> Înapoi
           </Button>
-          <Button 
-            onClick={handleGenerateReport}
-            disabled={role === "tehnician" && !equipmentVerified}
-          >
-            <FileText className="mr-2 h-4 w-4" /> Generează raport
-          </Button>
+      
 
           {lucrare.statusLucrare === WORK_STATUS.ARCHIVED && role === "admin" && (
             <Button
@@ -830,8 +826,8 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
             )
           })()}
 
-          {/* Adăugăm butonul de preluare/anulare preluare pentru admin și dispecer */}
-          {isAdminOrDispatcher && isCompletedWithReport && !lucrare.preluatDispecer && (
+          {/* Adăugăm butonul de preluare pentru admin și dispecer atunci când lucrarea este Finalizată */}
+          {isAdminOrDispatcher && lucrare.statusLucrare === WORK_STATUS.COMPLETED && !lucrare.preluatDispecer && (
             <Button
               variant="default"
               className="bg-blue-600 hover:bg-blue-700 text-white"
@@ -922,27 +918,8 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
         </Alert>
       )}
 
-      {/* Adăugăm un banner de notificare pentru tehnicieni dacă echipamentul nu a fost verificat */}
-      {role === "tehnician" && !equipmentVerified && lucrare.statusLucrare !== WORK_STATUS.POSTPONED && (
-        <Alert variant="default" className="mb-4 bg-yellow-50 border-yellow-200">
-          <AlertCircle className="h-4 w-4 text-yellow-500" />
-          <AlertTitle>Verificare echipament necesară</AlertTitle>
-          <AlertDescription>
-            Trebuie să verificați echipamentul înainte de a putea începe intervenția. Accesați tab-ul "Verificare
-            Echipament".
-          </AlertDescription>
-        </Alert>
-      )}
 
-      {/* Adăugăm un banner de confirmare dacă echipamentul a fost verificat */}
-      {role === "tehnician" && equipmentVerified && lucrare.statusLucrare !== WORK_STATUS.POSTPONED && (
-        <Alert variant="default" className="mb-4 bg-green-50 border-green-200">
-          <CheckCircle className="h-4 w-4 text-green-500" />
-          <AlertTitle>Echipament verificat</AlertTitle>
-          <AlertDescription>Echipamentul a fost verificat cu succes. Puteți continua intervenția.</AlertDescription>
-        </Alert>
-      )}
-
+     
     
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList
@@ -955,20 +932,12 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
             Detalii&nbsp;Lucrare
           </TabsTrigger>
 
-          {/* ------------ 3. Verificare Echipament (100 % pe mobil) ------- */}
-          {role === "tehnician" && !lucrare.raportGenerat && lucrare.statusLucrare !== WORK_STATUS.POSTPONED && (
-            <TabsTrigger value="verificare" className="basis-full md:basis-auto text-center whitespace-normal">
-              Verificare echipament
-            </TabsTrigger>
-          )}
+          {/* Tab verificare echipament eliminat */}
           {/* ------------ 2. Intervenție (50 %) --------------------------- */}
           {role === "tehnician" && !lucrare.raportGenerat && lucrare.statusLucrare !== WORK_STATUS.POSTPONED && (
             <TabsTrigger
               value="interventie"
-              disabled={
-                role === "tehnician" &&
-                 (!equipmentVerified || (lucrare.statusLucrare === "Finalizat" && Boolean(lucrare.raportGenerat)))
-              }
+              disabled={false}
               className={`flex-1 basis-1/2 text-center whitespace-normal ${
                 role === "tehnician" &&
                 (!equipmentVerified || (lucrare.statusLucrare === "Finalizat" && Boolean(lucrare.raportGenerat)))
@@ -976,12 +945,9 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
                   : ""
               }`}
             >
-              {role === "tehnician" && !equipmentVerified && <Lock className="h-3 w-3 absolute right-2" />}
-              {role === "tehnician" &&
-                equipmentVerified &&
-                lucrare.statusLucrare === "Finalizat" &&
-                lucrare.raportGenerat && <CheckCircle className="h-3 w-3 absolute right-2" />}
-              Intervenție
+              {/* lock eliminat */}
+              {/* indicatori eliminati */}
+              Proiectare
             </TabsTrigger>
           )}
         </TabsList>
@@ -992,7 +958,7 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
               <CardHeader>
                 <div className="flex items-center justify-between gap-2">
                   <div>
-                <CardTitle>Detalii lucrare</CardTitle>
+                <CardTitle>Detalii proiect</CardTitle>
             
                   </div>
                 </div>
@@ -1030,9 +996,9 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
                 {/* Linie de separare */}
                 <Separator className="my-4" />
 
-                {/* Tehnicieni asignați – etichetă și valori pe același rând */}
+                {/* Specialisti asignați – etichetă și valori pe același rând */}
                 <div className="mt-4 text-base mb-4 w-full flex items-center flex-wrap gap-2">
-                  <span className="font-semibold">Tehnicieni asignați:</span>
+                  <span className="font-semibold">Specialisti asignați:</span>
                   <div className="flex flex-wrap gap-2">
                     {lucrare.tehnicieni.map((tehnician, index) => (
                       <Badge key={index} variant="secondary" className="text-base font-normal px-4 py-2 rounded-md">
@@ -1204,7 +1170,7 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
 
                 <Separator />
                 <div className="space-y-4">
-                {/* Rând cu: Locație | Persoană contact (locație) | Echipament */}
+                {/* Rând cu: Locație | Persoană contact (locație) */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
                   {/* Locație */}
                   <div>
@@ -1279,28 +1245,7 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
                     </div>
                   </div>
 
-                  {/* Echipament */}
-                  <div>
-                    <p className="text-base font-semibold mb-2">Echipament:</p>
-                    <p className="text-sm mb-2">
-                      {lucrare.echipament ? `${lucrare.echipament}` : "Nespecificat"}
-                    </p>
-                    <div className="space-y-1">
-                      {role !== "tehnician" && lucrare.echipamentCod && (
-                        <p className="text-sm">
-                          <span className="font-medium text-blue-600">Cod:</span>{" "}
-                          <span className="text-blue-600">{lucrare.echipamentCod}</span>
-                        </p>
-                      )}
-                      {lucrare.echipamentModel && (
-                        <p className="text-sm">
-                          <span className="font-medium text-blue-600">Model:</span>{" "}
-                          <span className="text-blue-600">{lucrare.echipamentModel}</span>
-                        </p>
-                      )}
-                      
-                    </div>
-                  </div>
+                  {/* Echipament - eliminat */}
                 </div>
                 </div>
 
@@ -1337,7 +1282,7 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
                       <div className="space-y-1">
                         {lucrare.descriere && (
                           <div>
-                            <span className="font-semibold text-base mr-2">Dispecer:</span>
+                            <span className="font-semibold text-base mr-2">Admin:</span>
                             <span className="text-base text-gray-600">{lucrare.descriere}</span>
                           </div>
                         )}
@@ -1367,7 +1312,7 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
                         <div className="space-y-1">
                           {lucrare.descriere && (
                             <div>
-                              <span className="font-semibold text-base mr-2">Dispecer:</span>
+                              <span className="font-semibold text-base mr-2">Admin:</span>
                               <span className="text-base text-gray-600">{lucrare.descriere}</span>
                             </div>
                           )}
@@ -1382,70 +1327,7 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
                     )}
                   </div>
                 )}
-                {/* Informații despre garanție pentru Proiecte de tip "Intervenție în garanție" */}
-                {lucrare.tipLucrare === "Intervenție în garanție" && warrantyInfo && (
-                  <div className="mt-4 p-4 border rounded-md bg-gradient-to-r from-blue-50 to-indigo-50">
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="h-5 w-5 rounded-full bg-blue-500 flex items-center justify-center">
-                        <span className="text-white text-xs font-bold">G</span>
-                      </div>
-                      <h4 className="text-sm font-medium text-blue-900">Informații Garanție Echipament</h4>
-                      <Badge className={warrantyInfo.statusBadgeClass + " rounded-md"}>
-                        {warrantyInfo.statusText}
-                      </Badge>
-                    </div>
-
-                    {/* Calculul automat al garanției */}
-                    <div className="p-3 bg-white rounded-md border mb-3">
-                      <h5 className="font-medium text-sm mb-2">Calculul automat al garanției:</h5>
-                      <div className="grid grid-cols-2 gap-2 text-xs">
-                          <div>
-                          <span className="text-gray-600">Status:</span>
-                          <Badge className={warrantyInfo.statusBadgeClass + " ml-1 rounded-md"}>
-                            {warrantyInfo.statusText}
-                          </Badge>
-                          </div>
-                          <div>
-                          <span className="text-gray-600">Zile rămase:</span>
-                          <span className={`ml-1 font-medium ${warrantyInfo.isInWarranty ? 'text-green-600' : 'text-red-600'}`}>
-                            {warrantyInfo.isInWarranty ? warrantyInfo.daysRemaining : 0} zile
-                          </span>
-                          </div>
-                          <div>
-                          <span className="text-gray-600">Data instalării:</span>
-                          <span className="ml-1">{warrantyInfo.installationDate || "Nedefinită"}</span>
-                          </div>
-                          <div>
-                          <span className="text-gray-600">Expiră la:</span>
-                          <span className="ml-1">{warrantyInfo.warrantyExpires || "Nedefinită"}</span>
-                          </div>
-                        </div>
-                      <p className="text-xs text-gray-600 mt-2">{warrantyInfo.warrantyMessage}</p>
-                        </div>
-
-                    {/* Confirmarea tehnicianului la fața locului */}
-                    {lucrare.tehnicianConfirmaGarantie !== undefined && (
-                      <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-md mb-4">
-                        <div className="flex items-center space-x-2">
-                          <span className="font-medium text-sm text-yellow-800">
-                            Confirmarea tehnicianului la fața locului:
-                          </span>
-                          <Badge 
-                            className={lucrare.tehnicianConfirmaGarantie 
-                              ? "bg-green-100 text-green-800 border-green-200 rounded-md" 
-                              : "bg-red-100 text-red-800 border-red-200 rounded-md"
-                            }
-                          >
-                            {lucrare.tehnicianConfirmaGarantie ? "✓ Confirmă garanția" : "✗ Nu confirmă garanția"}
-                          </Badge>
-                        </div>
-                        <p className="text-xs text-yellow-700 mt-1">
-                          Tehnicianul a verificat fizic echipamentul și a {lucrare.tehnicianConfirmaGarantie ? 'confirmat' : 'infirmat'} că este în garanție.
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                )}
+                {/* Informații garanție – eliminate din noul flux */}
 
                 {/* Secțiunea de management a statusurilor a fost mutată în cardul "Informații client" pentru un layout mai clar */}
 
@@ -1810,22 +1692,7 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
                 )}
 
                 {/* Mesaj informativ când lucrarea nu este încă preluată */}
-                {isAdminOrDispatcher && lucrare.statusLucrare === "Finalizat" && !lucrare.preluatDispecer && (
-                  <div className="p-4 border rounded-md bg-gray-50 border-gray-200">
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="h-5 w-5 rounded-full bg-gray-400 flex items-center justify-center">
-                        <span className="text-white text-xs font-bold">!</span>
-                      </div>
-                      <h4 className="text-sm font-medium text-gray-700">Managementul statusurilor critice</h4>
-                      <Badge variant="outline" className="bg-gray-100 text-gray-600 border-gray-300 text-xs">
-                        Dezactivat
-                      </Badge>
-                    </div>
-                    <p className="text-xs text-gray-600">
-                      Această secțiune va fi disponibilă doar după preluarea proiectului de către dispecer.
-                    </p>
-                  </div>
-                )}
+             
 
                 {/* Documente PDF – păstrăm încărcarea pentru facturi; upload ofertă ascuns (se generează automat după acceptare) */}
                 <div className="mt-4">
@@ -1901,19 +1768,10 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
                   raportGenerat: lucrare.raportGenerat,
                   necesitaOferta: lucrare.necesitaOferta,
                   comentariiOferta: lucrare.comentariiOferta,
-                  statusEchipament: lucrare.statusEchipament,
-                  // Adăugăm câmpurile pentru garanție
-                  tipLucrare: lucrare.tipLucrare,
-                  echipamentCod: lucrare.echipamentCod,
-                  // Pentru echipamentData, trebuie să găsim echipamentul în datele clientului
-                  echipamentData: clientData?.locatii
-                    ?.find((loc: any) => loc.nume === lucrare.locatie)
-                    ?.echipamente
-                    ?.find((eq: any) => eq.cod === lucrare.echipamentCod),
+                  // câmpuri echipament/garanție eliminate din noul flux
                   // Adăugăm statusul finalizării intervenției
                   statusFinalizareInterventie: lucrare.statusFinalizareInterventie,
-                  // Adăugăm confirmarea garanției de către tehnician
-                  tehnicianConfirmaGarantie: lucrare.tehnicianConfirmaGarantie,
+                  // confirmare garanție eliminată din UI
                   // Adăugăm imaginile defectelor
                   imaginiDefecte: lucrare.imaginiDefecte,
                   // Notă internă tehnician
