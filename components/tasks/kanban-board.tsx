@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { useFirebaseCollection } from "@/hooks/use-firebase-collection"
-import { getTaskSettings, listTasks, updateTask, createTask, type Task, startTimeEntry, stopTimeEntry } from "@/lib/firebase/tasks"
+import { getTaskSettings, listTasks, updateTask, createTask, type Task } from "@/lib/firebase/tasks"
 import { useAuth } from "@/contexts/AuthContext"
 import { Plus, Calendar, User } from "lucide-react"
 
@@ -39,14 +39,6 @@ export function KanbanBoard() {
   // Task detail dialog
   const [detailOpen, setDetailOpen] = useState(false)
   const [selectedTask, setSelectedTask] = useState<Task | null>(null)
-  const [activeTimerTaskId, setActiveTimerTaskId] = useState<string>("")
-  const [activeEntryId, setActiveEntryId] = useState<string>("")
-  const [tick, setTick] = useState<number>(0)
-
-  useEffect(() => {
-    const id = window.setInterval(() => setTick((t) => t + 1), 1000)
-    return () => window.clearInterval(id)
-  }, [])
 
   useEffect(() => {
     const run = async () => {
@@ -323,38 +315,7 @@ export function KanbanBoard() {
                           </span>
                         </div>
                       )}
-                      <div className="ml-auto">
-                        {activeTimerTaskId === t.id ? (
-                          <Button
-                            variant="destructive"
-                            size="sm"
-                            onClick={async (e) => {
-                              e.stopPropagation()
-                              if (activeEntryId) {
-                                await stopTimeEntry(activeEntryId)
-                                setActiveTimerTaskId("")
-                                setActiveEntryId("")
-                              }
-                            }}
-                          >
-                            Oprește
-                          </Button>
-                        ) : (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={async (e) => {
-                              e.stopPropagation()
-                              if (!userData?.uid) return
-                              const entryId = await startTimeEntry(t.id!, userData.uid)
-                              setActiveTimerTaskId(t.id!)
-                              setActiveEntryId(entryId)
-                            }}
-                          >
-                            Pornește
-                          </Button>
-                        )}
-                      </div>
+                      {/* pontaj controls removed */}
                     </div>
                   </div>
                 )
