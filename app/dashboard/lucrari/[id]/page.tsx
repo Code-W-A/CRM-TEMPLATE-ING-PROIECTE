@@ -255,7 +255,7 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
           }
         }
 
-        // Calculăm informațiile de garanție pentru lucrările de tip "Intervenție în garanție"
+        // Calculăm informațiile de garanție pentru Proiecte de tip "Intervenție în garanție"
         if (data && data.tipLucrare === "Intervenție în garanție" && data.client && data.locatie && data.echipament) {
           try {
             const clienti = await getClienti()
@@ -1382,7 +1382,7 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
                     )}
                   </div>
                 )}
-                {/* Informații despre garanție pentru lucrările de tip "Intervenție în garanție" */}
+                {/* Informații despre garanție pentru Proiecte de tip "Intervenție în garanție" */}
                 {lucrare.tipLucrare === "Intervenție în garanție" && warrantyInfo && (
                   <div className="mt-4 p-4 border rounded-md bg-gradient-to-r from-blue-50 to-indigo-50">
                     <div className="flex items-center gap-2 mb-3">

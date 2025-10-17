@@ -164,7 +164,7 @@ export default function NewLucrarePage() {
         ? `A fost adăugată o re-intervenție pentru clientul "${formData.client}" cu ID-ul ${lucrareId} (din lucrarea originală ${originalWorkOrderId})`
         : `A fost adăugată o nouă lucrare pentru clientul "${formData.client}" cu ID-ul ${lucrareId}`
       
-      await addLog("Adăugare", logMessage, "Informație", "Lucrări")
+      await addLog("Adăugare", logMessage, "Informație", "Proiecte")
 
       // Afișăm un mesaj de succes
       const successMessage = isReassignment 

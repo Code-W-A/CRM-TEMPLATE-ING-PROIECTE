@@ -218,7 +218,7 @@ export default function EditLucrarePage({ params }: { params: { id: string } }) 
         "Actualizare",
         `A fost actualizată lucrarea pentru clientul "${data.client}" cu ID-ul ${id}`,
         "Informație",
-        "Lucrări",
+        "Proiecte",
       )
 
       // Afișăm un mesaj de succes

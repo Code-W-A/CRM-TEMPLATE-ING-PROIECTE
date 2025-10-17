@@ -1,11 +1,13 @@
 "use client"
 
 import type * as React from "react"
+import { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
 import { cn } from "@/lib/utils"
 import { useAuth } from "@/contexts/AuthContext"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
 // Adăugăm importurile pentru iconițe
 import {
@@ -18,6 +20,9 @@ import {
   FileCodeIcon as FileContract,
   StickyNote,
   Archive,
+  List,
+  UserPlus,
+  Plug
 } from "lucide-react"
 
 // Actualizăm componenta MainNav pentru a include iconițele și logo-ul CRM
@@ -88,19 +93,48 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
           </Link>
         )}
         {!isTechnician && (
-          <Link
-            href="/dashboard/clienti"
-            className={cn(
-              "flex items-center gap-1 text-sm font-medium transition-colors hover:text-primary",
-              pathname === "/dashboard/clienti" || pathname.startsWith("/dashboard/clienti/")
-                ? "text-primary"
-                : "text-muted-foreground",
-            )}
-          >
-            <Users className="h-4 w-4" />
-            <span>Clienți</span>
-          </Link>
+          (() => {
+            const [open, setOpen] = useState(false)
+            return (
+              <div onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
+                <DropdownMenu open={open} onOpenChange={setOpen}>
+                  <DropdownMenuTrigger asChild>
+                    <button
+                      className={cn(
+                        "flex items-center gap-1 text-sm font-medium transition-colors hover:text-primary",
+                        pathname === "/dashboard/clienti" || pathname.startsWith("/dashboard/clienti/") || pathname === "/dashboard/achizitii-client"
+                          ? "text-primary"
+                          : "text-muted-foreground",
+                      )}
+                    >
+                      <Users className="h-4 w-4" />
+                      <span>Clienți</span>
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start">
+                    <DropdownMenuItem asChild>
+                      <Link href="/dashboard/clienti">
+                        <div className="flex items-center gap-2">
+                          <List className="h-4 w-4" />
+                          <span>Lista clienți</span>
+                        </div>
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/dashboard/achizitii-client">
+                        <div className="flex items-center gap-2">
+                          <UserPlus className="h-4 w-4" />
+                          <span>Achiziții clienți</span>
+                        </div>
+                      </Link>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            )
+          })()
         )}
+         
         {isAdmin && (
           <Link
             href="/dashboard/contracte"
@@ -129,6 +163,18 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
         )}
         {!isTechnician && (
           <Link
+            href="/dashboard/integrari"
+            className={cn(
+              "flex items-center gap-1 text-sm font-medium transition-colors hover:text-primary",
+              pathname === "/dashboard/integrari" ? "text-primary" : "text-muted-foreground",
+            )}
+          >
+            <Plug className="h-4 w-4" />
+            <span>Integrări</span>
+          </Link>
+        )}
+        {!isTechnician && (
+          <Link
             href="/dashboard/tasks"
             className={cn(
               "flex items-center gap-1 text-sm font-medium transition-colors hover:text-primary",
@@ -139,6 +185,7 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
             <span>Tasks</span>
           </Link>
         )}
+    
         {isAdmin && (
           <>
             <Link

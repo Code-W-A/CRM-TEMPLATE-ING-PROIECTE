@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { getTaskSettings, updateTaskSettings, ensureDefaultTaskSettings } from "@/lib/firebase/tasks"
+import { getTaskSettings, updateTaskSettings, ensureDefaultTaskSettings, normalizeTaskSettings } from "@/lib/firebase/tasks"
 
 export function TaskSettings() {
   const [statuses, setStatuses] = useState<Array<{ id: string; name: string; color: string; order: number }>>([])
@@ -38,6 +38,11 @@ export function TaskSettings() {
           <div className="flex gap-2">
             <Input placeholder="Nume status" value={newStatus} onChange={(e) => setNewStatus(e.target.value)} />
             <Button onClick={addStatus}>Adaugă</Button>
+            <Button variant="outline" onClick={async () => {
+              const s = await normalizeTaskSettings()
+              setStatuses([...(s.statuses || [])])
+              setPriorities([...(s.priorities || [])])
+            }}>Normalizează</Button>
           </div>
           <div className="space-y-1">
             {statuses.map((s) => (

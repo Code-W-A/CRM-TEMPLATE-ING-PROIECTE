@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { createTask, getTaskSettings, type TaskPriority } from "@/lib/firebase/tasks"
+import { useFirebaseCollection } from "@/hooks/use-firebase-collection"
 import { useEffect } from "react"
 
 export function TaskForm({ onCreated }: { onCreated?: (id: string) => void }) {
@@ -15,6 +16,9 @@ export function TaskForm({ onCreated }: { onCreated?: (id: string) => void }) {
   const [statuses, setStatuses] = useState<Array<{ id: string; name: string }>>([])
   const [status, setStatus] = useState<string>("backlog")
   const [saving, setSaving] = useState(false)
+  const { data: users } = useFirebaseCollection<any>("users")
+  const technicians = (users || []).filter((u: any) => String(u?.role || "").toLowerCase() === "tehnician")
+  const [assigneeId, setAssigneeId] = useState<string>("")
 
   useEffect(() => {
     const run = async () => {
@@ -30,9 +34,10 @@ export function TaskForm({ onCreated }: { onCreated?: (id: string) => void }) {
     if (!t) return
     setSaving(true)
     try {
-      const id = await createTask({ title: t, description, priority, status, assigneeIds: [] })
+      const id = await createTask({ title: t, description, priority, status, assigneeIds: assigneeId ? [assigneeId] : [] })
       setTitle("")
       setDescription("")
+      setAssigneeId("")
       onCreated?.(id)
     } finally {
       setSaving(false)
@@ -59,6 +64,17 @@ export function TaskForm({ onCreated }: { onCreated?: (id: string) => void }) {
             <SelectItem value="medium">Medie</SelectItem>
             <SelectItem value="high">Ridicată</SelectItem>
             <SelectItem value="urgent">Urgent</SelectItem>
+          </SelectContent>
+        </Select>
+        <Select value={assigneeId} onValueChange={setAssigneeId}>
+          <SelectTrigger className="w-56"><SelectValue placeholder="Atribuie tehnician" /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="">Neatribuit</SelectItem>
+            {technicians.map((t: any) => (
+              <SelectItem key={t.id || t.uid} value={t.id || t.uid}>
+                {t.nume || t.name || t.displayName || t.email || (t.id || t.uid)}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
         <Button onClick={onSubmit} disabled={saving}>{saving ? "Se salvează..." : "Creează"}</Button>

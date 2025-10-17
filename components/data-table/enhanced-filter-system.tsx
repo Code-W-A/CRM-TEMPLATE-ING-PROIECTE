@@ -1084,7 +1084,7 @@ export function EnhancedFilterSystem<TData>({ table, persistenceKey }: EnhancedF
                 value={newFilterName}
                 onChange={(e) => setNewFilterName(e.target.value)}
                 className="col-span-3"
-                placeholder="Ex: Lucrări în așteptare"
+                placeholder="Ex: Proiecte în așteptare"
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">

@@ -36,7 +36,7 @@ export function useLucrariWelcomeNotifications(lucrari: Lucrare[]) {
     const notifications: WorkNotification[] = []
     let criticalCount = 0
 
-    // Filtrăm doar lucrările modificate după 26 iulie 2025, ora 16:20
+    // Filtrăm doar Proiecte modificate după 26 iulie 2025, ora 16:20
     const validLucrari = lucrari.filter(lucrare => {
       const updatedAtTimestamp = lucrare.updatedAt?.toMillis ? lucrare.updatedAt.toMillis() : 0
       const isModifiedAfterStart = updatedAtTimestamp >= notificationSystemStartDate
@@ -54,7 +54,7 @@ export function useLucrariWelcomeNotifications(lucrari: Lucrare[]) {
       return isModifiedAfterStart
     })
 
-    // 1. Lucrări neatribuite (fără tehnicieni) - doar din lucrările valide
+    // 1. Proiecte neatribuite (fără tehnicieni) - doar din Proiecte valide
     const unassignedCount = validLucrari.filter(lucrare => 
       !lucrare.tehnicieni || lucrare.tehnicieni.length === 0
     ).length
@@ -70,7 +70,7 @@ export function useLucrariWelcomeNotifications(lucrari: Lucrare[]) {
       criticalCount += unassignedCount
     }
 
-    // 2. Lucrări în progres sau nefinalizate - doar din lucrările valide
+    // 2. Proiecte în progres sau nefinalizate - doar din Proiecte valide
     const inProgressCount = validLucrari.filter(lucrare => 
       lucrare.statusLucrare === WORK_STATUS.IN_PROGRESS ||
       lucrare.statusLucrare === WORK_STATUS.LISTED ||
@@ -88,7 +88,7 @@ export function useLucrariWelcomeNotifications(lucrari: Lucrare[]) {
       })
     }
 
-    // 3. Lucrări finalizate dar fără factură - doar din lucrările valide
+    // 3. Proiecte finalizate dar fără factură - doar din Proiecte valide
     const completedUninvoicedCount = validLucrari.filter(lucrare => 
       lucrare.statusLucrare === WORK_STATUS.COMPLETED && 
       !lucrare.facturaDocument
@@ -105,7 +105,7 @@ export function useLucrariWelcomeNotifications(lucrari: Lucrare[]) {
       criticalCount += completedUninvoicedCount
     }
 
-    // 4. Lucrări amânate (necesită reatribuire) - doar din lucrările valide
+    // 4. Proiecte amânate (necesită reatribuire) - doar din Proiecte valide
     const postponedCount = validLucrari.filter(lucrare => 
       lucrare.statusLucrare === WORK_STATUS.POSTPONED
     ).length
@@ -121,7 +121,7 @@ export function useLucrariWelcomeNotifications(lucrari: Lucrare[]) {
       criticalCount += postponedCount
     }
 
-    // 5. Lucrări foarte vechi (peste 7 zile fără update) - doar din lucrările valide
+    // 5. Proiecte foarte vechi (peste 7 zile fără update) - doar din Proiecte valide
     const sevenDaysAgo = new Date()
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
     

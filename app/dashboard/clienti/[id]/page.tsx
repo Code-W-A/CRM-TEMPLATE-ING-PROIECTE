@@ -8,7 +8,7 @@ import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { ArrowLeft, Pencil, Trash2, MapPin, Wrench, Calendar, Clock, FileText } from "lucide-react"
+import { ArrowLeft, Pencil, Trash2, MapPin, Wrench, Calendar, Clock, FileText, Link as LinkIcon, CalendarClock } from "lucide-react"
 import { getWarrantyDisplayInfo } from "@/lib/utils/warranty-calculator"
 import { getClientById, deleteClient, type Client } from "@/lib/firebase/firestore"
 import { useAuth } from "@/contexts/AuthContext"
@@ -16,11 +16,15 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { AlertCircle } from "lucide-react"
 import { useFirebaseCollection } from "@/hooks/use-firebase-collection"
 import type { Lucrare } from "@/lib/firebase/firestore"
-import { orderBy } from "firebase/firestore"
+import { orderBy, collection, query as fsQuery, limit } from "firebase/firestore"
+import { db } from "@/lib/firebase/config"
 import { ClientContractsManager } from "@/components/client-contracts-manager"
 // Adăugăm importul pentru componenta EquipmentQRCode
 import { EquipmentQRCode } from "@/components/equipment-qr-code"
 import { formatDate } from "@/lib/utils/time-format"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { CalendlyEmbed } from "@/components/integrations/calendly-embed"
 
 // Importăm hook-ul useClientLucrari pentru a putea actualiza datele
 import { useClientLucrari } from "@/hooks/use-client-lucrari"
@@ -37,9 +41,19 @@ export default function ClientPage({ params }: { params: { id: string } }) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  // Obținem lucrările pentru acest client
+  // Obținem Proiecte pentru acest client
   const { data: toateLucrarile } = useFirebaseCollection<Lucrare>("lucrari", [orderBy("dataEmiterii", "desc")])
   const [lucrariClient, setLucrariClient] = useState<Lucrare[]>([])
+  // Programări (ultimele 5) din subcolecția appointments
+  const { data: appointments } = useFirebaseCollection<any>(
+    "appointments",
+    [],
+    fsQuery(
+      collection(db, "clienti", params.id, "appointments"),
+      orderBy("scheduledAt", "desc"),
+      limit(5),
+    ),
+  )
 
   // Adăugăm hook-ul în componenta ClientPage
   const { refreshData } = useClientLucrari()
@@ -68,7 +82,7 @@ export default function ClientPage({ params }: { params: { id: string } }) {
     fetchClient()
   }, [params.id])
 
-  // Filtrăm lucrările pentru acest client
+  // Filtrăm Proiecte pentru acest client
   useEffect(() => {
     if (client && toateLucrarile.length > 0) {
       const lucrari = toateLucrarile.filter((lucrare) => lucrare.client === client.nume)
@@ -146,6 +160,82 @@ export default function ClientPage({ params }: { params: { id: string } }) {
           </div>
 
           <Separator />
+
+          {/* Programare consultanță */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <h3 className="font-medium text-gray-500 flex items-center gap-2"><CalendarClock className="h-4 w-4" /> Programare consultanță</h3>
+              {process.env.NEXT_PUBLIC_CALENDLY_EVENT_URL && (
+                <div className="flex items-center gap-2">
+                  <Input
+                    readOnly
+                    value={`${process.env.NEXT_PUBLIC_CALENDLY_EVENT_URL}?utm_content=client-${params.id}`}
+                    className="w-[280px]"
+                  />
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_CALENDLY_EVENT_URL}?utm_content=client-${params.id}`)}
+                  >
+                    <LinkIcon className="h-4 w-4 mr-1" /> Copiază link
+                  </Button>
+                </div>
+              )}
+            </div>
+
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="default">Programează consultanță</Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-3xl">
+                <DialogHeader>
+                  <DialogTitle>Programează consultanță pentru {client?.nume}</DialogTitle>
+                </DialogHeader>
+                {process.env.NEXT_PUBLIC_CALENDLY_EVENT_URL ? (
+                  <CalendlyEmbed
+                    eventUrl={process.env.NEXT_PUBLIC_CALENDLY_EVENT_URL}
+                    client={{ id: params.id, name: client?.nume || undefined, email: client?.email || undefined }}
+                  />
+                ) : (
+                  <div className="rounded border p-4 text-sm text-muted-foreground">Config missing: NEXT_PUBLIC_CALENDLY_EVENT_URL</div>
+                )}
+              </DialogContent>
+            </Dialog>
+
+            {/* Listă programări recente */}
+            <div className="mt-2">
+              <h4 className="text-sm font-medium text-gray-600 mb-2">Programări recente</h4>
+              {appointments && appointments.length > 0 ? (
+                <div className="space-y-2">
+                  {appointments.map((a: any, idx: number) => {
+                    const when = a?.scheduledAt ? new Date(a.scheduledAt) : null
+                    return (
+                      <div key={a.id || idx} className="flex items-center justify-between rounded border p-2 text-sm">
+                        <div className="flex-1">
+                          <div className="font-medium">{when ? when.toLocaleString("ro-RO") : "—"}</div>
+                          {a?.inviteeUri && (
+                            <div className="text-xs text-muted-foreground break-all">{a.inviteeUri}</div>
+                          )}
+                        </div>
+                        {a?.eventUri && (
+                          <a
+                            href={a.eventUri}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-blue-600 hover:underline ml-3 whitespace-nowrap"
+                          >
+                            Deschide
+                          </a>
+                        )}
+                      </div>
+                    )
+                  })}
+                </div>
+              ) : (
+                <div className="text-sm text-muted-foreground">Nu există programări salvate încă.</div>
+              )}
+            </div>
+          </div>
 
           <div className="grid gap-4 md:grid-cols-2">
             <div>
@@ -437,7 +527,7 @@ export default function ClientPage({ params }: { params: { id: string } }) {
           <Separator />
 
           <div>
-            <h3 className="font-medium text-gray-500 mb-2">Lucrări recente</h3>
+            <h3 className="font-medium text-gray-500 mb-2">Proiecte recente</h3>
             {lucrariClient.length > 0 ? (
               <div className="space-y-2">
                 {lucrariClient.slice(0, 5).map((lucrare) => (

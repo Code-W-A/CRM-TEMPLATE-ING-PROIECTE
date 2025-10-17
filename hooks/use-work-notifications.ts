@@ -48,7 +48,7 @@ export function useWorkNotifications() {
     const notifications: WorkNotification[] = []
     let criticalCount = 0
 
-    // 1. Lucrări neatribuite (fără tehnicieni)
+    // 1. Proiecte neatribuite (fără tehnicieni)
     const unassignedCount = lucrari.filter(lucrare => 
       !lucrare.tehnicieni || lucrare.tehnicieni.length === 0
     ).length
@@ -64,7 +64,7 @@ export function useWorkNotifications() {
       criticalCount += unassignedCount
     }
 
-    // 2. Lucrări în progres sau nefinalizate
+    // 2. Proiecte în progres sau nefinalizate
     const inProgressCount = lucrari.filter(lucrare => 
       lucrare.statusLucrare === WORK_STATUS.IN_PROGRESS ||
       lucrare.statusLucrare === WORK_STATUS.LISTED ||
@@ -82,7 +82,7 @@ export function useWorkNotifications() {
       })
     }
 
-    // 3. Lucrări finalizate dar fără factură
+    // 3. Proiecte finalizate dar fără factură
     const completedUninvoicedCount = lucrari.filter(lucrare => 
       lucrare.statusLucrare === WORK_STATUS.COMPLETED && 
       !lucrare.facturaDocument
@@ -99,7 +99,7 @@ export function useWorkNotifications() {
       criticalCount += completedUninvoicedCount
     }
 
-    // 4. Lucrări amânate (necesită reatribuire)
+    // 4. Proiecte amânate (necesită reatribuire)
     const postponedCount = lucrari.filter(lucrare => 
       lucrare.statusLucrare === WORK_STATUS.POSTPONED
     ).length
@@ -115,7 +115,7 @@ export function useWorkNotifications() {
       criticalCount += postponedCount
     }
 
-    // 5. Lucrări foarte vechi (peste 7 zile fără update)
+    // 5. Proiecte foarte vechi (peste 7 zile fără update)
     const sevenDaysAgo = new Date()
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
     

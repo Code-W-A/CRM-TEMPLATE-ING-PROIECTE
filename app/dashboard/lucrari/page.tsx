@@ -221,16 +221,16 @@ export default function Lucrari() {
     saveSearchText(value)
   }
 
-  // Obținem lucrările din Firebase - excludem arhivate direct din query pentru optimizare
+  // Obținem Proiecte din Firebase - excludem arhivate direct din query pentru optimizare
   const {
     data: rawLucrari,
     loading,
     error: fetchError,
   } = useFirebaseCollection("lucrari", [
-    where("statusLucrare", "!=", WORK_STATUS.ARCHIVED) // Excludem direct lucrările arhivate
+    where("statusLucrare", "!=", WORK_STATUS.ARCHIVED) // Excludem direct Proiecte arhivate
   ])
 
-  // Sortăm lucrările (deja filtrate fără arhivate): prioritizăm lucrările cu updatedAt (modificate recent), apoi cele cu createdAt
+  // Sortăm Proiecte (deja filtrate fără arhivate): prioritizăm Proiecte cu updatedAt (modificate recent), apoi cele cu createdAt
   const lucrari = useMemo(() => {
     if (!rawLucrari || rawLucrari.length === 0) return []
     
@@ -1687,7 +1687,7 @@ export default function Lucrari() {
     },
     {
       accessorKey: "dataInterventie",
-      header: "Data solicitată intervenție",
+      header: "Data solicitată",
       enableHiding: true,
       enableFiltering: true,
       sortingFn: (rowA: any, rowB: any, columnId: any) => {
@@ -1710,7 +1710,7 @@ export default function Lucrari() {
     },
     {
       accessorKey: "tipLucrare",
-      header: "Tip Lucrare",
+      header: "Tip proiect",
       enableHiding: true,
       enableFiltering: true,
       cell: ({ row }) => (
@@ -1777,7 +1777,7 @@ export default function Lucrari() {
     
     {
       accessorKey: "statusLucrare",
-      header: "Status Lucrare",
+      header: "Status proiect",
       enableHiding: true,
       enableFiltering: true,
       cell: ({ row }) => (
@@ -2076,8 +2076,8 @@ export default function Lucrari() {
     <TooltipProvider>
       <DashboardShell>
         <DashboardHeader 
-          heading="Lucrări" 
-          text="Gestionați toate lucrările și intervențiile"
+          heading="Proiecte" 
+          text="Gestionați toate Proiecte și intervențiile"
           headerAction={!isTechnician ? <LucrariNotificationsBell lucrari={rawLucrari || []} /> : undefined}
         >
         {!isTechnician && (
@@ -2294,7 +2294,7 @@ export default function Lucrari() {
         {loading ? (
           <div className="flex justify-center items-center py-12">
             <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
-            <span className="ml-2 text-gray-600">Se încarcă lucrările...</span>
+            <span className="ml-2 text-gray-600">Se încarcă Proiecte...</span>
           </div>
         ) : fetchError ? (
           <Alert variant="destructive">

@@ -37,10 +37,10 @@ export default function Dashboard() {
     where("timestamp", ">=", Timestamp.fromDate(startOfToday)),
   ])
 
-  // Filtrăm lucrările în funcție de rolul utilizatorului
+  // Filtrăm Proiecte în funcție de rolul utilizatorului
   const lucrari = useMemo(() => {
     if (role === "tehnician" && userData?.displayName) {
-      // Tehnicienii văd doar lucrările la care sunt asignați și care sunt active
+      // Tehnicienii văd doar Proiecte la care sunt asignați și care sunt active
       return toateLucrarile.filter(
         (lucrare) =>
           lucrare.tehnicieni.includes(userData.displayName) &&
@@ -48,7 +48,7 @@ export default function Dashboard() {
             lucrare.statusLucrare.toLowerCase() === WORK_STATUS.IN_PROGRESS.toLowerCase()),
       )
     }
-    // Administratorii și dispecerii văd toate lucrările
+    // Administratorii și dispecerii văd toate Proiecte
     return toateLucrarile
   }, [toateLucrarile, role, userData?.displayName])
 
@@ -156,9 +156,9 @@ export default function Dashboard() {
   // Verificăm dacă datele sunt încă în curs de încărcare
   const isLoading = loadingStats
 
-  // Funcție pentru a obține lucrările recente pentru afișare în taburi
+  // Funcție pentru a obține Proiecte recente pentru afișare în taburi
   const getLucrariRecente = () => {
-    // Dacă utilizatorul este tehnician, filtrăm lucrările la care este alocat
+    // Dacă utilizatorul este tehnician, filtrăm Proiecte la care este alocat
     if (role === "tehnician" && userData?.displayName) {
       return [...lucrari]
         .filter((l) => l.tehnicieni.includes(userData.displayName!))
@@ -170,7 +170,7 @@ export default function Dashboard() {
         .slice(0, 5)
     }
 
-    // Pentru admin și dispecer, afișăm toate lucrările
+    // Pentru admin și dispecer, afișăm toate Proiecte
     return [...lucrari]
       .sort((a, b) => {
         const dateA = a.dataEmiterii.split(".").reverse().join("")
@@ -180,9 +180,9 @@ export default function Dashboard() {
       .slice(0, 5)
   }
 
-  // Modificăm și funcțiile pentru lucrările în așteptare și în curs
+  // Modificăm și funcțiile pentru Proiecte în așteptare și în curs
   const getLucrariAsteptare = () => {
-    // Filtrăm lucrările în așteptare
+    // Filtrăm Proiecte în așteptare
     const filteredLucrari =
       role === "tehnician" && userData?.displayName
         ? lucrari.filter(
@@ -196,7 +196,7 @@ export default function Dashboard() {
   }
 
   const getLucrariInCurs = () => {
-    // Filtrăm lucrările în curs
+    // Filtrăm Proiecte în curs
     const filteredLucrari =
       role === "tehnician" && userData?.displayName
         ? lucrari.filter(

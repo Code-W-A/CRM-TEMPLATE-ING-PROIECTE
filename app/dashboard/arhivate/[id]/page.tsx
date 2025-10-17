@@ -194,7 +194,7 @@ export default function ArchivedWorkDetailPage({ params }: ArchivedWorkDetailPag
       })
       toast({
         title: "Succes",
-        description: "proiectul a fost dezarhivată cu succes și a fost mutată în lucrările active.",
+        description: "proiectul a fost dezarhivată cu succes și a fost mutată în Proiecte active.",
       })
       
       // Refresh cache-ul Next.js pentru a actualiza toate paginile
@@ -1051,7 +1051,7 @@ export default function ArchivedWorkDetailPage({ params }: ArchivedWorkDetailPag
               <CardHeader>
                 <CardTitle>Documente Încărcate</CardTitle>
                 <CardDescription>
-                  Documentele pot fi doar vizualizate și descărcate pentru lucrările arhivate.
+                  Documentele pot fi doar vizualizate și descărcate pentru Proiecte arhivate.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -1070,7 +1070,7 @@ export default function ArchivedWorkDetailPage({ params }: ArchivedWorkDetailPag
               <CardHeader>
                 <CardTitle>Imagini Detalii</CardTitle>
                 <CardDescription>
-                  Imaginile pot fi doar vizualizate pentru lucrările arhivate.
+                  Imaginile pot fi doar vizualizate pentru Proiecte arhivate.
                 </CardDescription>
               </CardHeader>
               <CardContent>

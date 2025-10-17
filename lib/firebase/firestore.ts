@@ -144,7 +144,7 @@ export interface Lucrare {
   tehnicianConfirmaGarantie?: boolean  // Confirmarea tehnicianului la fața locului despre garanție (doar pentru "Intervenție în garanție")
   statusOferta?: "NU" | "DA" | "OFERTAT" // Nou câmp pentru managementul statusului ofertei
   // CÂMP NOU PENTRU NUMĂRUL FACTURII - BACKWARD COMPATIBLE
-  numarFactura?: string // Numărul facturii (opțional, pentru lucrările facturate)
+  numarFactura?: string // Numărul facturii (opțional, pentru Proiecte facturate)
   // CÂMP NOU PENTRU MOTIV NEFACTURARE - BACKWARD COMPATIBLE
   motivNefacturare?: string // Motivul pentru care nu se facturează
   // CÂMP NOU PENTRU NUMĂRUL RAPORTULUI - BACKWARD COMPATIBLE
@@ -214,7 +214,16 @@ export interface Client {
   echipamente?: Echipament[]
   contracte?: Contract[]
   locatii?: Locatie[]
-  // Câmpuri opționale pentru achiziție client / cost campanie (UI-only, non-breaking)
+  // Achiziții client (BACKWARD COMPATIBLE)
+  // Nou: suportăm mai multe înregistrări per client
+  acquisitionEntries?: Array<{
+    id?: string
+    source: "recomandare" | "organic_seo" | "organic_social" | "paid_campaign"
+    cost?: number // aplicabil doar pentru paid_campaign
+    date?: any // dată opțională a achiziției (fallback la createdAt client)
+    note?: string
+  }>
+  // Vechi: păstrăm câmpurile pentru compatibilitate cu codul existent
   acquisitionSource?: "recomandare" | "organic_seo" | "organic_social" | "paid_campaign"
   campaignCost?: number
   createdAt?: Timestamp
@@ -610,7 +619,7 @@ export const addLucrare = async (lucrare: Lucrare) => {
     actiune: "Creare lucrare",
     detalii: `ID: ${docRef.id}; client: ${lucrare.client}; tip: ${lucrare.tipLucrare}; dataInterventie: ${lucrare.dataInterventie || '-'}`,
     tip: "Informație",
-    categorie: "Lucrări",
+    categorie: "Proiecte",
   })
   return {
     id: docRef.id,
@@ -709,7 +718,7 @@ export const updateLucrare = async (
         actiune: "Actualizare lucrare",
         detalii,
         tip: "Informație",
-        categorie: "Lucrări",
+        categorie: "Proiecte",
       })
     } catch (e) {
       console.warn("Log diff failed (non-blocking):", e)
@@ -733,7 +742,7 @@ export const deleteLucrare = async (id: string) => {
     actiune: "Ștergere lucrare",
     detalii: `ID: ${id}`,
     tip: "Avertisment",
-    categorie: "Lucrări",
+    categorie: "Proiecte",
   })
   return id
 }

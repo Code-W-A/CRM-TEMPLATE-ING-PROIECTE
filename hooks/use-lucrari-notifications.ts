@@ -135,11 +135,11 @@ export function useLucrariNotifications(lucrari: Lucrare[]) {
                                   (Array.isArray(lucrare.notificationReadBy) && 
                                    lucrare.notificationReadBy.includes(userData.uid))
       
-      // Doar lucrările necitite și create/modificate după 26 iulie sunt notificări
+      // Doar Proiecte necitite și create/modificate după 26 iulie sunt notificări
       if (!isNotificationRead) {
         const updatedAtTimestamp = lucrare.updatedAt?.toMillis ? lucrare.updatedAt.toMillis() : 0
         
-        // LOGICĂ STRICTĂ: Doar lucrările modificate după 26 iulie 2025, ora 16:20
+        // LOGICĂ STRICTĂ: Doar Proiecte modificate după 26 iulie 2025, ora 16:20
         const isModifiedAfterStart = updatedAtTimestamp >= notificationSystemStartDate
         
         if (isModifiedAfterStart) {

@@ -5,8 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Toggle } from "@/components/ui/toggle"
+import { Button } from "@/components/ui/button"
 import { useFirebaseCollection } from "@/hooks/use-firebase-collection"
 import type { Lucrare } from "@/lib/firebase/firestore"
+import { ChevronDown, ChevronUp } from "lucide-react"
 
 function parseMaybeDate(value: any): Date | null {
   try {
@@ -34,10 +36,12 @@ export function SalesAnalysis() {
   const { data: lucrari, loading } = useFirebaseCollection<Lucrare>("lucrari")
   const [year, setYear] = useState<number>(new Date().getFullYear())
   const [includeVAT, setIncludeVAT] = useState<boolean>(true)
+  const [showDetails, setShowDetails] = useState<boolean>(false)
 
-  const { series, totalYear, avgPerMonth, bestMonth, worstMonth } = useMemo(() => {
+  const { series, totalYear, avgPerMonth, bestMonth, worstMonth, clientDetails } = useMemo(() => {
     const monthly: number[] = Array(12).fill(0)
     let yearlyTotal = 0
+    const clientMap = new Map<string, { client: string; total: number; count: number }>()
 
     lucrari.forEach((l: any) => {
       // Count only accepted offers
@@ -54,11 +58,20 @@ export function SalesAnalysis() {
       if (!isFinite(value)) return
       monthly[d.getMonth()] += value
       yearlyTotal += value
+
+      // Aggregate per client
+      const clientName = l?.client || "Necunoscut"
+      const existing = clientMap.get(clientName) || { client: clientName, total: 0, count: 0 }
+      existing.total += value
+      existing.count += 1
+      clientMap.set(clientName, existing)
     })
 
     const bestIdx = monthly.reduce((bi, v, i, arr) => (v > arr[bi] ? i : bi), 0)
     const worstIdx = monthly.reduce((wi, v, i, arr) => (v < arr[wi] ? i : wi), 0)
     const avg = yearlyTotal / 12
+
+    const clientDetails = Array.from(clientMap.values()).sort((a, b) => b.total - a.total)
 
     return {
       series: monthly,
@@ -66,6 +79,7 @@ export function SalesAnalysis() {
       avgPerMonth: avg,
       bestMonth: { index: bestIdx, value: monthly[bestIdx] },
       worstMonth: { index: worstIdx, value: monthly[worstIdx] },
+      clientDetails,
     }
   }, [lucrari, year, includeVAT])
 
@@ -110,6 +124,48 @@ export function SalesAnalysis() {
 
         <div className="mt-2">
           <MiniBars labels={months} values={series} loading={loading} />
+        </div>
+
+        {/* Client details toggle */}
+        <div className="mt-4 border-t pt-4">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowDetails(!showDetails)}
+            className="w-full"
+          >
+            {showDetails ? <ChevronUp className="h-4 w-4 mr-2" /> : <ChevronDown className="h-4 w-4 mr-2" />}
+            {showDetails ? "Ascunde detalii per client" : "Vezi detalii per client"}
+          </Button>
+          {showDetails && (
+            <div className="mt-4 overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="border-b">
+                  <tr className="text-left">
+                    <th className="p-2 font-medium">Client</th>
+                    <th className="p-2 font-medium text-right">Oferte acceptate</th>
+                    <th className="p-2 font-medium text-right">Total vânzări (RON)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {clientDetails.map((c, idx) => (
+                    <tr key={idx} className="border-b hover:bg-gray-50">
+                      <td className="p-2">{c.client}</td>
+                      <td className="p-2 text-right">{c.count}</td>
+                      <td className="p-2 text-right font-medium">{c.total.toLocaleString("ro-RO", { maximumFractionDigits: 0 })}</td>
+                    </tr>
+                  ))}
+                </tbody>
+                <tfoot className="border-t bg-gray-50">
+                  <tr>
+                    <td className="p-2 font-semibold">Total</td>
+                    <td className="p-2 text-right font-semibold">{clientDetails.reduce((s, c) => s + c.count, 0)}</td>
+                    <td className="p-2 text-right font-semibold">{totalYear.toLocaleString("ro-RO", { maximumFractionDigits: 0 })}</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>

@@ -117,7 +117,7 @@ export function WorkModificationsDialog({ isOpen, onClose }: WorkModificationsDi
           <div className="flex items-center justify-between">
             <DialogTitle className="flex items-center gap-2">
               <Bell className="h-5 w-5" />
-              Modificări Lucrări
+              Modificări Proiecte
               {hasUnreadNotifications && (
                 <Badge variant="destructive" className="text-xs">
                   {unreadCount} noi
@@ -313,7 +313,7 @@ export function WorkModificationsDialog({ isOpen, onClose }: WorkModificationsDi
             </Button>
             <Button onClick={() => { onClose(); router.push('/dashboard/lucrari') }}>
               <Eye className="h-4 w-4 mr-2" />
-              Vezi toate lucrările
+              Vezi toate Proiecte
             </Button>
           </div>
         </div>

@@ -1068,11 +1068,11 @@ export function EquipmentReport({ className = "", reportType = "detailed" }: Equ
                   ) : (
                     <Tabs defaultValue="type" className="w-full">
                       <TabsList className="grid w-full grid-cols-2">
-                        <TabsTrigger value="type">După Tip Lucrare</TabsTrigger>
+                        <TabsTrigger value="type">După Tip proiect</TabsTrigger>
                         <TabsTrigger value="status">După Status</TabsTrigger>
                       </TabsList>
                       <TabsContent value="type" className="rounded-md border p-4 mt-4">
-                        <h3 className="mb-4 font-medium">Intervenții după Tip Lucrare</h3>
+                        <h3 className="mb-4 font-medium">Intervenții după Tip proiect</h3>
                         <div className="h-80 w-full">
                           <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={chartData.typeData}>

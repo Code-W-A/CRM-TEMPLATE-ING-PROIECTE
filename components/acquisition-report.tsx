@@ -3,8 +3,11 @@
 import { useMemo, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
 import { useFirebaseCollection } from "@/hooks/use-firebase-collection"
 import type { Client } from "@/lib/firebase/firestore"
+import { ChevronDown, ChevronUp } from "lucide-react"
 
 function toDate(v: any): Date | null {
   try {
@@ -27,30 +30,78 @@ const SOURCE_LABELS: Record<string, string> = {
 export function AcquisitionReport() {
   const { data: clienti } = useFirebaseCollection<Client>("clienti")
   const [year, setYear] = useState<number>(new Date().getFullYear())
+  const [showDetails, setShowDetails] = useState<boolean>(false)
 
-  const { counts, totalCount, paidTotalCost, paidCount, paidCostPerClient, monthlyCounts } = useMemo(() => {
+  const { counts, totalCount, paidTotalCost, paidCount, paidCostPerClient, monthlyCounts, clientDetails } = useMemo(() => {
     const counts: Record<string, number> = { recomandare: 0, organic_seo: 0, organic_social: 0, paid_campaign: 0 }
     const monthlyCounts: number[] = Array(12).fill(0)
     let paidTotalCost = 0
     let paidCount = 0
+    const clientDetailsMap = new Map<string, { client: string; sources: string[]; totalCost: number; entries: number }>()
 
     for (const c of clienti || []) {
-      const created = toDate((c as any).createdAt) || toDate((c as any).updatedAt)
-      if (!created || created.getFullYear() !== year) continue
-      const src = (c as any).acquisitionSource as string | undefined
-      const key = src && SOURCE_LABELS[src] ? src : undefined
-      if (key) counts[key] = (counts[key] || 0) + 1
-      monthlyCounts[created.getMonth()] += 1
-      if (src === "paid_campaign") {
-        const cost = Number((c as any).campaignCost || 0)
-        if (cost > 0) paidTotalCost += cost
-        paidCount += 1
+      const clientName = (c as any).nume || "Necunoscut"
+      const clientSources = new Set<string>()
+      let clientCost = 0
+      let clientEntries = 0
+
+      const entries = Array.isArray((c as any).acquisitionEntries) ? (c as any).acquisitionEntries : []
+      if (entries.length) {
+        entries.forEach((e: any) => {
+          const d = toDate(e?.date) || toDate((c as any).createdAt) || toDate((c as any).updatedAt)
+          if (!d || d.getFullYear() !== year) return
+          const src = e?.source
+          if (src && SOURCE_LABELS[src]) {
+            counts[src] = (counts[src] || 0) + 1
+            clientSources.add(SOURCE_LABELS[src])
+            clientEntries += 1
+          }
+          monthlyCounts[d.getMonth()] += 1
+          if (src === 'paid_campaign') {
+            const cost = Number(e?.cost || 0)
+            if (cost > 0) {
+              paidTotalCost += cost
+              clientCost += cost
+            }
+            paidCount += 1
+          }
+        })
+      } else {
+        // fallback pentru datele vechi
+        const created = toDate((c as any).createdAt) || toDate((c as any).updatedAt)
+        if (!created || created.getFullYear() !== year) continue
+        const src = (c as any).acquisitionSource as string | undefined
+        const key = src && SOURCE_LABELS[src] ? src : undefined
+        if (key) {
+          counts[key] = (counts[key] || 0) + 1
+          clientSources.add(SOURCE_LABELS[key])
+          clientEntries += 1
+        }
+        monthlyCounts[created.getMonth()] += 1
+        if (src === 'paid_campaign') {
+          const cost = Number((c as any).campaignCost || 0)
+          if (cost > 0) {
+            paidTotalCost += cost
+            clientCost += cost
+          }
+          paidCount += 1
+        }
+      }
+
+      if (clientSources.size > 0) {
+        clientDetailsMap.set(clientName, {
+          client: clientName,
+          sources: Array.from(clientSources),
+          totalCost: clientCost,
+          entries: clientEntries,
+        })
       }
     }
 
     const totalCount = Object.values(counts).reduce((s, v) => s + (v || 0), 0)
     const paidCostPerClient = paidCount > 0 ? paidTotalCost / paidCount : 0
-    return { counts, totalCount, paidTotalCost, paidCount, paidCostPerClient, monthlyCounts }
+    const clientDetails = Array.from(clientDetailsMap.values()).sort((a, b) => b.totalCost - a.totalCost || b.entries - a.entries)
+    return { counts, totalCount, paidTotalCost, paidCount, paidCostPerClient, monthlyCounts, clientDetails }
   }, [clienti, year])
 
   const years = useMemo(() => {
@@ -119,6 +170,59 @@ export function AcquisitionReport() {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Client details toggle */}
+        <div className="mt-4 border-t pt-4">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowDetails(!showDetails)}
+            className="w-full"
+          >
+            {showDetails ? <ChevronUp className="h-4 w-4 mr-2" /> : <ChevronDown className="h-4 w-4 mr-2" />}
+            {showDetails ? "Ascunde detalii per client" : "Vezi detalii per client"}
+          </Button>
+          {showDetails && (
+            <div className="mt-4 overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="border-b">
+                  <tr className="text-left">
+                    <th className="p-2 font-medium">Client</th>
+                    <th className="p-2 font-medium">Surse achiziție</th>
+                    <th className="p-2 font-medium text-right">Intrări</th>
+                    <th className="p-2 font-medium text-right">Cost total (RON)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {clientDetails.map((c, idx) => (
+                    <tr key={idx} className="border-b hover:bg-gray-50">
+                      <td className="p-2">{c.client}</td>
+                      <td className="p-2">
+                        <div className="flex flex-wrap gap-1">
+                          {c.sources.map((s, i) => (
+                            <Badge key={i} variant="outline" className="text-xs">{s}</Badge>
+                          ))}
+                        </div>
+                      </td>
+                      <td className="p-2 text-right">{c.entries}</td>
+                      <td className="p-2 text-right font-medium">
+                        {c.totalCost > 0 ? c.totalCost.toLocaleString("ro-RO", { maximumFractionDigits: 2 }) : "—"}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+                <tfoot className="border-t bg-gray-50">
+                  <tr>
+                    <td className="p-2 font-semibold">Total</td>
+                    <td className="p-2"></td>
+                    <td className="p-2 text-right font-semibold">{clientDetails.reduce((s, c) => s + c.entries, 0)}</td>
+                    <td className="p-2 text-right font-semibold">{paidTotalCost.toLocaleString("ro-RO", { maximumFractionDigits: 2 })}</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>

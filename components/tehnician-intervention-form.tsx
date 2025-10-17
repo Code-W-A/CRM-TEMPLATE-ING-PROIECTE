@@ -182,7 +182,7 @@ export function TehnicianInterventionForm({
         notaInternaTehnician,
       }
 
-      // Adăugăm tehnicianConfirmaGarantie doar pentru lucrările în garanție
+      // Adăugăm tehnicianConfirmaGarantie doar pentru Proiecte în garanție
       if (isWarrantyWork) {
         updateData.tehnicianConfirmaGarantie = tehnicianConfirmaGarantie
       }
@@ -262,7 +262,7 @@ export function TehnicianInterventionForm({
         notaInternaTehnician,
       }
 
-      // Adăugăm tehnicianConfirmaGarantie doar pentru lucrările în garanție
+      // Adăugăm tehnicianConfirmaGarantie doar pentru Proiecte în garanție
       if (isWarrantyWork) {
         updateData.tehnicianConfirmaGarantie = tehnicianConfirmaGarantie
       }

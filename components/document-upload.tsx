@@ -302,7 +302,7 @@ export function DocumentUpload({ lucrareId, lucrare, onLucrareUpdate, hideOferta
         </CardTitle>
         <CardDescription>
           {isArchived 
-            ? "Documentele pot fi doar vizualizate și descărcate pentru lucrările arhivate"
+            ? "Documentele pot fi doar vizualizate și descărcate pentru Proiecte arhivate"
             : "Facturare: Încărcați factura sau marcați 'Nu se facturează' și adăugați motivul"
           }
         </CardDescription>

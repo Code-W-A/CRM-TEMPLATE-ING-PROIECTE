@@ -94,8 +94,8 @@ export default function LucrariArhivate() {
     setError(null)
 
     try {
-      // Pentru compatibility cu lucrările arhivate înainte de implementarea câmpului archivedAt,
-      // încărcăm toate lucrările arhivate și le sortăm în memorie
+      // Pentru compatibility cu Proiecte arhivate înainte de implementarea câmpului archivedAt,
+      // încărcăm toate Proiecte arhivate și le sortăm în memorie
       const lucrarireQuery = query(
         collection(db, "lucrari"),
         where("statusLucrare", "==", WORK_STATUS.ARCHIVED)
@@ -107,7 +107,7 @@ export default function LucrariArhivate() {
         ...doc.data()
       })) as Lucrare[]
 
-      // Sortăm lucrările după data arhivării (archivedAt), cu fallback pe updatedAt pentru compatibilitate
+      // Sortăm Proiecte după data arhivării (archivedAt), cu fallback pe updatedAt pentru compatibilitate
       lucrari.sort((a, b) => {
         const dateA = a.archivedAt ? (a.archivedAt.toDate?.() || new Date(a.archivedAt as any)) : 
                       (a.updatedAt ? (a.updatedAt.toDate?.() || new Date(a.updatedAt as any)) : new Date(0))
@@ -119,10 +119,10 @@ export default function LucrariArhivate() {
       setLucrariArhivate(lucrari)
     } catch (error) {
       console.error("Eroare la încărcarea lucrărilor arhivate:", error)
-      setError("Nu s-au putut încărca lucrările arhivate")
+      setError("Nu s-au putut încărca Proiecte arhivate")
       toast({
         title: "Eroare",
-        description: "Nu s-au putut încărca lucrările arhivate.",
+        description: "Nu s-au putut încărca Proiecte arhivate.",
         variant: "destructive",
       })
     } finally {
@@ -621,7 +621,7 @@ export default function LucrariArhivate() {
           <div className="flex items-center justify-center py-12">
             <div className="text-center">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-              <p className="text-gray-500">Se încarcă lucrările arhivate...</p>
+              <p className="text-gray-500">Se încarcă Proiecte arhivate...</p>
             </div>
           </div>
         </DashboardShell>
@@ -977,7 +977,7 @@ export default function LucrariArhivate() {
         <FilterModal
           isOpen={isFilterModalOpen}
           onClose={() => setIsFilterModalOpen(false)}
-          title="Filtrează lucrările arhivate"
+          title="Filtrează Proiecte arhivate"
           filterOptions={filterOptions}
           activeFilters={activeFilters}
           onApplyFilters={handleFiltersChange}

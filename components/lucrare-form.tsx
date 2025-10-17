@@ -1809,7 +1809,7 @@ export const LucrareForm = forwardRef<LucrareFormRef, LucrareFormProps>(
             </label>
             <Select value={formData.tipLucrare} onValueChange={(value) => handleSelectChange("tipLucrare", value)}>
               <SelectTrigger id="tipLucrare" className={hasError("tipLucrare") ? errorStyle : ""}>
-                <SelectValue placeholder="Selectați tipul intervenției" />
+                <SelectValue placeholder="Selectați tipul proiectului" />
               </SelectTrigger>
               <SelectContent>
                 {WORK_TYPE_OPTIONS.map((option) => (
@@ -2122,7 +2122,7 @@ export const LucrareForm = forwardRef<LucrareFormRef, LucrareFormProps>(
           {isEdit && (
             <div className="space-y-2">
               <label htmlFor="statusLucrare" className="text-sm font-medium">
-                Status Lucrare
+                Status proiect
               </label>
               <div className="flex items-center h-10 px-3 py-2 text-sm border rounded-md bg-muted/50">
                 <Badge className={getWorkStatusClass(formData.statusLucrare)}>{formData.statusLucrare}</Badge>

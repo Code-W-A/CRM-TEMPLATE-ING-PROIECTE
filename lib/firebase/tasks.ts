@@ -91,6 +91,41 @@ export async function updateTaskSettings(update: Partial<TaskSettingsDoc>): Prom
   await setDoc(ref, { ...prev, ...update }, { merge: true })
 }
 
+function sanitizeStatuses(statuses: Array<{ id: string; name: string; color: string; order: number }>): Array<{ id: string; name: string; color: string; order: number }> {
+  const byId = new Map<string, { id: string; name: string; color: string; order: number }>()
+  for (const s of statuses || []) {
+    if (!s || !s.id) continue
+    if (!byId.has(s.id)) byId.set(s.id, s)
+  }
+  const list = Array.from(byId.values()).sort((a, b) => (a.order ?? 0) - (b.order ?? 0) || a.name.localeCompare(b.name))
+  return list.map((s, idx) => ({ ...s, order: idx }))
+}
+
+function sanitizePriorities(priorities: Array<{ id: TaskPriority; name: string; color: string; order: number }>): Array<{ id: TaskPriority; name: string; color: string; order: number }> {
+  const byId = new Map<TaskPriority, { id: TaskPriority; name: string; color: string; order: number }>()
+  for (const p of priorities || []) {
+    if (!p || !p.id) continue
+    if (!byId.has(p.id)) byId.set(p.id, p)
+  }
+  const list = Array.from(byId.values()).sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+  return list.map((p, idx) => ({ ...p, order: idx }))
+}
+
+export async function normalizeTaskSettings(): Promise<TaskSettingsDoc> {
+  const ref = doc(collection(db, SETTINGS_PATH.col), SETTINGS_PATH.id)
+  const snap = await getDoc(ref)
+  const current: TaskSettingsDoc = snap.exists() ? (snap.data() as TaskSettingsDoc) : await ensureDefaultTaskSettings()
+  const sanitized: TaskSettingsDoc = {
+    statuses: sanitizeStatuses(current.statuses || []),
+    priorities: sanitizePriorities(current.priorities || []),
+  }
+  const changed = JSON.stringify(current) !== JSON.stringify(sanitized)
+  if (changed) {
+    await setDoc(ref, sanitized, { merge: false })
+  }
+  return sanitized
+}
+
 export async function createTask(task: Omit<Task, "id" | "createdAt" | "updatedAt" | "spentSeconds">): Promise<string> {
   const col = collection(db, TASKS)
   const docRef = await addDoc(col, {
@@ -135,6 +170,7 @@ export async function startTimeEntry(taskId: string, userId: string): Promise<st
     taskId,
     userId,
     startedAt: serverTimestamp(),
+    endedAt: null,
   })
   return docRef.id
 }

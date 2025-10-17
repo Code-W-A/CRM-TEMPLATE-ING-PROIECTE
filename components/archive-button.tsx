@@ -32,7 +32,7 @@ export function ArchiveButton({
   const { userData } = useAuth()
   const [isArchiving, setIsArchiving] = useState(false)
 
-  // Doar lucrările finalizate pot fi arhivate
+  // Doar Proiecte finalizate pot fi arhivate
   if (lucrareStatus !== WORK_STATUS.COMPLETED) {
     return null
   }
