@@ -419,7 +419,7 @@ export function TehnicianInterventionForm({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Formular intervenție tehnician</CardTitle>
+        <CardTitle>Formular intervenție specialist</CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={(e) => {
@@ -486,12 +486,7 @@ export function TehnicianInterventionForm({
             {/* Secțiunea pentru informațiile de garanție */}
             {isWarrantyWork && (
               <div className="border p-4 rounded-md bg-gradient-to-r from-blue-50 to-indigo-50">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="h-5 w-5 rounded-full bg-blue-500 flex items-center justify-center">
-                    <span className="text-white text-xs font-bold">G</span>
-                  </div>
-                  <Label className="font-medium text-blue-900">Informații Garanție Echipament</Label>
-                </div>
+                <div className="hidden" />
 
                 {/* Informații despre garanție calculate automat */}
                 {warrantyInfo && (
@@ -530,7 +525,7 @@ export function TehnicianInterventionForm({
                       <Badge className="bg-green-100 text-green-800 border-green-200">
                         ✓ Echipament verificat
                       </Badge>
-                      <span className="text-xs text-gray-600">prin scanarea QR code</span>
+                        <span className="hidden" />
                     </div>
                     <p className="text-xs text-green-700">
                       Echipamentul a fost verificat în tabul "Verificare Echipament". 
@@ -619,9 +614,9 @@ export function TehnicianInterventionForm({
               isUploading={isGeneratingReport || isSaving} // Loading state din componenta părinte
             />
 
-            {/* Notă internă tehnician */}
+            {/* Notă internă specialist */}
             <div className="space-y-2">
-              <Label htmlFor="notaInternaTehnician">Notă internă (tehnician)</Label>
+              <Label htmlFor="notaInternaTehnician">Notă internă (specialist)</Label>
               <Textarea
                 id="notaInternaTehnician"
                 placeholder="Adăugați observații interne pentru dispecer/admin (nu apar în raportul final)"
@@ -644,7 +639,15 @@ export function TehnicianInterventionForm({
               <div className="flex justify-end space-x-2">
                 <Button
                   type="button"
-                  onClick={handleSave}
+                  onClick={async () => {
+                    await handleSave()
+                    try {
+                      await updateLucrare(lucrareId, { statusLucrare: "Finalizat" })
+                      toast({ title: "Proiect finalizat", description: "Statusul proiectului a fost actualizat." })
+                    } catch (e) {
+                      console.error(e)
+                    }
+                  }}
                   disabled={isSaving || formDisabled}
                   className="bg-blue-600 hover:bg-blue-700"
                 >
@@ -656,29 +659,12 @@ export function TehnicianInterventionForm({
                   ) : (
                     <>
                       <Check className="mr-2 h-4 w-4" />
-                      Salvează
+                      Finalizează proiect
                     </>
                   )}
                 </Button>
 
-                <Button
-                  type="button"
-                  onClick={handleGenerateReport}
-                  disabled={isGeneratingReport || formDisabled || !descriereInterventie}
-                  className="bg-green-600 hover:bg-green-700"
-                >
-                  {isGeneratingReport ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Se procesează...
-                    </>
-                  ) : (
-                    <>
-                      <FileText className="mr-2 h-4 w-4" />
-                      Generează raport
-                    </>
-                  )}
-                </Button>
+                {/* Buton generare raport ascuns conform noului flux */}
               </div>
             )}
           </div>

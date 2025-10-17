@@ -22,6 +22,9 @@ export interface Task {
   description?: string
   status: string // dynamic from settings
   priority: TaskPriority
+  // Domeniu Proiectare Ing
+  discipline?: "arhitectura" | "structura" | "instalatii" | "management" | "altul"
+  phase?: "SF" | "DALI" | "DTAC" | "PT" | "DE" | "PTH" | "AsBuilt" | "Supraveghere" | "Altul"
   slaLevel?: "standard" | "priority" | "critical"
   startDate?: any
   dueDate?: any

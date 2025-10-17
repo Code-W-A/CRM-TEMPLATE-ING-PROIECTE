@@ -52,10 +52,10 @@ export function PostponeWorkDialog({ lucrareId, onSuccess, className }: Postpone
         statusLucrare: WORK_STATUS.POSTPONED,
         motivAmanare: motiv.trim(),
         dataAmanare: new Date().toLocaleString('ro-RO'),
-        amanataDe: userData?.displayName || "Tehnician necunoscut",
+        amanataDe: userData?.displayName || "Specialist necunoscut",
         tehnicieni: [], // Eliminăm tehnicianul din lucrare
         updatedAt: serverTimestamp(),
-        updatedBy: userData?.displayName || "Tehnician necunoscut"
+        updatedBy: userData?.displayName || "Specialist necunoscut"
       }
 
       await updateLucrare(lucrareId, updateData)

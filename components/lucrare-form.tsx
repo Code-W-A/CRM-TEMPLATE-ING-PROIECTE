@@ -1769,38 +1769,7 @@ export const LucrareForm = forwardRef<LucrareFormRef, LucrareFormProps>(
             </div>
           )}
 
-          {/* 4. Echipamentul */}
-          <div className="space-y-2">
-            <label htmlFor="echipament" className="text-sm font-medium">
-              Echipament
-            </label>
-            <CustomEquipmentSelect
-              key={`equipment-select-${availableEquipments.length}-${formData.echipamentCod || formData.echipament}`}
-              equipments={availableEquipments}
-              value={formData.echipamentId || formData.echipamentCod}
-              onSelect={handleEquipmentSelect}
-              disabled={!formData.locatie}
-              placeholder={formData.locatie ? "Selectați echipamentul" : "Selectați mai întâi o locație"}
-              emptyMessage={
-                formData.locatie ? "Nu există echipamente pentru această locație" : "Selectați mai întâi o locație"
-              }
-              fallbackName={formData.echipament}
-            />
-            {availableEquipments.length === 0 && formData.locatie && equipmentsLoaded && (
-              <div>
-                <p className="text-xs text-amber-600">
-                  Nu există echipamente definite pentru această locație. Puteți adăuga echipamente din secțiunea de
-                  gestionare a clientului.
-                </p>
-                <p className="text-xs text-gray-500 mt-1">Locație selectată: {formData.locatie}</p>
-              </div>
-            )}
-            {availableEquipments.length > 0 && (
-              <p className="text-xs text-green-600">
-                {availableEquipments.length} echipamente disponibile pentru această locație
-              </p>
-            )}
-          </div>
+          {/* 4. Echipamentul - eliminat conform noului flux (admin/dispecer) */}
 
           {/* 5. Tipul de intervenție */}
           <div className="space-y-2">

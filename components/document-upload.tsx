@@ -516,7 +516,7 @@ export function DocumentUpload({ lucrareId, lucrare, onLucrareUpdate, hideOferta
                 <AlertCircle className="h-4 w-4" />
                 <AlertDescription>
                   {!needsOffer 
-                    ? "Încărcarea ofertei este dezactivată. Tehnicianul nu a marcat că această lucrare necesită ofertă."
+                    ? "Încărcarea ofertei este dezactivată. Specialistul nu a marcat că această lucrare necesită ofertă."
                     : "Încărcarea ofertei este disponibilă doar când statusul ofertei este setat pe \"OFERTAT\"."
                   }
                 </AlertDescription>
@@ -530,7 +530,7 @@ export function DocumentUpload({ lucrareId, lucrare, onLucrareUpdate, hideOferta
           <p><strong>Condiții pentru încărcare:</strong></p>
           <ul className="list-disc list-inside mt-1 space-y-1">
             <li>Lucrarea trebuie să fie preluată de dispecer</li>
-            <li>Pentru ofertă: tehnicianul trebuie să marcheze "Necesită ofertă"</li>
+            <li>Pentru ofertă: specialistul trebuie să marcheze "Necesită ofertă"</li>
             <li>Orice tip de fișier este acceptat (fără restricții de dimensiune)</li>
             <li>Completarea numărului și datei este obligatorie</li>
             <li>Documentele pot fi înlocuite prin încărcarea unor fișiere noi</li>

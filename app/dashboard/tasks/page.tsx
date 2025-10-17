@@ -27,8 +27,6 @@ export default function TasksPage() {
             <LayoutGrid className="h-4 w-4 mr-2" />
             Listă
           </TabsTrigger>
-
-     
         </TabsList>
 
         <TabsContent value="list" className="mt-0">

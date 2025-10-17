@@ -38,6 +38,8 @@ export function TaskList() {
   const [description, setDescription] = useState("")
   const [priority, setPriority] = useState<TaskPriority>("medium")
   const [assigneeId, setAssigneeId] = useState<string>("none")
+  const [discipline, setDiscipline] = useState<string>("altul")
+  const [phase, setPhase] = useState<string>("Altul")
   const [dueDate, setDueDate] = useState<string>("")
   const [saving, setSaving] = useState(false)
 
@@ -84,6 +86,8 @@ export function TaskList() {
     setDescription("")
     setPriority("medium")
     setAssigneeId("none")
+    setDiscipline("altul")
+    setPhase("Altul")
     setDueDate("")
   }
 
@@ -98,6 +102,8 @@ export function TaskList() {
     setDescription(task.description || "")
     setPriority((task.priority as TaskPriority) || "medium")
     setAssigneeId(task.assigneeIds?.[0] || "none")
+    setDiscipline((task as any).discipline || "altul")
+    setPhase((task as any).phase || "Altul")
     const d = task.dueDate?.toDate ? task.dueDate.toDate() : (task.dueDate ? new Date(task.dueDate) : null)
     setDueDate(d ? new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10) : "")
     setOpen(true)
@@ -114,6 +120,8 @@ export function TaskList() {
           description,
           priority,
           assigneeIds: assigneeId === "none" ? [] : [assigneeId],
+          discipline,
+          phase,
         }
         if (dueDate) update.dueDate = new Date(dueDate)
         await updateTask(editingTask.id, update)
@@ -125,6 +133,8 @@ export function TaskList() {
           status: settings?.statuses?.[0]?.id || "backlog",
           priority,
           assigneeIds: assigneeId === "none" ? [] : [assigneeId],
+          discipline,
+          phase,
         }
         if (dueDate) data.dueDate = new Date(dueDate)
         const id = await createTask(data)
@@ -183,7 +193,7 @@ export function TaskList() {
                       </Select>
                     </div>
                     <div className="grid gap-2">
-                      <Label>Tehnician</Label>
+                      <Label>Specialist</Label>
                       <Select value={assigneeId} onValueChange={setAssigneeId}>
                         <SelectTrigger><SelectValue placeholder="Selectează" /></SelectTrigger>
                         <SelectContent>
@@ -197,9 +207,41 @@ export function TaskList() {
                       </Select>
                     </div>
                   </div>
-                  <div className="grid gap-2">
-                    <Label>Data scadentă (opțional)</Label>
-                    <Input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} />
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div className="grid gap-2">
+                      <Label>Disciplină</Label>
+                      <Select value={discipline} onValueChange={setDiscipline}>
+                        <SelectTrigger><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="arhitectura">Arhitectură</SelectItem>
+                          <SelectItem value="structura">Structură</SelectItem>
+                          <SelectItem value="instalatii">Instalații</SelectItem>
+                          <SelectItem value="management">Management</SelectItem>
+                          <SelectItem value="altul">Altul</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="grid gap-2">
+                      <Label>Fază</Label>
+                      <Select value={phase} onValueChange={setPhase}>
+                        <SelectTrigger><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="SF">SF</SelectItem>
+                          <SelectItem value="DALI">DALI</SelectItem>
+                          <SelectItem value="DTAC">DTAC</SelectItem>
+                          <SelectItem value="PT">PT</SelectItem>
+                          <SelectItem value="DE">DE</SelectItem>
+                          <SelectItem value="PTH">PTH</SelectItem>
+                          <SelectItem value="AsBuilt">AsBuilt</SelectItem>
+                          <SelectItem value="Supraveghere">Supraveghere</SelectItem>
+                          <SelectItem value="Altul">Altul</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="grid gap-2">
+                      <Label>Data scadentă (opțional)</Label>
+                      <Input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} />
+                    </div>
                   </div>
                 </div>
                 <DialogFooter>
@@ -225,7 +267,7 @@ export function TaskList() {
           </Select>
           {!isTechnician && (
             <Select value={assigneeFilter} onValueChange={setAssigneeFilter}>
-              <SelectTrigger className="w-[200px]"><SelectValue placeholder="Tehnician" /></SelectTrigger>
+              <SelectTrigger className="w-[200px]"><SelectValue placeholder="Specialist" /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">Toți</SelectItem>
                 {technicians.map((t: any) => (
@@ -258,7 +300,15 @@ export function TaskList() {
                 <div className="flex-1">
                   <div className="flex items-center justify-between gap-2">
                     <div className="font-medium text-sm">{t.title}</div>
-                    <Badge className={`${pr.bg} ${pr.color} border-0 text-[10px]`}>{pr.label}</Badge>
+                    <div className="flex items-center gap-1">
+                      {(t as any).discipline && (
+                        <Badge className="bg-gray-100 text-gray-700 border-0 text-[10px]">{String((t as any).discipline).charAt(0).toUpperCase() + String((t as any).discipline).slice(1)}</Badge>
+                      )}
+                      {(t as any).phase && (
+                        <Badge className="bg-gray-100 text-gray-700 border-0 text-[10px]">{String((t as any).phase)}</Badge>
+                      )}
+                      <Badge className={`${pr.bg} ${pr.color} border-0 text-[10px]`}>{pr.label}</Badge>
+                    </div>
                   </div>
                   {t.description && <div className="text-xs text-muted-foreground mt-1 line-clamp-2">{t.description}</div>}
                   <div className="flex items-center gap-3 mt-2 text-xs text-muted-foreground">

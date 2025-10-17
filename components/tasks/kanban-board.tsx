@@ -279,7 +279,7 @@ export function KanbanBoard() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Atribuie Tehnician</Label>
+                  <Label>Atribuie Specialist</Label>
                   <Select value={newAssignee} onValueChange={setNewAssignee}>
                     <SelectTrigger>
                       <SelectValue placeholder="Selectează" />
@@ -495,7 +495,7 @@ export function KanbanBoard() {
               </div>
               {canAssign && (
                 <div>
-                  <Label className="text-xs text-muted-foreground mb-2 block">Atribuie tehnician</Label>
+                  <Label className="text-xs text-muted-foreground mb-2 block">Atribuie specialist</Label>
                   <Select
                     value={(selectedTask.assigneeIds && selectedTask.assigneeIds[0]) || "none"}
                     onValueChange={async (v) => {
