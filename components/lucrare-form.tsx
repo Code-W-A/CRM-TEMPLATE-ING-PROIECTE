@@ -1911,7 +1911,7 @@ export const LucrareForm = forwardRef<LucrareFormRef, LucrareFormProps>(
           {/* 7. Tehnicianul alocat */}
           <div className="space-y-2">
             <label htmlFor="tehnicieni" className="text-sm font-medium">
-              Tehnician alocat
+              Specialist alocat
             </label>
             <div className="flex flex-wrap gap-2 mb-2">
               {formData.tehnicieni.map((tech) => (
@@ -1925,7 +1925,7 @@ export const LucrareForm = forwardRef<LucrareFormRef, LucrareFormProps>(
             </div>
             <Select onValueChange={handleTehnicieniChange}>
               <SelectTrigger id="tehnicieni">
-                <SelectValue placeholder="Selectați tehnicienii" />
+                <SelectValue placeholder="selectați specialistii" />
               </SelectTrigger>
               <SelectContent>
                 {loadingTehnicieni ? (
