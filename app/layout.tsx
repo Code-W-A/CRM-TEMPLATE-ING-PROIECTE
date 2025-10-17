@@ -14,7 +14,7 @@ const inter = Inter({ subsets: ["latin"] })
 // Actualizăm titlul în metadata
 export const metadata: Metadata = {
   title: "Customer Relationship Management",
-  description: "Aplicație pentru gestionarea lucrărilor de service",
+  description: "Aplicație pentru gestionarea proiectelor",
   manifest: "/manifest.json",
     generator: 'v0.dev'
 }

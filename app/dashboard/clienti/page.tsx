@@ -255,7 +255,7 @@ export default function Clienti() {
       },
       {
         id: "numarLucrari",
-        label: "Număr lucrări",
+        label: "Număr proiecte",
         type: "multiselect" as const,
         options: numarLucrariOptions,
         value: [] as string[],

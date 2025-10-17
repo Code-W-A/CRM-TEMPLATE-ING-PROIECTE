@@ -600,9 +600,9 @@ useEffect(() => {
                     ) : null}
                   </>
                 ) : (!currentWork || clientData === null) ? (
-                  <span>Se identifică adresa de email a persoanei de contact din locația lucrării...</span>
+                  <span>Se identifică adresa de email a persoanei de contact din locația proiectului...</span>
                 ) : (
-                  <span>Nu există email valid pentru persoana de contact din locația lucrării.</span>
+                  <span>Nu există email valid pentru persoana de contact din locația proiectului.</span>
                 )}
               </div>
             </div>
@@ -610,7 +610,7 @@ useEffect(() => {
 
             <div className="flex items-center justify-end gap-2">
               {(!isPickedUp || statusOferta === "OFERTAT") && (
-                <span className="text-xs text-muted-foreground mr-auto">{!isPickedUp ? "Editorul este disponibil după preluarea lucrării de către dispecer." : "Oferta trimisă este înghețată. Creați o versiune nouă pentru modificări."}</span>
+                <span className="text-xs text-muted-foreground mr-auto">{!isPickedUp ? "Editorul este disponibil după preluarea proiectului de către dispecer." : "Oferta trimisă este înghețată. Creați o versiune nouă pentru modificări."}</span>
               )}
               {statusOferta === "OFERTAT" && !editingNewVersion ? (
                 <Button onClick={startNewVersion} disabled={saving}>Începe versiune nouă</Button>

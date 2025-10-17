@@ -145,11 +145,11 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
   // State pentru afișarea banner-ului de modificare
   const [showModificationBanner, setShowModificationBanner] = useState(true)
 
-  // Încărcăm datele lucrării și adresa locației
+  // Încărcăm datele proiectului și adresa locației
   useEffect(() => {
     const fetchLucrareAndLocationAddress = async () => {
       try {
-        // Obținem datele lucrării
+        // Obținem datele proiectului
         const data = await getLucrareById(paramsId)
         setLucrare(data)
 
@@ -288,7 +288,7 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
           }
         }
       } catch (error) {
-        console.error("Eroare la încărcarea lucrării:", error)
+        console.error("Eroare la încărcarea proiectului:", error)
         toast({
           title: "Eroare",
           description: "Nu s-a putut încărca lucrarea.",
@@ -336,10 +336,10 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
       })
       router.push("/dashboard/lucrari")
     } catch (error) {
-      console.error("Eroare la ștergerea lucrării:", error)
+      console.error("Eroare la ștergerea proiectului:", error)
       toast({
         title: "Eroare",
-        description: "A apărut o eroare la ștergerea lucrării.",
+        description: "A apărut o eroare la ștergerea proiectului.",
         variant: "destructive",
       })
     }
@@ -356,10 +356,10 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
   // Modificăm funcția handleGenerateReport pentru a naviga către pagina de raport
   const handleGenerateReport = useCallback(() => {
     if (!lucrare?.id) {
-      console.error("ID-ul lucrării lipsește:", lucrare)
+      console.error("ID-ul proiectului lipsește:", lucrare)
       toast({
         title: "Eroare",
-        description: "ID-ul lucrării nu este valid",
+        description: "ID-ul proiectului nu este valid",
         variant: "destructive",
       })
       return
@@ -368,7 +368,7 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
     router.push(`/raport/${lucrare.id}`)
   }, [router, lucrare])
 
-  // Funcție pentru a reîncărca datele lucrării
+  // Funcție pentru a reîncărca datele proiectului
   const refreshLucrare = useStableCallback(async (preserveActiveTab = false) => {
     try {
       const data = await getLucrareById(paramsId)
@@ -392,14 +392,14 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
       if (!preserveActiveTab) {
         toast({
           title: "Actualizat",
-          description: "Datele lucrării au fost actualizate.",
+          description: "Datele proiectului au fost actualizate.",
         })
       }
     } catch (error) {
-      console.error("Eroare la reîncărcarea lucrării:", error)
+      console.error("Eroare la reîncărcarea proiectului:", error)
       toast({
         title: "Eroare",
-        description: "Nu s-au putut reîncărca datele lucrării.",
+        description: "Nu s-au putut reîncărca datele proiectului.",
         variant: "destructive",
       })
     }
@@ -435,7 +435,7 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
     }
   }, [refreshLucrare])
 
-  // Modificăm funcția handleVerificationComplete pentru a actualiza și statusul lucrării la "În lucru"
+  // Modificăm funcția handleVerificationComplete pentru a actualiza și statusul proiectului la "În lucru"
   // când tehnicianul scanează cu succes codul QR al echipamentului
 
   // Găsește o altă lucrare "În lucru" pentru același tehnician (exclus lucrarea curentă)
@@ -546,7 +546,7 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
           oraSosire,
         }
 
-        // Actualizăm statusul lucrării la "În lucru" doar dacă statusul curent este "Listată" sau "Atribuită"
+        // Actualizăm statusul proiectului la "În lucru" doar dacă statusul curent este "Listată" sau "Atribuită"
         // ȘI raportul nu a fost încă generat (pentru a nu suprascrie statusul "Finalizat")
         if ((lucrare.statusLucrare === "Listată" || lucrare.statusLucrare === "Atribuită") && !lucrare.raportGenerat) {
           updateData.statusLucrare = "În lucru"
@@ -628,7 +628,7 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
     }
   })
 
-  // Funcție pentru a actualiza starea de preluare a lucrării
+  // Funcție pentru a actualiza starea de preluare a proiectului
   const handleToggleDispatcherPickup = async () => {
     if (!lucrare?.id) return
 
@@ -1696,7 +1696,7 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
                                 setIsUpdating(false)
                               }
                             }}
-                            placeholder={!lucrare.preluatDispecer ? "Indisponibil până la preluarea lucrării..." : "Detalii relevante pentru ofertă..."}
+                            placeholder={!lucrare.preluatDispecer ? "Indisponibil până la preluarea proiectului..." : "Detalii relevante pentru ofertă..."}
                             className={`min-h-[80px] text-sm ${!lucrare.preluatDispecer ? 'bg-gray-50 text-gray-500 border-gray-300 cursor-not-allowed' : ''}`}
                             disabled={isUpdating || !lucrare.preluatDispecer}
                           />
@@ -1822,7 +1822,7 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
                       </Badge>
                     </div>
                     <p className="text-xs text-gray-600">
-                      Această secțiune va fi disponibilă doar după preluarea lucrării de către dispecer.
+                      Această secțiune va fi disponibilă doar după preluarea proiectului de către dispecer.
                     </p>
                   </div>
                 )}

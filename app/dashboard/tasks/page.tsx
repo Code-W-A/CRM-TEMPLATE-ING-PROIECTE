@@ -1,46 +1,47 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { useState } from "react"
 import { DashboardHeader } from "@/components/dashboard-header"
 import { DashboardShell } from "@/components/dashboard-shell"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { KanbanBoard } from "@/components/tasks/kanban-board"
-import { TaskCalendar } from "@/components/tasks/task-calendar"
-import { TaskGantt } from "@/components/tasks/task-gantt"
-import { TimesheetView } from "@/components/tasks/timesheet-view"
+import { TaskList } from "@/components/tasks/task-list"
+// Lazy load calendar (simple) to avoid any init issues
+import dynamic from "next/dynamic"
+const TaskCalendar = dynamic(() => import("@/components/tasks/task-calendar-simple").then(m => m.TaskCalendarSimple), { ssr: false })
 import { TaskSettings } from "@/components/tasks/task-settings"
+import { LayoutGrid, Calendar, Settings } from "lucide-react"
+import { useAuth } from "@/contexts/AuthContext"
 
 export default function TasksPage() {
-  const [activeTab, setActiveTab] = useState("board")
+  const [activeTab, setActiveTab] = useState("list")
+  const { userData } = useAuth()
+  const isTechnician = userData?.role === "tehnician"
 
   return (
     <DashboardShell>
-      <DashboardHeader heading="Tasks" text="Planificare, urmărire și raportare a sarcinilor." />
+      <DashboardHeader heading="Tasks" text="Planificare, urmărire și raportare a sarcinilor" />
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full max-w-3xl grid-cols-2 md:grid-cols-5">
-          <TabsTrigger value="board">Board</TabsTrigger>
-          <TabsTrigger value="calendar">Calendar</TabsTrigger>
-          <TabsTrigger value="gantt">Gantt</TabsTrigger>
-          <TabsTrigger value="timesheets">Pontaj</TabsTrigger>
-          <TabsTrigger value="settings">Setări</TabsTrigger>
+        <TabsList className="grid w-full max-w-3xl grid-cols-2 md:grid-cols-3 mb-6">
+          <TabsTrigger value="list">
+            <LayoutGrid className="h-4 w-4 mr-2" />
+            Listă
+          </TabsTrigger>
+
+     
         </TabsList>
 
-        <TabsContent value="board" className="pt-4">
-          <KanbanBoard />
+        <TabsContent value="list" className="mt-0">
+          <TaskList />
         </TabsContent>
-        <TabsContent value="calendar" className="pt-4">
+        <TabsContent value="calendar" className="mt-0">
           <TaskCalendar />
         </TabsContent>
-        <TabsContent value="gantt" className="pt-4">
-          <TaskGantt />
-        </TabsContent>
-        <TabsContent value="timesheets" className="pt-4">
-          <TimesheetView />
-        </TabsContent>
-        <TabsContent value="settings" className="pt-4">
-          <TaskSettings />
-        </TabsContent>
+        {!isTechnician && (
+          <TabsContent value="settings" className="mt-0">
+            <TaskSettings />
+          </TabsContent>
+        )}
       </Tabs>
     </DashboardShell>
   )

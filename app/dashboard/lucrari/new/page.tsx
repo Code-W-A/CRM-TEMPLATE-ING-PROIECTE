@@ -159,7 +159,7 @@ export default function NewLucrarePage() {
         createdByName: userData?.displayName || userData?.email || "Utilizator necunoscut",
       })
 
-      // Adăugăm un log pentru crearea lucrării
+      // Adăugăm un log pentru crearea proiectului
       const logMessage = isReassignment 
         ? `A fost adăugată o re-intervenție pentru clientul "${formData.client}" cu ID-ul ${lucrareId} (din lucrarea originală ${originalWorkOrderId})`
         : `A fost adăugată o nouă lucrare pentru clientul "${formData.client}" cu ID-ul ${lucrareId}`
@@ -261,10 +261,10 @@ export default function NewLucrarePage() {
       // Redirecționăm către pagina de lucrări
       router.push("/dashboard/lucrari")
     } catch (error) {
-      console.error("Eroare la adăugarea lucrării:", error)
+      console.error("Eroare la adăugarea proiectului:", error)
       toast({
         title: "Eroare",
-        description: "A apărut o eroare la adăugarea lucrării. Vă rugăm să încercați din nou.",
+        description: "A apărut o eroare la adăugarea proiectului. Vă rugăm să încercați din nou.",
         variant: "destructive",
         icon: <AlertCircle className="h-4 w-4" />,
       })

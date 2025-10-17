@@ -181,7 +181,7 @@ export function getWarrantyDisplayInfo(echipament: Echipament) {
 /**
  * Calculează și setează informațiile de garanție pentru o lucrare
  * @param lucrare Lucrarea pentru care se calculează garanția
- * @param echipament Echipamentul asociat lucrării
+ * @param echipament Echipamentul asociat proiectului
  * @returns Obiect cu datele actualizate pentru lucrare
  */
 export function updateWorkOrderWarrantyInfo(lucrare: any, echipament: Echipament) {

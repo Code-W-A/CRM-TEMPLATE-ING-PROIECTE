@@ -719,7 +719,7 @@ export function QRCodeScanner({
   const handleReportScanIssue = async () => {
     try {
       if (!workId) {
-        toast({ title: "Lipsă context lucrare", description: "ID-ul lucrării nu este disponibil.", variant: "destructive" })
+        toast({ title: "Lipsă context lucrare", description: "ID-ul proiectului nu este disponibil.", variant: "destructive" })
         return
       }
       setReporting(true)

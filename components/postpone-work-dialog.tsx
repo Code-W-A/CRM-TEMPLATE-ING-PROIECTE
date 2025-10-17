@@ -62,7 +62,7 @@ export function PostponeWorkDialog({ lucrareId, onSuccess, className }: Postpone
 
       // Trimitem email clientului despre amânare (preferăm email-ul persoanei de contact a locației)
       try {
-        // Obținem datele actuale ale lucrării pentru a construi corect payload-ul
+        // Obținem datele actuale ale proiectului pentru a construi corect payload-ul
         const lucrare = await getLucrareById(lucrareId)
 
         const result = await sendWorkOrderPostponedNotification({
@@ -100,10 +100,10 @@ export function PostponeWorkDialog({ lucrareId, onSuccess, className }: Postpone
         onSuccess()
       }
     } catch (error) {
-      console.error("Eroare la amânarea lucrării:", error)
+      console.error("Eroare la amânarea proiectului:", error)
       toast({
         title: "Eroare",
-        description: "A apărut o eroare la amânarea lucrării. Te rog să încerci din nou.",
+        description: "A apărut o eroare la amânarea proiectului. Te rog să încerci din nou.",
         variant: "destructive",
       })
     } finally {

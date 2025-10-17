@@ -398,12 +398,12 @@ export async function sendWorkOrderNotifications(workOrderData: any) {
         equipmentCode: workOrderData.echipamentCod || "",
         equipmentModel: workOrderData.echipamentModel || "",
       },
-      workOrderId: workOrderData.id || "", // Asigurăm-ne că ID-ul lucrării este transmis corect
+      workOrderId: workOrderData.id || "", // Asigurăm-ne că ID-ul proiectului este transmis corect
       workOrderNumber: workOrderData.number || workOrderData.id || "",
       clientEmails: Array.from(clientRecipientSet),
     }
 
-    console.log("ID-ul lucrării pentru notificare:", workOrderData.id || "nedefinit")
+    console.log("ID-ul proiectului pentru notificare:", workOrderData.id || "nedefinit")
     // Send notifications
     console.log("Sending notification data to API:", JSON.stringify(notificationData, null, 2))
     const response = await fetch("/api/notifications/work-order", {

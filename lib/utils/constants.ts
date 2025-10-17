@@ -59,8 +59,8 @@ export const WORK_TYPE_OPTIONS = Object.values(WORK_TYPES)
 
 // Actualizez și funcția getWorkTypeClass pentru a include toate tipurile noi
 /**
- * Funcție pentru a obține clasa CSS pentru tipul lucrării
- * @param tip Tipul lucrării
+ * Funcție pentru a obține clasa CSS pentru tipul proiectului
+ * @param tip Tipul proiectului
  * @returns Clasa CSS corespunzătoare
  */
 export function getWorkTypeClass(tip: string): string {
@@ -85,8 +85,8 @@ export function getWorkTypeClass(tip: string): string {
 }
 
 /**
- * Funcție pentru a obține clasa CSS pentru statusul lucrării
- * @param status Statusul lucrării
+ * Funcție pentru a obține clasa CSS pentru statusul proiectului
+ * @param status Statusul proiectului
  * @returns Clasa CSS corespunzătoare
  */
 export function getWorkStatusClass(status: string): string {
@@ -109,7 +109,7 @@ export function getWorkStatusClass(status: string): string {
 }
 
 /**
- * Funcție pentru a obține clasa CSS pentru rândul tabelului în funcție de statusul lucrării
+ * Funcție pentru a obține clasa CSS pentru rândul tabelului în funcție de statusul proiectului
  * @param lucrare Obiectul lucrare
  * @returns Clasa CSS corespunzătoare
  */
@@ -135,7 +135,7 @@ export function getWorkStatusRowClass(lucrare: any): string {
     return "bg-red-100 border-l-4 border-red-500"
   }
 
-  // PRIORITATE SECUNDARĂ: Colorarea normală pe baza statusului lucrării
+  // PRIORITATE SECUNDARĂ: Colorarea normală pe baza statusului proiectului
   switch (lucrare.statusLucrare.toLowerCase()) {
     case WORK_STATUS.LISTED.toLowerCase():
       return "bg-gray-50"

@@ -290,8 +290,8 @@ export default function RaportPage({ params }: { params: { id: string } }) {
           setError("Proiectul nu a fost găsit")
         }
       } catch (err) {
-        console.error("Eroare la încărcarea lucrării:", err)
-        setError("A apărut o eroare la încărcarea lucrării")
+        console.error("Eroare la încărcarea proiectului:", err)
+        setError("A apărut o eroare la încărcarea proiectului")
       } finally {
         setLoading(false)
       }
@@ -348,7 +348,7 @@ export default function RaportPage({ params }: { params: { id: string } }) {
     async (pdfBlob: Blob) => {
       try {
         if (!updatedLucrare) {
-          throw new Error("Datele lucrării nu sunt disponibile")
+          throw new Error("Datele proiectului nu sunt disponibile")
         }
 
         // Prevent double email sending
@@ -729,15 +729,15 @@ CRM by NRG`,
     }
   }, [techSignatureData, clientSignatureData, isTechDrawing, isClientDrawing])
 
-  // Actualizăm statusul lucrării și marcăm raportul ca generat
+  // Actualizăm statusul proiectului și marcăm raportul ca generat
   const updateWorkOrderStatus = async (lucrareId: string) => {
     try {
       if (!lucrareId) {
-        console.error("ID-ul lucrării lipsește")
+        console.error("ID-ul proiectului lipsește")
         return
       }
 
-      console.log("Actualizăm statusul lucrării și marcăm raportul ca generat:", lucrareId)
+      console.log("Actualizăm statusul proiectului și marcăm raportul ca generat:", lucrareId)
 
       // Actualizăm documentul în Firestore direct
       const lucrareRef = doc(db, "lucrari", lucrareId)
@@ -753,7 +753,7 @@ CRM by NRG`,
       // LOG DEBUG – confirmare după updateWorkOrderStatus
       console.log("🔍 updateWorkOrderStatus – raportGenerat:true, statusLucrare:Finalizat, preluatDispecer:false")
     } catch (error) {
-      console.error("Eroare la actualizarea statusului lucrării:", error)
+      console.error("Eroare la actualizarea statusului proiectului:", error)
       toast({
         title: "Atenție",
         description: "Raportul a fost generat, dar nu s-a putut actualiza starea în sistem.",
@@ -2059,7 +2059,7 @@ CRM by NRG`,
                               variant: "default",
                             })
 
-                            // Actualizăm statusul lucrării
+                            // Actualizăm statusul proiectului
                             if (updatedLucrare && updatedLucrare.id) {
                               updateWorkOrderStatus(updatedLucrare.id)
                             }

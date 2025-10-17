@@ -118,7 +118,7 @@ export default function LucrariArhivate() {
 
       setLucrariArhivate(lucrari)
     } catch (error) {
-      console.error("Eroare la încărcarea lucrărilor arhivate:", error)
+      console.error("Eroare la încărcarea proiectelor arhivate:", error)
       setError("Nu s-au putut încărca Proiecte arhivate")
       toast({
         title: "Eroare",
@@ -652,7 +652,7 @@ export default function LucrariArhivate() {
       <DashboardShell>
         <DashboardHeader 
           heading="Proiecte Arhivate" 
-          text={`${filteredLucrari.length} ${searchTerm || activeFilters.length ? 'rezultate filtrate' : 'lucrări arhivate'} din ${lucrariArhivate.length} total`}
+          text={`${filteredLucrari.length} ${searchTerm || activeFilters.length ? 'rezultate filtrate' : 'proiecte arhivate'} din ${lucrariArhivate.length} total`}
         />
 
 
@@ -738,7 +738,7 @@ export default function LucrariArhivate() {
 
               {/* Informații despre filtrare - pe mobil sub butoane */}
               <div className="text-sm text-gray-500 order-last sm:order-none">
-                {filteredLucrari.length} din {lucrariArhivate.length} lucrări
+                {filteredLucrari.length} din {lucrariArhivate.length} proiecte
               </div>
             </div>
 
@@ -800,12 +800,12 @@ export default function LucrariArhivate() {
                 <CardContent className="flex flex-col items-center justify-center py-12">
                   <Archive className="h-12 w-12 text-gray-400 mb-4" />
                   <h3 className="text-lg font-medium text-gray-900 mb-2">
-                    Nu există lucrări arhivate
+                    Nu există proiecte arhivate
                   </h3>
                   <p className="text-gray-500 text-center max-w-md">
                     {searchTerm || activeFilters.length
-                      ? "Nu s-au găsit lucrări arhivate care să corespundă criteriilor de căutare."
-                      : "Încă nu aveți lucrări arhivate. Lucrările finalizate pot fi arhivate pentru organizare."
+                      ? "Nu s-au găsit proiecte arhivate care să corespundă criteriilor de căutare."
+                      : "Încă nu aveți proiecte arhivate. Proiectele finalizate pot fi arhivate pentru organizare."
                     }
                   </p>
                   {(searchTerm || activeFilters.length > 0) && (
@@ -935,12 +935,12 @@ export default function LucrariArhivate() {
                 <CardContent className="flex flex-col items-center justify-center py-12">
                   <Archive className="h-12 w-12 text-gray-400 mb-4" />
                   <h3 className="text-lg font-medium text-gray-900 mb-2">
-                    Nu există lucrări arhivate
+                    Nu există proiecte arhivate
                   </h3>
                   <p className="text-gray-500 text-center max-w-md">
                     {searchTerm || activeFilters.length
-                      ? "Nu s-au găsit lucrări arhivate care să corespundă criteriilor de căutare."
-                      : "Încă nu aveți lucrări arhivate."
+                      ? "Nu s-au găsit proiecte arhivate care să corespundă criteriilor de căutare."
+                      : "Încă nu aveți proiecte arhivate."
                     }
                   </p>
                   {(searchTerm || activeFilters.length > 0) && (

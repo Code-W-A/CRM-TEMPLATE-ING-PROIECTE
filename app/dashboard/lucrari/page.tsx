@@ -512,7 +512,7 @@ export default function Lucrari() {
               return true
 
             case "tehnicieni":
-              // Verificăm dacă există o intersecție între tehnicienii selectați și cei ai lucrării
+              // Verificăm dacă există o intersecție între tehnicienii selectați și cei ai proiectului
               return filter.value.some((tehnician) => item.tehnicieni.includes(tehnician))
 
             case "locatie":
@@ -704,7 +704,7 @@ export default function Lucrari() {
           if (isTechnician) {
             toast({
               title: "Acces restricționat",
-              description: "Nu aveți permisiunea de a edita lucrări.",
+              description: "Nu aveți permisiunea de a edita proiecte.",
               variant: "destructive",
             })
             router.push("/dashboard/lucrari")
@@ -716,7 +716,7 @@ export default function Lucrari() {
             handleEdit(lucrare)
           }
         } catch (err) {
-          console.error("Eroare la încărcarea lucrării pentru editare:", err)
+          console.error("Eroare la încărcarea proiectului pentru editare:", err)
         }
       }
     }
@@ -935,7 +935,7 @@ export default function Lucrari() {
     if (!formData.tipLucrare) errors.push("tipLucrare")
     if (!formData.client) errors.push("client")
 
-    // Validăm câmpul contract doar dacă tipul lucrării este "Intervenție în contract"
+    // Validăm câmpul contract doar dacă tipul proiectului este "Intervenție în contract"
     if (formData.tipLucrare === "Intervenție în contract" && !formData.contract) {
       errors.push("contract")
     }
@@ -999,10 +999,10 @@ export default function Lucrari() {
         description: isReassignment ? "Re-intervenția a fost creată cu succes." : "Lucrarea a fost adăugată cu succes.",
       })
     } catch (error) {
-      console.error("Eroare la adăugarea lucrării:", error)
+      console.error("Eroare la adăugarea proiectului:", error)
       toast({
         title: "Eroare",
-        description: "A apărut o eroare la adăugarea lucrării.",
+        description: "A apărut o eroare la adăugarea proiectului.",
         variant: "destructive",
       })
     }
@@ -1019,7 +1019,7 @@ export default function Lucrari() {
         return
       }
 
-      // Setăm automat statusul lucrării în funcție de prezența tehnicienilor
+      // Setăm automat statusul proiectului în funcție de prezența tehnicienilor
       const statusLucrare = (formData.tehnicieni && formData.tehnicieni.length > 0) ? "Atribuită" : "Listată"
 
       const newLucrare = {
@@ -1141,7 +1141,7 @@ export default function Lucrari() {
       setIsAddDialogOpen(false)
       resetForm()
 
-      // Afișăm toast de succes pentru adăugarea lucrării
+      // Afișăm toast de succes pentru adăugarea proiectului
       toast({
         title: "Proiect adăugată",
         description: "Proiectul a fost adăugată cu succes.",
@@ -1149,8 +1149,8 @@ export default function Lucrari() {
         icon: <Check className="h-4 w-4" />,
       })
     } catch (err) {
-      console.error("Eroare la adăugarea lucrării:", err)
-      setError("A apărut o eroare la adăugarea lucrării. Încercați din nou.")
+      console.error("Eroare la adăugarea proiectului:", err)
+      setError("A apărut o eroare la adăugarea proiectului. Încercați din nou.")
       setIsSubmitting(false)
     } finally {
       setIsSubmitting(false)
@@ -1177,7 +1177,7 @@ export default function Lucrari() {
       setDataInterventie(new Date())
     }
 
-    // Populăm formularul cu datele lucrării
+    // Populăm formularul cu datele proiectului
     setFormData({
       tipLucrare: lucrare.tipLucrare,
       tehnicieni: [...lucrare.tehnicieni],
@@ -1295,7 +1295,7 @@ export default function Lucrari() {
       setIsEditDialogOpen(false)
       resetForm()
 
-      // Afișăm toast de succes pentru actualizarea lucrării
+      // Afișăm toast de succes pentru actualizarea proiectului
       toast({
         title: "Proiectu actualizat",
         description: "Proiectul a fost actualizat cu succes.",
@@ -1308,8 +1308,8 @@ export default function Lucrari() {
         router.push("/dashboard/lucrari")
       }
     } catch (err) {
-      console.error("Eroare la actualizarea lucrării:", err)
-      setError("A apărut o eroare la actualizarea lucrării. Încercați din nou.")
+      console.error("Eroare la actualizarea proiectului:", err)
+      setError("A apărut o eroare la actualizarea proiectului. Încercați din nou.")
     } finally {
       setIsSubmitting(false)
     }
@@ -1320,8 +1320,8 @@ export default function Lucrari() {
       try {
         await deleteLucrare(id)
       } catch (err) {
-        console.error("Eroare la ștergerea lucrării:", err)
-        alert("A apărut o eroare la ștergerea lucrării.")
+        console.error("Eroare la ștergerea proiectului:", err)
+        alert("A apărut o eroare la ștergerea proiectului.")
       }
     }
   }
@@ -1340,10 +1340,10 @@ export default function Lucrari() {
     }
 
     if (!lucrare || !lucrare.id) {
-      console.error("ID-ul lucrării nu este valid:", lucrare)
+      console.error("ID-ul proiectului nu este valid:", lucrare)
       toast({
         title: "Eroare",
-        description: "ID-ul lucrării nu este valid",
+        description: "ID-ul proiectului nu este valid",
         variant: "destructive",
       })
       return
@@ -1367,10 +1367,10 @@ export default function Lucrari() {
 
       // Verificăm că lucrare și lucrare.id sunt valide
       if (!lucrare || !lucrare.id) {
-        console.error("ID-ul lucrării nu este valid:", lucrare)
+        console.error("ID-ul proiectului nu este valid:", lucrare)
         toast({
           title: "Eroare",
-          description: "ID-ul lucrării nu este valid",
+          description: "ID-ul proiectului nu este valid",
           variant: "destructive",
         })
         return
@@ -1385,10 +1385,10 @@ export default function Lucrari() {
   // Modificăm funcția handleDispatcherPickup pentru a permite doar preluarea, nu și anularea
   const handleDispatcherPickup = async (lucrare) => {
     if (!lucrare || !lucrare.id) {
-      console.error("ID-ul lucrării nu este valid:", lucrare)
+      console.error("ID-ul proiectului nu este valid:", lucrare)
       toast({
         title: "Eroare",
-        description: "ID-ul lucrării nu este valid",
+        description: "ID-ul proiectului nu este valid",
         variant: "destructive",
       })
       return
@@ -1419,7 +1419,7 @@ export default function Lucrari() {
   // Funcție pentru reatribuirea unei lucrări (pentru dispecer)
   const handleReassign = useCallback(async (originalLucrare: any) => {
     try {
-      // Creăm un mesaj informativ cu detaliile lucrării originale
+      // Creăm un mesaj informativ cu detaliile proiectului originale
       const originalInfo = `${originalLucrare.client} - ${originalLucrare.locatie} (${originalLucrare.dataInterventie})`
       
       // Precompletăm formularul cu datele din lucrarea originală
@@ -1501,7 +1501,7 @@ export default function Lucrari() {
             handleReassign(lucrare)
           }
         } catch (err) {
-          console.error("Eroare la încărcarea lucrării pentru reintervenție:", err)
+          console.error("Eroare la încărcarea proiectului pentru reintervenție:", err)
         }
       }
     }
@@ -2145,7 +2145,7 @@ export default function Lucrari() {
           </Dialog>
         )}
 
-        {/* Dialog pentru editarea lucrării */}
+        {/* Dialog pentru editarea proiectului */}
         <Dialog
           open={isEditDialogOpen}
           onOpenChange={(open) => {
@@ -2158,8 +2158,8 @@ export default function Lucrari() {
         >
           <DialogContent className="w-[calc(100%-2rem)] max-w-[600px] max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>Editează Lucrare</DialogTitle>
-              <DialogDescription>Modificați detaliile lucrării</DialogDescription>
+              <DialogTitle>Editează Proiect</DialogTitle>
+              <DialogDescription>Modificați detaliile proiectului</DialogDescription>
             </DialogHeader>
             {error && (
               <Alert variant="destructive">
@@ -2206,7 +2206,7 @@ export default function Lucrari() {
         <div className="flex flex-wrap gap-2">
           <div className="flex items-center">
             <div className="w-4 h-4 mr-1 bg-red-100 border border-red-500 border-l-4 rounded"></div>
-                <span className="text-xs">Situații critice (NEFINALIZAT / Status ofertă: DA)</span>
+                <span className="text-xs">Necesită ofertă</span>
           </div>
           <div className="flex items-center">
             <div className="w-4 h-4 mr-1 bg-gray-50 border border-gray-200 rounded"></div>
@@ -2273,7 +2273,7 @@ export default function Lucrari() {
         <FilterModal
           isOpen={isFilterModalOpen}
           onClose={() => setIsFilterModalOpen(false)}
-          title="Filtrare lucrări"
+          title="Filtrare proiecte"
           filterOptions={filterOptions}
           activeFilters={activeFilters}
           onApplyFilters={handleApplyFilters}
@@ -2300,7 +2300,7 @@ export default function Lucrari() {
           <Alert variant="destructive">
             <AlertCircle className="h-4 w-4" />
             <AlertDescription>
-              A apărut o eroare la încărcarea lucrărilor. Încercați să reîmprospătați pagina.
+              A apărut o eroare la încărcarea proiectului. Încercați să reîmprospătați pagina.
             </AlertDescription>
           </Alert>
         ) : activeTab === "tabel" ? (
@@ -2435,7 +2435,7 @@ export default function Lucrari() {
                           <span className="text-sm">{lucrare.telefon}</span>
                         </div>
                       </div>
-                      {/* Adăugăm acest cod în secțiunea de carduri, după statusul lucrării
+                      {/* Adăugăm acest cod în secțiunea de carduri, după statusul proiectului
                       Acest cod trebuie adăugat în componenta Card, în secțiunea de detalii */}
                       {(lucrare.statusOferta === "DA" || (lucrare.statusOferta === undefined && lucrare.necesitaOferta)) && (
                         <div className="flex justify-between mt-2">
@@ -2613,9 +2613,9 @@ export default function Lucrari() {
                 <div className="col-span-full text-center py-10">
                   {userData?.role === "tehnician" ? (
                     <div>
-                      <p className="text-muted-foreground mb-2">Nu aveți lucrări active în acest moment.</p>
+                      <p className="text-muted-foreground mb-2">Nu aveți proiecte active în acest moment.</p>
                       <p className="text-sm text-muted-foreground">
-                        Lucrările finalizate cu raport generat și preluate de dispecer nu mai sunt afișate.
+                        Proiectele finalizate cu raport generat și preluate de dispecer nu mai sunt afișate.
                       </p>
                     </div>
                   ) : (

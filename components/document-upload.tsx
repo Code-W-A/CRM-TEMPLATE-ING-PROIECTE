@@ -15,7 +15,7 @@ import { useAuth } from "@/contexts/AuthContext"
 
 interface DocumentUploadProps {
   lucrareId: string
-  lucrare: any // Tipul complet al lucrării
+  lucrare: any // Tipul complet al proiectului
   onLucrareUpdate: (updatedLucrare: any) => void
   hideOfertaUpload?: boolean
 }
@@ -313,7 +313,7 @@ export function DocumentUpload({ lucrareId, lucrare, onLucrareUpdate, hideOferta
           <Alert>
             <AlertCircle className="h-4 w-4" />
             <AlertDescription>
-              Încărcarea documentelor este disponibilă doar după preluarea lucrării de către dispecer.
+              Încărcarea documentelor este disponibilă doar după preluarea proiectului de către dispecer.
             </AlertDescription>
           </Alert>
         )}

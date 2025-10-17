@@ -804,7 +804,7 @@ export const ReportGenerator = forwardRef<HTMLButtonElement, ReportGeneratorProp
             console.log("✅ SUCCES - Prima generare salvată în Firestore cu statusLucrare: Finalizat")
           } else if (isOldFinalizedReport) {
             console.log("🏛️ RAPORT VECHI FINALIZAT - Nu salvez nimic în baza de date")
-            console.log("📋 Folosesc doar datele existente pentru PDF fără a modifica starea lucrării")
+            console.log("📋 Folosesc doar datele existente pentru PDF fără a modifica starea proiectului")
           } else {
             console.log("🔄 REGENERARE - Actualizez doar timestamp-ul")
             await updateDoc(doc(db, "lucrari", lucrare.id), {

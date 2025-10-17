@@ -120,10 +120,10 @@ export default function EditLucrarePage({ params }: { params: { id: string } }) 
         setLoading(false)
         setIsLoading(false)
       } catch (error) {
-        console.error("Eroare la încărcarea lucrării:", error)
+        console.error("Eroare la încărcarea proiectului:", error)
         toast({
           title: "Eroare",
-          description: "A apărut o eroare la încărcarea lucrării. Vă rugăm să încercați din nou.",
+          description: "A apărut o eroare la încărcarea proiectului. Vă rugăm să încercați din nou.",
           variant: "destructive",
         })
         setLoading(false)
@@ -213,7 +213,7 @@ export default function EditLucrarePage({ params }: { params: { id: string } }) 
 
       // Restul codului rămâne neschimbat...
 
-      // Adăugăm un log pentru actualizarea lucrării
+      // Adăugăm un log pentru actualizarea proiectului
       await addLog(
         "Actualizare",
         `A fost actualizată lucrarea pentru clientul "${data.client}" cu ID-ul ${id}`,
@@ -309,10 +309,10 @@ export default function EditLucrarePage({ params }: { params: { id: string } }) 
       // Redirecționăm către pagina de lucrări
       router.push("/dashboard/lucrari")
     } catch (error) {
-      console.error("Eroare la actualizarea lucrării:", error)
+      console.error("Eroare la actualizarea proiectului:", error)
       toast({
         title: "Eroare",
-        description: "A apărut o eroare la actualizarea lucrării. Vă rugăm să încercați din nou.",
+        description: "A apărut o eroare la actualizarea proiectului. Vă rugăm să încercați din nou.",
         variant: "destructive",
       })
     } finally {
@@ -356,7 +356,7 @@ export default function EditLucrarePage({ params }: { params: { id: string } }) 
       <Card>
         <CardHeader>
           <CardTitle>Editare Lucrare</CardTitle>
-          <CardDescription>Actualizați detaliile lucrării</CardDescription>
+          <CardDescription>Actualizați detaliile proiectului</CardDescription>
         </CardHeader>
         <CardContent>
           <LucrareForm

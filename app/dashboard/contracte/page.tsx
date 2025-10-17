@@ -762,7 +762,7 @@ export default function ContractsPage() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="Abonament">Abonament</SelectItem>
-                  <SelectItem value="O singură lucrare">O singură lucrare</SelectItem>
+                  <SelectItem value="Un singur proiect">Un singur proiect</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -838,7 +838,7 @@ export default function ContractsPage() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="Abonament">Abonament</SelectItem>
-                  <SelectItem value="O singură lucrare">O singură lucrare</SelectItem>
+                  <SelectItem value="Un singur proiect">Un singur proiect</SelectItem>
                 </SelectContent>
               </Select>
             </div>

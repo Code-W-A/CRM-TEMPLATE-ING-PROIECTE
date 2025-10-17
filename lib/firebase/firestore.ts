@@ -138,8 +138,8 @@ export interface Lucrare {
   // CÂMP NOU PENTRU STATUS FINALIZARE INTERVENȚIE - BACKWARD COMPATIBLE
   statusFinalizareInterventie?: "FINALIZAT" | "NEFINALIZAT"  // Status-ul finalizării intervenției (independent de statusLucrare)
   // CÂMP NOU PENTRU REFERINȚĂ LA LUCRAREA ORIGINALĂ - BACKWARD COMPATIBLE
-  lucrareOriginala?: string       // ID-ul lucrării originale în caz de reatribuire
-  mesajReatribuire?: string       // Mesajul de reatribuire (ex: "reintervenită în urma lucrării x")
+  lucrareOriginala?: string       // ID-ul proiectului originale în caz de reatribuire
+  mesajReatribuire?: string       // Mesajul de reatribuire (ex: "reintervenită în urma proiectului x")
   // CÂMP NOU PENTRU CONFIRMAREA GARANȚIEI DE CĂTRE TEHNICIAN - BACKWARD COMPATIBLE
   tehnicianConfirmaGarantie?: boolean  // Confirmarea tehnicianului la fața locului despre garanție (doar pentru "Intervenție în garanție")
   statusOferta?: "NU" | "DA" | "OFERTAT" // Nou câmp pentru managementul statusului ofertei
@@ -176,11 +176,11 @@ export interface Lucrare {
     uploadedBy: string  // Cine a încărcat (tehnicianul)
     compressed: boolean // Dacă imaginea a fost comprimată
   }>
-  // CÂMPURI NOI PENTRU AMÂNAREA LUCRĂRII - BACKWARD COMPATIBLE
+  // CÂMPURI NOI PENTRU AMÂNAREA proiectului - BACKWARD COMPATIBLE
   motivAmanare?: string    // Motivul pentru care lucrarea a fost amânată
   dataAmanare?: string     // Data când lucrarea a fost amânată
   amanataDe?: string       // Cine a amânat lucrarea (tehnicianul)
-  // CÂMPURI NOI PENTRU ARHIVAREA LUCRĂRII - BACKWARD COMPATIBLE
+  // CÂMPURI NOI PENTRU ARHIVAREA proiectului - BACKWARD COMPATIBLE
   archivedAt?: Timestamp   // Data și ora când lucrarea a fost arhivată
   archivedBy?: string      // Cine a arhivat lucrarea (admin/dispecer)
   // CÂMPURI NOI PENTRU MOTIVELE REINTERVENȚIEI - BACKWARD COMPATIBLE

@@ -46,7 +46,7 @@ async function safeAddLog(action: string, details: string, type = "Informație",
   }
 }
 
-// Funcție pentru a extrage ID-ul lucrării în mod sigur
+// Funcție pentru a extrage ID-ul proiectului în mod sigur
 function extractWorkOrderId(workOrderId: any): string {
   // Verificăm dacă este string
   if (typeof workOrderId === "string") {
@@ -123,7 +123,7 @@ export async function POST(request: NextRequest) {
     if (!data.workOrderId) {
       console.log(`[WORK-ORDER-API] [${requestId}] EROARE: Lipsește workOrderId`)
       logWarning("Missing required field: workOrderId", { data }, { category: "api", context: logContext })
-      return NextResponse.json({ error: "ID-ul lucrării este obligatoriu" }, { status: 400 })
+      return NextResponse.json({ error: "ID-ul proiectului este obligatoriu" }, { status: 400 })
     }
 
     // Extract data
@@ -302,7 +302,7 @@ export async function POST(request: NextRequest) {
     // Asigurăm că URL-ul aplicației este complet
     const appBaseUrl = ensureCompleteUrl(process.env.NEXT_PUBLIC_APP_URL || "CRM.nrg-acces.ro")
 
-    // Extragem ID-ul lucrării în mod sigur
+    // Extragem ID-ul proiectului în mod sigur
     const safeWorkOrderId = extractWorkOrderId(workOrderId)
     console.log(`[WORK-ORDER-API] [${requestId}] ID proiect extras: ${safeWorkOrderId}`)
 

@@ -2129,11 +2129,11 @@ export const LucrareForm = forwardRef<LucrareFormRef, LucrareFormProps>(
                 <span className="ml-2 text-xs text-muted-foreground">Status automatizat</span>
               </div>
               <p className="text-xs text-muted-foreground">
-                Statusul lucrării este actualizat automat în funcție de atribuirea tehnicienilor și progresul lucrării
+                Statusul proiectului este actualizat automat în funcție de atribuirea tehnicienilor și progresul proiectului
               </p>
               <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-md">
                 <p className="text-xs text-blue-700">
-                  {/* <strong>Notă:</strong> Statusul facturării se actualizează din pagina de detalii a lucrării după finalizarea și preluarea acesteia de către dispecer. */}
+                  {/* <strong>Notă:</strong> Statusul facturării se actualizează din pagina de detalii a proiectului după finalizarea și preluarea acesteia de către dispecer. */}
                 </p>
               </div>
             </div>

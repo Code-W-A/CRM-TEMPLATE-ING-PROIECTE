@@ -154,7 +154,7 @@ export default function ClientPage({ params }: { params: { id: string } }) {
             </div>
             <div className="text-right">
               <p className="text-sm font-medium">
-                Număr lucrări: <span className="font-bold">{lucrariClient.length}</span>
+                Număr proiecte: <span className="font-bold">{lucrariClient.length}</span>
               </p>
             </div>
           </div>
@@ -543,7 +543,7 @@ export default function ClientPage({ params }: { params: { id: string } }) {
                 ))}
               </div>
             ) : (
-              <p className="text-muted-foreground">Nu există lucrări pentru acest client.</p>
+              <p className="text-muted-foreground">Nu există proiecte pentru acest client.</p>
             )}
           </div>
         </CardContent>

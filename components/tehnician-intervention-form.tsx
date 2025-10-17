@@ -132,7 +132,7 @@ export function TehnicianInterventionForm({
           setFormDisabled(true)
         }
       } catch (error) {
-        console.error("Eroare la verificarea stării lucrării:", error)
+        console.error("Eroare la verificarea stării proiectului:", error)
       }
     }
 

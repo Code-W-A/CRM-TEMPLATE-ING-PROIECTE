@@ -52,9 +52,9 @@ export function generateModificationDescription(
   switch (type) {
     case 'status':
       if (oldValue && newValue) {
-        return `Statusul lucrării a fost schimbat din "${oldValue}" în "${newValue}"`
+        return `Statusul proiectului a fost schimbat din "${oldValue}" în "${newValue}"`
       }
-      return "Statusul lucrării a fost modificat"
+      return "Statusul proiectului a fost modificat"
       
     case 'assignment':
       if (oldValue && newValue) {
@@ -62,16 +62,16 @@ export function generateModificationDescription(
       } else if (newValue) {
         return `Lucrarea a fost atribuită: ${newValue}`
       }
-      return "Atribuirea lucrării a fost modificată"
+      return "Atribuirea proiectului a fost modificată"
       
     case 'details':
-      return extraInfo || "Detaliile lucrării au fost actualizate"
+      return extraInfo || "Detaliile proiectului au fost actualizate"
       
     case 'schedule':
       if (oldValue && newValue) {
         return `Data intervenției a fost reprogramată din ${oldValue} în ${newValue}`
       }
-      return "Programarea lucrării a fost modificată"
+      return "Programarea proiectului a fost modificată"
       
     case 'completion':
       return extraInfo || "Lucrarea a fost finalizată"
@@ -119,7 +119,7 @@ export function getModificationPriority(
 }
 
 /**
- * Funcție helper pentru a obține titlul lucrării (client + locație)
+ * Funcție helper pentru a obține titlul proiectului (client + locație)
  */
 export function getLucrareTitle(lucrare: any): string {
   if (lucrare.client && lucrare.locatie) {

@@ -148,7 +148,7 @@ export function useLucrariNotifications(lucrari: Lucrare[]) {
           let description = ''
           let priority: LucrareNotification['priority'] = 'medium'
 
-          // Analiză pe baza statusului și datelor lucrării
+          // Analiză pe baza statusului și datelor proiectului
           if (!lucrare.tehnicieni || lucrare.tehnicieni.length === 0) {
             modificationType = 'tehnician'
             description = `Lucrare neatribuită: ${lucrare.client || ''} - ${lucrare.locatie || ''}`
