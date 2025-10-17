@@ -1155,7 +1155,7 @@ export function EquipmentReport({ className = "", reportType = "detailed" }: Equ
                         <div className="mt-4 grid gap-2 md:grid-cols-2">
                           {order.defectReclamat && (
                             <div>
-                              <p className="text-sm font-medium text-muted-foreground">Defect reclamat:</p>
+                              <p className="text-sm font-medium text-muted-foreground">Detalii proiect:</p>
                               <p className="text-sm">{order.defectReclamat}</p>
                             </div>
                           )}

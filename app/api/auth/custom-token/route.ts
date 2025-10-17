@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server"
-import { adminAuth } from "@/lib/firebase/admin"
+import { getAdminAuth } from "@/lib/firebase/admin"
+
+export const runtime = "nodejs"
+export const dynamic = "force-dynamic"
 
 export async function POST(request: Request) {
   try {
@@ -20,6 +23,7 @@ export async function POST(request: Request) {
 
     try {
       // Generate a custom token for the user
+      const adminAuth = getAdminAuth()
       const customToken = await adminAuth.createCustomToken(uid)
       return NextResponse.json({ token: customToken })
     } catch (error: any) {

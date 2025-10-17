@@ -57,7 +57,6 @@ import {
   getWorkStatusRowClass,
   getInvoiceStatusClass,
   getWorkTypeClass,
-  getEquipmentStatusClass,
 } from "@/lib/utils/constants"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
@@ -303,7 +302,7 @@ export default function Lucrari() {
     return lucrare.statusLucrare === WORK_STATUS.POSTPONED && lucrare.preluatDispecer === false
   }, [])
 
-  // Modificăm funcția filterOptions pentru a include și echipamentele și statusul echipamentului
+  // Modificăm funcția filterOptions pentru a exclude status echipament și a păstra doar Locația
   const { data: tehnicieni } = useFirebaseCollection("users", [])
   const filterOptions = useMemo(() => {
     // Extragem toate valorile unice pentru tipuri de lucrări
@@ -326,7 +325,7 @@ export default function Lucrari() {
       label: client,
     }))
 
-    // Extragem toate echipamentele unice
+    // Extragem toate locațiile unice
     const echipamente = Array.from(new Set(filteredLucrari.map((lucrare) => lucrare.locatie)))
       .filter(Boolean)
       .map((echipament) => ({
@@ -350,18 +349,12 @@ export default function Lucrari() {
       }),
     )
 
-    // Extragem toate statusurile de echipament unice
-    const statusuriEchipament = Array.from(
-      new Set(filteredLucrari.map((lucrare) => lucrare.statusEchipament || "Nedefinit")),
-    ).map((status) => ({
-      value: status,
-      label: status === "Nedefinit" ? "Nedefinit" : status,
-    }))
+    // Eliminat: status echipament
 
     return [
       {
         id: "dataEmiterii",
-        label: "Data emiterii",
+        label: "Data începerii proiectului",
         type: "dateRange",
         value: null,
       },
@@ -394,7 +387,7 @@ export default function Lucrari() {
       },
       {
         id: "locatie",
-        label: "Echipament",
+        label: "Locație",
         type: "multiselect",
         options: echipamente,
         value: [],
@@ -413,13 +406,7 @@ export default function Lucrari() {
         options: statusuriFacturare,
         value: [],
       },
-      {
-        id: "statusEchipament",
-        label: "Status echipament",
-        type: "multiselect",
-        options: statusuriEchipament,
-        value: [],
-      },
+      
       {
         id: "numarRaport",
         label: "Cu număr raport",
@@ -458,7 +445,7 @@ export default function Lucrari() {
 
   // Adaugă această funcție după declararea constantei filterOptions
   const hasEquipmentStatusFilter = useMemo(() => {
-    return activeFilters.some((filter) => filter.id === "statusEchipament" && filter.value && filter.value.length > 0)
+  return false
   }, [activeFilters])
 
   // Modificăm funcția applyFilters pentru a gestiona filtrarea după echipament și statusul echipamentului
@@ -532,13 +519,7 @@ export default function Lucrari() {
               // Filtrare după echipament
               return filter.value.includes(item.locatie)
 
-            case "statusEchipament":
-              // Filtrare după statusul echipamentului
-              if (!item.statusEchipament) {
-                // Dacă lucrarea nu are status de echipament și filtrul include valoarea goală sau "Nedefinit"
-                return filter.value.includes("") || filter.value.includes("Nedefinit")
-              }
-              return filter.value.includes(item.statusEchipament)
+            // Eliminat: statusEchipament
 
             // În funcția applyFilters, adăugăm un nou caz pentru necesitaOferta
             // Acest cod trebuie adăugat în switch-ul din funcția applyFilters
@@ -1683,7 +1664,7 @@ export default function Lucrari() {
     },
     {
       accessorKey: "dataEmiterii",
-      header: "Data Emiterii",
+      header: "Data începerii proiectului",
       enableHiding: true,
       enableFiltering: true,
       sortingFn: (rowA: any, rowB: any, columnId: any) => {
@@ -1740,7 +1721,7 @@ export default function Lucrari() {
     },
     {
       accessorKey: "defectReclamat",
-      header: "Defect reclamat",
+      header: "Detalii proiect",
       enableHiding: true,
       enableFiltering: true,
       cell: ({ row }) => (
@@ -1782,34 +1763,18 @@ export default function Lucrari() {
     },
     {
       accessorKey: "locatie",
-      header: "Locație / Echipament",
+      header: "Locație",
       enableHiding: true,
       enableFiltering: true,
       cell: ({ row }) => {
             return (
               <div>
             <div className="font-medium">{row.original.locatie}</div>
-            {row.original.echipamentCod && (
-              <div className="text-sm text-gray-500">Cod: {row.original.echipamentCod}</div>
-            )}
               </div>
             )
       },
     },
-    {
-      accessorKey: "statusEchipament",
-      header: "Status Echipament",
-      enableHiding: true,
-      enableFiltering: true,
-      cell: ({ row }) => {
-        if (!row.original.statusEchipament) return null
-        return (
-          <Badge className={getEquipmentStatusClass(row.original.statusEchipament)}>
-            {row.original.statusEchipament}
-          </Badge>
-        )
-      },
-    },
+    
     {
       accessorKey: "statusLucrare",
       header: "Status Lucrare",
@@ -2241,7 +2206,7 @@ export default function Lucrari() {
         <div className="flex flex-wrap gap-2">
           <div className="flex items-center">
             <div className="w-4 h-4 mr-1 bg-red-100 border border-red-500 border-l-4 rounded"></div>
-            <span className="text-xs">Situații critice (NEFINALIZAT / Echipament nefuncțional / Status ofertă: DA)</span>
+                <span className="text-xs">Situații critice (NEFINALIZAT / Status ofertă: DA)</span>
           </div>
           <div className="flex items-center">
             <div className="w-4 h-4 mr-1 bg-gray-50 border border-gray-200 rounded"></div>
@@ -2430,7 +2395,7 @@ export default function Lucrari() {
                         </div>
                         {lucrare.defectReclamat && (
                           <div>
-                            <span className="text-sm font-medium text-muted-foreground">Defect reclamat:</span>
+                            <span className="text-sm font-medium text-muted-foreground">Detalii proiect:</span>
                             <p className="text-sm line-clamp-2" title={lucrare.defectReclamat}>
                               {lucrare.defectReclamat}
                             </p>
@@ -2443,7 +2408,7 @@ export default function Lucrari() {
                           </div>
                         )}
                         <div className="flex justify-between">
-                          <span className="text-sm font-medium text-muted-foreground">Data emiterii:</span>
+                          <span className="text-sm font-medium text-muted-foreground">Data începerii proiectului:</span>
                           <span className="text-sm">{lucrare.dataEmiterii}</span>
                         </div>
                         <div className="flex justify-between">
@@ -2460,14 +2425,7 @@ export default function Lucrari() {
                             ))}
                           </div>
                         </div>
-                        {lucrare.statusEchipament && (
-                          <div className="flex justify-between">
-                            <span className="text-sm font-medium text-muted-foreground">Status echipament:</span>
-                            <Badge className={getEquipmentStatusClass(lucrare.statusEchipament)}>
-                              {lucrare.statusEchipament}
-                            </Badge>
-                          </div>
-                        )}
+                        
                         <div className="flex justify-between">
                           <span className="text-sm font-medium text-muted-foreground">Contact:</span>
                           <span className="text-sm">{lucrare.persoanaContact}</span>

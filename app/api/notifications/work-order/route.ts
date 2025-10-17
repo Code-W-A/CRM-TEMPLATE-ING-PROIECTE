@@ -241,14 +241,14 @@ export async function POST(request: NextRequest) {
     // Prepare email content for technicians - include all details and rename "Descriere" to "Sfaturi pt tehnician"
     const technicianWorkOrderInfo = `
       <ul style="list-style-type: none; padding-left: 0;">
-        <li><strong>Data emiterii:</strong> ${(details?.issueDate || "N/A").split(' ')[0]}</li>
+        <li><strong>Data începerii proiectului:</strong> ${(details?.issueDate || "N/A").split(' ')[0]}</li>
         <li><strong>Data intervenție:</strong> ${(details?.interventionDate || "N/A").split(' ')[0]}</li>
         <li><strong>Tip proiect:</strong> ${details?.workType || "N/A"}</li>
         <li><strong>Locație:</strong> ${details?.location || "N/A"}</li>
         <li><strong>Echipament:</strong> ${details?.equipment || "N/A"}</li>
         <li><strong>Model echipament:</strong> ${details?.equipmentModel || "N/A"}</li>
         <li><strong>Sfaturi pt tehnician:</strong> ${details?.description || "N/A"}</li>
-        <li><strong>Defect reclamat:</strong> ${details?.reportedIssue || "N/A"}</li>
+        <li><strong>Detalii proiect:</strong> ${details?.reportedIssue || "N/A"}</li>
         <li><strong>Status:</strong> ${details?.status || "N/A"}</li>
       </ul>
     `
@@ -290,7 +290,7 @@ export async function POST(request: NextRequest) {
     `
       : `
       <ul style="list-style-type: none; padding-left: 0;">
-        <li><strong>Data emiterii:</strong> ${(details?.issueDate || "N/A").split(' ')[0]}</li>
+        <li><strong>Data începerii proiectului:</strong> ${(details?.issueDate || "N/A").split(' ')[0]}</li>
         <li><strong>Data intervenție:</strong> ${(details?.interventionDate || "N/A").split(' ')[0]}</li>
         <li><strong>Tip proiect:</strong> ${details?.workType || "N/A"}</li>
         <li><strong>Locație:</strong> ${details?.location || "N/A"}</li>

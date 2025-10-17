@@ -1541,10 +1541,10 @@ export const LucrareForm = forwardRef<LucrareFormRef, LucrareFormProps>(
       <div className="modal-calendar-container">
         {error && <div className="text-red-500 mb-4">{error}</div>}
         <div className="grid gap-4 py-4">
-          {/* Data Emiterii - Setată automat și nemodificabilă */}
+          {/* Data începerii proiectului - setată automat și nemodificabilă */}
           <div className="space-y-2">
             <label htmlFor="dataEmiterii" className="text-sm font-medium flex items-center">
-              Data Emiterii
+              Data începerii proiectului
               <span className="ml-2 text-xs text-muted-foreground bg-gray-100 px-2 py-0.5 rounded">Automată</span>
             </label>
             <div className="flex flex-col sm:flex-row gap-2">
@@ -1571,10 +1571,10 @@ export const LucrareForm = forwardRef<LucrareFormRef, LucrareFormProps>(
             <p className="text-xs text-muted-foreground">Data și ora emiterii sunt setate automat cu data curentă</p>
           </div>
 
-          {/* 1. Data când se solicită intervenția (fără oră în UI, dar cu ora în baza de date) */}
+          {/* 1. Termen de finalizare (fără oră în UI, dar cu ora în baza de date) */}
           <div className="space-y-2">
             <label htmlFor="dataInterventie" className="text-sm font-medium">
-              Data când se solicită intervenția *
+              Termen de finalizare *
             </label>
             <div className="w-full">
               <Popover open={dateInterventieOpen} onOpenChange={setDateInterventieOpen}>
@@ -1603,7 +1603,7 @@ export const LucrareForm = forwardRef<LucrareFormRef, LucrareFormProps>(
               </Popover>
             </div>
             <p className="text-xs text-muted-foreground">
-              Data când se solicită intervenția
+              Termen de finalizare
             </p>
           </div>
 
@@ -1805,7 +1805,7 @@ export const LucrareForm = forwardRef<LucrareFormRef, LucrareFormProps>(
           {/* 5. Tipul de intervenție */}
           <div className="space-y-2">
             <label htmlFor="tipLucrare" className="text-sm font-medium">
-              Tip Intervenție *
+              Tip proiect *
             </label>
             <Select value={formData.tipLucrare} onValueChange={(value) => handleSelectChange("tipLucrare", value)}>
               <SelectTrigger id="tipLucrare" className={hasError("tipLucrare") ? errorStyle : ""}>
@@ -1980,14 +1980,14 @@ export const LucrareForm = forwardRef<LucrareFormRef, LucrareFormProps>(
             <p className="text-xs text-muted-foreground">Puteți selecta mai mulți tehnicieni</p>
           </div>
 
-          {/* 8. Defect reclamat */}
+          {/* 8. Detalii proiect */}
           <div className="space-y-2">
             <label htmlFor="defectReclamat" className="text-sm font-medium">
-              Defect reclamat
+              Detalii proiect
             </label>
             <Textarea
               id="defectReclamat"
-              placeholder="Introduceți defectul reclamat de client"
+              placeholder="introduceți detaliile proiectului"
               value={formData.defectReclamat || ""}
               onChange={handleInputChange}
               className="min-h-[80px] resize-y"

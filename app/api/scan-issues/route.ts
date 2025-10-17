@@ -1,5 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server"
-import { adminAuth, adminDb } from "@/lib/firebase/admin"
+import { getAdminAuth, getAdminDb } from "@/lib/firebase/admin"
+
+export const runtime = "nodejs"
+export const dynamic = "force-dynamic"
 
 export async function POST(req: NextRequest) {
   try {
@@ -24,23 +27,26 @@ export async function POST(req: NextRequest) {
     let userEmail: string | undefined
     try {
       const cookie = req.headers.get("cookie") || ""
-      const match = cookie.split(";").map((p) => p.trim()).find((p) => p.startsWith("__session="))
+      const match = cookie
+        .split(";")
+        .map((p: string) => p.trim())
+        .find((p: string) => p.startsWith("__session="))
       const token = match ? decodeURIComponent(match.split("=")[1]) : undefined
       if (token) {
-        const decoded = await adminAuth.verifySessionCookie(token, true)
+        const decoded = await getAdminAuth().verifySessionCookie(token, true)
         userId = decoded.uid
         userEmail = decoded.email
       }
     } catch {}
 
     // Fetch work document for context
-    const workRef = adminDb.collection("lucrari").doc(String(lucrareId))
+    const workRef = getAdminDb().collection("lucrari").doc(String(lucrareId))
     const workSnap = await workRef.get()
     if (!workSnap.exists) return NextResponse.json({ error: "Proiect inexistent" }, { status: 404 })
     const workData = workSnap.data() as any
 
     // Create a scan issue request document
-    const requestsRef = adminDb.collection("scan_issue_requests")
+    const requestsRef = getAdminDb().collection("scan_issue_requests")
     const now = new Date()
     const requestData = {
       lucrareId: String(lucrareId),
@@ -65,7 +71,7 @@ export async function POST(req: NextRequest) {
     const docRef = await requestsRef.add(requestData)
 
     // Also add a red log entry with deep details for debugging
-    await adminDb.collection("logs").add({
+    await getAdminDb().collection("logs").add({
       timestamp: now,
       utilizator: userEmail || "Utilizator",
       utilizatorId: userId || "unknown",
@@ -102,25 +108,25 @@ export async function GET(req: NextRequest) {
       const match = cookie.split(";").map((p) => p.trim()).find((p) => p.startsWith("__session="))
       const token = match ? decodeURIComponent(match.split("=")[1]) : undefined
       if (token) {
-        const decoded = await adminAuth.verifySessionCookie(token, true)
+        const decoded = await getAdminAuth().verifySessionCookie(token, true)
         userId = decoded.uid
       }
     } catch {}
     if (userId) {
       try {
-        const userSnap = await adminDb.collection("users").doc(String(userId)).get()
+        const userSnap = await getAdminDb().collection("users").doc(String(userId)).get()
         const userData = userSnap.exists ? (userSnap.data() as any) : null
         role = userData?.role
       } catch {}
     }
     if (role !== "admin") return NextResponse.json({ error: "Doar admin" }, { status: 403 })
 
-    const snap = await adminDb
+    const snap = await getAdminDb()
       .collection("scan_issue_requests")
       .orderBy("createdAt", "desc")
       .limit(200)
       .get()
-    const items = snap.docs.map((d) => ({ id: d.id, ...(d.data() as any) }))
+    const items = snap.docs.map((d: any) => ({ id: d.id, ...(d.data() as any) }))
     return NextResponse.json({ items })
   } catch (e: any) {
     console.error("/api/scan-issues GET error", e)

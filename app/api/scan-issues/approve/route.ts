@@ -1,5 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server"
-import { adminAuth, adminDb } from "@/lib/firebase/admin"
+import { getAdminAuth, getAdminDb } from "@/lib/firebase/admin"
+
+export const runtime = "nodejs"
+export const dynamic = "force-dynamic"
 
 export async function POST(req: NextRequest) {
   try {
@@ -12,16 +15,19 @@ export async function POST(req: NextRequest) {
     let role: string | undefined
     try {
       const cookie = req.headers.get("cookie") || ""
-      const match = cookie.split(";").map((p) => p.trim()).find((p) => p.startsWith("__session="))
+      const match = cookie
+        .split(";")
+        .map((p: string) => p.trim())
+        .find((p: string) => p.startsWith("__session="))
       const token = match ? decodeURIComponent(match.split("=")[1]) : undefined
       if (token) {
-        const decoded = await adminAuth.verifySessionCookie(token, true)
+        const decoded = await getAdminAuth().verifySessionCookie(token, true)
         userId = decoded.uid
       }
     } catch {}
     if (userId) {
       try {
-        const userSnap = await adminDb.collection("users").doc(String(userId)).get()
+        const userSnap = await getAdminDb().collection("users").doc(String(userId)).get()
         const userData = userSnap.exists ? (userSnap.data() as any) : null
         role = userData?.role
       } catch {}
@@ -29,14 +35,14 @@ export async function POST(req: NextRequest) {
     if (role !== "admin") return NextResponse.json({ error: "Doar admin" }, { status: 403 })
 
     // Load request
-    const reqRef = adminDb.collection("scan_issue_requests").doc(String(requestId))
+    const reqRef = getAdminDb().collection("scan_issue_requests").doc(String(requestId))
     const reqSnap = await reqRef.get()
     if (!reqSnap.exists) return NextResponse.json({ error: "Cerere inexistentă" }, { status: 404 })
     const requestData = reqSnap.data() as any
     if (requestData.status === "approved") return NextResponse.json({ ok: true })
 
     const lucrareId = requestData.lucrareId
-    const workRef = adminDb.collection("lucrari").doc(String(lucrareId))
+    const workRef = getAdminDb().collection("lucrari").doc(String(lucrareId))
     const workSnap = await workRef.get()
     if (!workSnap.exists) return NextResponse.json({ error: "Proiect inexistentă" }, { status: 404 })
     const now = new Date()
@@ -63,7 +69,7 @@ export async function POST(req: NextRequest) {
     await reqRef.update({ status: "approved", approvedAt: now, approvedBy: userId })
 
     // Log
-    await adminDb.collection("logs").add({
+    await getAdminDb().collection("logs").add({
       timestamp: now,
       utilizator: "Admin",
       utilizatorId: userId || "admin",

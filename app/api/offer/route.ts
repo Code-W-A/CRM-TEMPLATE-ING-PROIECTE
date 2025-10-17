@@ -1,12 +1,15 @@
 import { NextResponse, type NextRequest } from "next/server"
-import { adminDb } from "@/lib/firebase/admin"
+import { getAdminDb } from "@/lib/firebase/admin"
+
+export const runtime = "nodejs"
+export const dynamic = "force-dynamic"
 
 export async function POST(req: NextRequest) {
   try {
     const { lucrareId, snapshot } = await req.json()
     if (!lucrareId) return NextResponse.json({ error: "lucrareId lipsă" }, { status: 400 })
 
-    const workRef = adminDb.collection("lucrari").doc(String(lucrareId))
+    const workRef = getAdminDb().collection("lucrari").doc(String(lucrareId))
     const workSnap = await workRef.get()
     if (!workSnap.exists) return NextResponse.json({ error: "Proiectul nu există" }, { status: 404 })
 
@@ -26,7 +29,7 @@ export async function POST(req: NextRequest) {
     await workRef.update(updateData)
 
     // Build absolute base URL for email links (works on server): prefer env, then headers
-    const envBase = process.env.NEXT_PUBLIC_APP_URL
+    const envBase = process.env.NEXT_PUBLIC_APP_URL as string | undefined
     const proto = req.headers.get("x-forwarded-proto") || "https"
     const host = req.headers.get("x-forwarded-host") || req.headers.get("host") || ""
     const headerBase = host ? `${proto}://${host}` : ""

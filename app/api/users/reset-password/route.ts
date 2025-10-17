@@ -1,11 +1,13 @@
 import { NextResponse } from "next/server"
-import { getAuth } from "firebase-admin/auth"
-import { initializeFirebaseAdminApp } from "@/lib/firebase/admin"
+import { getAdminAuth, getAdminDb, initializeFirebaseAdminApp } from "@/lib/firebase/admin"
 import { collection, addDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase/config"
 
 // Initialize Firebase Admin if not already initialized
 initializeFirebaseAdminApp()
+
+export const runtime = "nodejs"
+export const dynamic = "force-dynamic"
 
 export async function POST(request: Request) {
   console.log("Password reset API called")
@@ -33,7 +35,7 @@ export async function POST(request: Request) {
     try {
       // First verify the user exists
       try {
-        const userRecord = await getAuth().getUser(userId)
+        const userRecord = await getAdminAuth().getUser(userId)
         console.log(`User found: ${userRecord.uid}`)
       } catch (userError) {
         console.error("User not found:", userError)
@@ -41,7 +43,7 @@ export async function POST(request: Request) {
       }
 
       // Update the user's password
-      await getAuth().updateUser(userId, {
+      await getAdminAuth().updateUser(userId, {
         password: newPassword,
       })
 

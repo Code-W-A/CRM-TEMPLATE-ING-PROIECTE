@@ -229,7 +229,7 @@ export function ImageDefectUpload({ lucrareId, lucrare, selectedImages, imagePre
                     }`}>
                       <img
                         src={image.url}
-                        alt={`Defect uploadat ${index + 1}`}
+                        alt={`Detaliu uploadat ${index + 1}`}
                         className={`w-full h-full object-cover ${
                           isMarkedForDeletion ? 'grayscale' : ''
                         }`}
@@ -289,7 +289,7 @@ export function ImageDefectUpload({ lucrareId, lucrare, selectedImages, imagePre
                   <div className="aspect-video relative rounded-lg overflow-hidden border bg-gray-100">
                     <img
                       src={imagePreviews[index]}
-                      alt={`Defect selectat ${index + 1}`}
+                      alt={`Detaliu selectat ${index + 1}`}
                       className="w-full h-full object-cover"
                       loading="lazy"
                     />

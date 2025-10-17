@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server"
-import { adminAuth, adminDb } from "@/lib/firebase/admin"
+import { getAdminAuth, getAdminDb } from "@/lib/firebase/admin"
 import { Timestamp } from "firebase-admin/firestore"
+
+export const runtime = "nodejs"
+export const dynamic = "force-dynamic"
 
 export async function POST(request: Request) {
   try {
@@ -20,19 +23,19 @@ export async function POST(request: Request) {
     }
 
     // Ensure Firebase Admin is initialized
-    if (!adminAuth) {
+    if (!getAdminAuth()) {
       console.error("Firebase Admin is not initialized")
       return NextResponse.json({ error: "Serviciul de autentificare nu este disponibil" }, { status: 500 })
     }
 
     // Actualizăm parola utilizatorului în Firebase Auth
     try {
-      await adminAuth.updateUser(userId, {
+      await getAdminAuth().updateUser(userId, {
         password: newPassword,
       })
 
       // Log the password change action using Admin SDK
-      const logRef = adminDb.collection("logs").doc(`password_reset_${Date.now()}`)
+      const logRef = getAdminDb().collection("logs").doc(`password_reset_${Date.now()}`)
       await logRef.set({
         timestamp: Timestamp.now(),
         actiune: "Resetare parolă",

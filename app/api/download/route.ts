@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server"
 // NOTE: For server-side logging, use Admin SDK (adminDb). Do not use client SDK here.
 import { cookies } from "next/headers"
-import { adminAuth, adminDb } from "@/lib/firebase/admin"
+import { getAdminAuth, getAdminDb } from "@/lib/firebase/admin"
+
+export const runtime = "nodejs"
+export const dynamic = "force-dynamic"
 
 export async function GET(request: Request) {
   try {
@@ -25,7 +28,7 @@ export async function GET(request: Request) {
       const cookieStore = await cookies()
       const sessionCookie = cookieStore.get("__session")?.value
       if (sessionCookie) {
-        const decoded = await adminAuth.verifySessionCookie(sessionCookie, true)
+        const decoded = await getAdminAuth().verifySessionCookie(sessionCookie, true)
         userEmail = decoded.email
         userId = decoded.uid
       }
@@ -36,7 +39,7 @@ export async function GET(request: Request) {
 
     // Authorization simplified: allow admins/dispeceri; otherwise allow if the requested URL matches the stored document URL for the lucrare
     // Load work order (required for both paths)
-    const workSnap = await adminDb.collection("lucrari").doc(lucrareId).get()
+    const workSnap = await getAdminDb().collection("lucrari").doc(lucrareId).get()
     if (!workSnap.exists) {
       console.warn(`[DOWNLOAD] [${requestId}] Work not found`, { lucrareId })
       return NextResponse.json({ error: "Proiect inexistent" }, { status: 404 })
@@ -47,7 +50,7 @@ export async function GET(request: Request) {
     let role: string | undefined
     if (userId) {
       try {
-        const userSnap = await adminDb.collection("users").doc(String(userId)).get()
+        const userSnap = await getAdminDb().collection("users").doc(String(userId)).get()
         const userData = userSnap.exists ? (userSnap.data() as any) : null
         role = userData?.role
       } catch {}
@@ -105,7 +108,7 @@ export async function GET(request: Request) {
     // Log into subcollection for easy querying in UI
     if (shouldLog) {
       try {
-        await adminDb
+        await getAdminDb()
           .collection("lucrari")
           .doc(lucrareId)
           .collection("downloads")
@@ -128,7 +131,7 @@ export async function GET(request: Request) {
     // Also add to global logs (non-blocking)
     if (shouldLog) {
       try {
-        await adminDb.collection("logs").add({
+        await getAdminDb().collection("logs").add({
           timestamp: new Date(),
           utilizator: userEmail || "Portal client",
           utilizatorId: userId || "portal",

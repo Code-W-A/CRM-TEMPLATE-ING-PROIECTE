@@ -1,5 +1,8 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { adminAuth, adminDb } from "@/lib/firebase/admin"
+import { getAdminAuth, getAdminDb } from "@/lib/firebase/admin"
+
+export const runtime = "nodejs"
+export const dynamic = "force-dynamic"
 
 export async function POST(request: NextRequest) {
   try {
@@ -12,7 +15,7 @@ export async function POST(request: NextRequest) {
 
     // Verificăm dacă email-ul nou este deja utilizat
     try {
-      const userByEmail = await adminAuth.getUserByEmail(newEmail)
+      const userByEmail = await getAdminAuth().getUserByEmail(newEmail)
       if (userByEmail && userByEmail.uid !== userId) {
         return NextResponse.json({ error: "Acest email este deja utilizat de alt cont" }, { status: 400 })
       }
@@ -24,19 +27,19 @@ export async function POST(request: NextRequest) {
     }
 
     // Actualizăm email-ul în Firebase Authentication
-    await adminAuth.updateUser(userId, {
+    await getAdminAuth().updateUser(userId, {
       email: newEmail,
     })
 
     // Actualizăm email-ul în Firestore folosind Admin SDK
-    const userRef = adminDb.collection("users").doc(userId)
+    const userRef = getAdminDb().collection("users").doc(userId)
     await userRef.update({
       email: newEmail,
       updatedAt: new Date(),
     })
 
     // Adăugăm un log pentru actualizarea email-ului
-    const logRef = adminDb.collection("logs").doc(`email_update_${Date.now()}`)
+    const logRef = getAdminDb().collection("logs").doc(`email_update_${Date.now()}`)
     await logRef.set({
       timestamp: new Date(),
       utilizator: "Admin",

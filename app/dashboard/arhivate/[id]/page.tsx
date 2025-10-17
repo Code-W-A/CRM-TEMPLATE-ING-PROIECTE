@@ -357,7 +357,7 @@ export default function ArchivedWorkDetailPage({ params }: ArchivedWorkDetailPag
                     <p className="text-sm">{lucrare.tipLucrare}</p>
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-gray-500">Data Emiterii</label>
+                    <label className="text-sm font-medium text-gray-500">Data începerii proiectului</label>
                     <p className="text-sm flex items-center gap-1">
                       <Calendar className="h-4 w-4" />
                       {formatDate(lucrare.dataEmiterii)}
@@ -377,12 +377,6 @@ export default function ArchivedWorkDetailPage({ params }: ArchivedWorkDetailPag
                 </div>
 
                 <div className="space-y-4">
-                  {lucrare.statusEchipament && (
-                    <div>
-                      <label className="text-sm font-medium text-gray-500">Status Echipament</label>
-                      <p className="text-sm">{lucrare.statusEchipament}</p>
-                    </div>
-                  )}
                   {lucrare.statusFinalizareInterventie && (
                     <div>
                       <label className="text-sm font-medium text-gray-500">Status Finalizare</label>
@@ -748,7 +742,7 @@ export default function ArchivedWorkDetailPage({ params }: ArchivedWorkDetailPag
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <FileText className="h-5 w-5" />
-                Descrieri și Defecte
+                Descrieri și Detalii
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -761,7 +755,7 @@ export default function ArchivedWorkDetailPage({ params }: ArchivedWorkDetailPag
               
               {lucrare.defectReclamat && (
                 <div>
-                  <label className="text-sm font-medium text-gray-500">Defect Reclamat</label>
+                  <label className="text-sm font-medium text-gray-500">Detalii proiect</label>
                   <p className="text-sm mt-1 whitespace-pre-line border rounded p-3 bg-red-50">
                     {lucrare.defectReclamat}
                   </p>
@@ -1074,7 +1068,7 @@ export default function ArchivedWorkDetailPage({ params }: ArchivedWorkDetailPag
           {lucrare.imaginiDefecte && lucrare.imaginiDefecte.length > 0 && (
             <Card>
               <CardHeader>
-                <CardTitle>Imagini Defecte</CardTitle>
+                <CardTitle>Imagini Detalii</CardTitle>
                 <CardDescription>
                   Imaginile pot fi doar vizualizate pentru lucrările arhivate.
                 </CardDescription>

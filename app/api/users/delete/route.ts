@@ -1,5 +1,8 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { adminAuth, adminDb } from "@/lib/firebase/admin"
+import { getAdminAuth, getAdminDb } from "@/lib/firebase/admin"
+
+export const runtime = "nodejs"
+export const dynamic = "force-dynamic"
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,15 +14,15 @@ export async function POST(request: NextRequest) {
 
     // Încercăm să ștergem utilizatorul din Authentication și Firestore
     const results = await Promise.allSettled([
-      adminAuth.deleteUser(userId),
-      adminDb.collection("users").doc(userId).delete(),
+      getAdminAuth().deleteUser(userId),
+      getAdminDb().collection("users").doc(userId).delete(),
     ])
 
     const authResult = results[0]
     const fsResult = results[1]
 
     // Log detaliat
-    await adminDb.collection("logs").add({
+    await getAdminDb().collection("logs").add({
       timestamp: new Date(),
       utilizator: "Admin",
       utilizatorId: "system",

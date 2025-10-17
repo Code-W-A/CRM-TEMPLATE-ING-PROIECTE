@@ -690,9 +690,20 @@ export default function Clienti() {
     },
     {
       accessorKey: "numarLucrari",
-      header: "Lucrări",
+      header: "Proiecte",
       enableFiltering: true,
       cell: ({ row }: any) => <span>{row.original.numarLucrari || 0}</span>,
+    },
+    {
+      id: "primaLocatie",
+      header: "Locație",
+      enableFiltering: false,
+      cell: ({ row }: any) => {
+        const locatii = Array.isArray(row.original.locatii) ? row.original.locatii : []
+        const first = locatii[0]
+        const text = first?.nume || first?.adresa || "—"
+        return <span className="truncate max-w-[220px] inline-block" title={text}>{text}</span>
+      },
     },
     {
       id: "actions",

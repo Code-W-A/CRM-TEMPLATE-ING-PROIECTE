@@ -389,7 +389,7 @@ export function ContractSelect({ value, onChange, hasError = false, errorStyle =
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="Abonament">Abonament</SelectItem>
-                  <SelectItem value="Cu plată la intervenție">Cu plată la intervenție</SelectItem>
+                  <SelectItem value="O singură lucrare">O singură lucrare</SelectItem>
                 </SelectContent>
               </Select>
             </div>

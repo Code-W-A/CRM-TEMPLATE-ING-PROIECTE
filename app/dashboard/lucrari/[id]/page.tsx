@@ -1000,7 +1000,7 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
               <CardContent>
                 <div className="text-sm flex flex-wrap items-start gap-x-3 gap-y-2 mt-2">
                   <div className="flex flex-col min-w-[140px]">
-                    <div className="text-xs font-medium text-muted-foreground">Data emiterii:</div>
+                    <div className="text-xs font-medium text-muted-foreground">Data începerii proiectului:</div>
                     <div className="text-gray-900 whitespace-nowrap">{String(lucrare.dataEmiterii || "").split(" ")[0]}</div>
                   </div>
                   <div className="flex flex-col min-w-[140px]">
@@ -1298,24 +1298,7 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
                           <span className="text-blue-600">{lucrare.echipamentModel}</span>
                         </p>
                       )}
-                      {lucrare.statusEchipament && (
-                        <p className="text-sm flex items-center mt-2">
-                          <span className="font-medium mr-2">Status:</span>
-                          <span
-                            className={`text-sm font-medium px-2 py-1 rounded ${
-                              lucrare.statusEchipament === "Funcțional"
-                                ? "bg-green-100 text-green-700"
-                                : lucrare.statusEchipament === "Parțial funcțional"
-                                  ? "bg-yellow-100 text-yellow-700"
-                                  : lucrare.statusEchipament === "Nefuncțional"
-                                    ? "bg-red-100 text-red-700"
-                                    : "bg-gray-100 text-gray-700"
-                            }`}
-                          >
-                            {lucrare.statusEchipament}
-                          </span>
-                        </p>
-                      )}
+                      
                     </div>
                   </div>
                 </div>
@@ -1325,9 +1308,9 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
                 <Separator className="my-4" />
                 
                 <div className="space-y-4">
-                  {/* Defect reclamat */}
+                  {/* Detalii proiect */}
                   <div>
-                    <p className="text-base font-semibold mb-2">Defect reclamat:</p>
+                    <p className="text-base font-semibold mb-2">Detalii proiect:</p>
                     <p className="text-base text-gray-600">{lucrare.defectReclamat || "Nu a fost specificat"}</p>
                   </div>
 

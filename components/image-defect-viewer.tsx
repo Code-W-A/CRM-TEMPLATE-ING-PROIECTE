@@ -71,7 +71,7 @@ export function ImageDefectViewer({ imaginiDefecte, userRole }: ImageDefectViewe
                 >
                   <img
                     src={image.url}
-                    alt={`Defect ${index + 1}`}
+                    alt={`Detaliu ${index + 1}`}
                     className="w-full h-full object-cover"
                     loading="lazy"
                   />
@@ -128,7 +128,7 @@ export function ImageDefectViewer({ imaginiDefecte, userRole }: ImageDefectViewe
             <div className="flex justify-center">
               <img
                 src={selectedImage}
-                alt="Defect mărit"
+                alt="Detaliu mărit"
                 className="max-w-full max-h-[70vh] object-contain rounded-lg"
               />
             </div>

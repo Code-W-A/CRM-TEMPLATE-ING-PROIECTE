@@ -1904,7 +1904,7 @@ CRM by NRG`,
                 <Separator />
 
                 <div>
-                  <h3 className="font-medium text-gray-500">Defect Reclamat</h3>
+                  <h3 className="font-medium text-gray-500">Detalii proiect</h3>
                   <p>{lucrare?.defectReclamat || "Nu a fost specificat"}</p>
                 </div>
 

@@ -12,6 +12,7 @@ import {
   orderBy,
   serverTimestamp,
   getCountFromServer,
+  setDoc,
 } from "firebase/firestore"
 import { db } from "./firebase"
 import { trackLucrareUpdate } from "@/lib/utils/work-modifications-tracker"
@@ -213,6 +214,9 @@ export interface Client {
   echipamente?: Echipament[]
   contracte?: Contract[]
   locatii?: Locatie[]
+  // Câmpuri opționale pentru achiziție client / cost campanie (UI-only, non-breaking)
+  acquisitionSource?: "recomandare" | "organic_seo" | "organic_social" | "paid_campaign"
+  campaignCost?: number
   createdAt?: Timestamp
   updatedAt?: Timestamp
 }

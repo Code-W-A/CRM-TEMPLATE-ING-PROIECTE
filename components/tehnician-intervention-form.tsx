@@ -25,7 +25,7 @@ import { uploadFile, deleteFile } from "@/lib/firebase/storage"
 import { useAuth } from "@/contexts/AuthContext"
 
 
-// First, let's update the interface to include statusEchipament
+// First, let's update the interface (statusEchipament kept internal only)
 interface TehnicianInterventionFormProps {
   lucrareId: string
   initialData: {
@@ -59,7 +59,7 @@ interface TehnicianInterventionFormProps {
   isCompleted?: boolean
 }
 
-// Then, let's update the component to use this prop and add the statusEchipament state
+// Then, update the component (UI elements for statusEchipament removed, logic remains)
 export function TehnicianInterventionForm({
   lucrareId,
   initialData,
@@ -462,17 +462,7 @@ export function TehnicianInterventionForm({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="statusEchipament">Status echipament</Label>
-              <Select value={statusEchipament} onValueChange={setStatusEchipament} disabled={formDisabled}>
-                <SelectTrigger id="statusEchipament" className={formDisabled ? "opacity-70 cursor-not-allowed" : ""}>
-                  <SelectValue placeholder="Selectați statusul echipamentului" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Funcțional">Funcțional</SelectItem>
-                  <SelectItem value="Parțial funcțional">Parțial funcțional</SelectItem>
-                  <SelectItem value="Nefuncțional">Nefuncțional</SelectItem>
-                </SelectContent>
-              </Select>
+              {/* Status echipament - UI eliminat, păstrăm doar logica internă */}
             </div>
 
 

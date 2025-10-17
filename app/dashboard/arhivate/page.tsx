@@ -175,18 +175,12 @@ export default function LucrariArhivate() {
       }),
     )
 
-    // Extragem toate statusurile de echipament unice
-    const statusuriEchipament = Array.from(
-      new Set(lucrariArhivate.map((lucrare) => lucrare.statusEchipament || "Nedefinit")),
-    ).map((status) => ({
-      value: status,
-      label: status === "Nedefinit" ? "Nedefinit" : status,
-    }))
+    // Eliminat: status echipament în UI
 
          return [
        {
          id: "dataEmiterii",
-         label: "Data emiterii",
+         label: "Data începerii proiectului",
          type: "dateRange" as const,
          value: null,
        },
@@ -237,13 +231,7 @@ export default function LucrariArhivate() {
          options: statusuriFacturare,
          value: [],
        },
-       {
-         id: "statusEchipament",
-         label: "Status echipament",
-         type: "multiselect" as const,
-         options: statusuriEchipament,
-         value: [],
-       },
+      
        {
          id: "numarRaport",
          label: "Cu număr raport",
@@ -327,11 +315,11 @@ export default function LucrariArhivate() {
               return vals.some((t) => itemTech.includes(t))
             }
 
-                         case "tipLucrare":
+            case "tipLucrare":
              case "client":
              case "locatie":
              case "statusFacturare":
-             case "statusEchipament": {
+            {
                const vals = normArr(Array.isArray(filter.value) ? filter.value : [])
                if (!vals.length) return true
                const target = norm((item as any)[filter.id] || "Nedefinit")
