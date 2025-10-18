@@ -1714,8 +1714,14 @@ export default function Lucrari() {
       enableHiding: true,
       enableFiltering: true,
       cell: ({ row }) => (
-        <Badge variant="outline" className={getWorkTypeClass(row.original.tipLucrare)}>
-          {row.original.tipLucrare}
+        <Badge
+          variant="outline"
+          className={`${getWorkTypeClass(row.original.tipLucrare)} max-w-[180px]`}
+          title={row.original.tipLucrare}
+        >
+          <span className="block max-w-[160px] overflow-hidden text-ellipsis whitespace-nowrap">
+            {row.original.tipLucrare}
+          </span>
         </Badge>
       ),
     },

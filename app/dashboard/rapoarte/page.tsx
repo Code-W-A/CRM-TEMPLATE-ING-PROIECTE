@@ -2,7 +2,8 @@
 
 import { DashboardHeader } from "@/components/dashboard-header"
 import { DashboardShell } from "@/components/dashboard-shell"
-import { EquipmentReport } from "@/components/equipment-report"
+// Eliminăm rapoartele pe echipament și afișăm pe tip proiect
+import { ProjectTypeReport } from "@/components/project-type-report"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useState } from "react"
 import { SalesAnalysis } from "@/components/sales-analysis"
@@ -10,27 +11,22 @@ import { MarketingCostAnalysis } from "@/components/marketing-cost-analysis"
 import { AcquisitionReport } from "@/components/acquisition-report"
 
 export default function ReportsPage() {
-  const [activeTab, setActiveTab] = useState("equipment")
+  const [activeTab, setActiveTab] = useState("project-type")
 
   return (
     <DashboardShell>
-      <DashboardHeader heading="Rapoarte" text="Generează și vizualizează rapoarte pentru echipamente și intervenții" />
+      <DashboardHeader heading="Rapoarte" text="Generează și vizualizează rapoarte în funcție de tipul proiectului" />
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full max-w-4xl grid-cols-1 md:grid-cols-5">
-          <TabsTrigger value="equipment">Rapoarte per Echipament</TabsTrigger>
-          <TabsTrigger value="annual">Analiză Anuală</TabsTrigger>
+        <TabsList className="grid w-full max-w-4xl grid-cols-1 md:grid-cols-4">
+          <TabsTrigger value="project-type">Tip proiect</TabsTrigger>
           <TabsTrigger value="sales">Analiză Vânzări</TabsTrigger>
           <TabsTrigger value="marketing">Marketing</TabsTrigger>
           <TabsTrigger value="acquisition">Achiziție clienți</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="equipment" className="pt-4">
-          <EquipmentReport className="w-full" reportType="detailed" />
-        </TabsContent>
-
-        <TabsContent value="annual" className="pt-4">
-          <EquipmentReport className="w-full" reportType="annual" />
+        <TabsContent value="project-type" className="pt-4">
+          <ProjectTypeReport />
         </TabsContent>
 
         <TabsContent value="sales" className="pt-4">
