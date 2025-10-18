@@ -358,7 +358,7 @@ export function ImageDefectUpload({ lucrareId, lucrare, selectedImages, imagePre
         <div className="text-xs text-gray-500 p-3 bg-gray-50 rounded-lg">
           <p><strong>Specificații tehnice:</strong></p>
           <ul className="list-disc list-inside mt-1 space-y-1">
-            <li>Maxim {maxImages} imagini per lucrare</li>
+            <li>Maxim {maxImages} imagini per proiect</li>
             <li>Doar fișiere imagine sunt acceptate</li>
         
          
