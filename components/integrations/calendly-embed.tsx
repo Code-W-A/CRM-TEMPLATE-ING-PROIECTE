@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useMemo } from "react"
 
 type CalendlyEmbedProps = {
   eventUrl: string
@@ -23,8 +23,6 @@ function buildUrl(base: string, client?: { id: string; name?: string; email?: st
 }
 
 export function CalendlyEmbed({ eventUrl, client, className }: CalendlyEmbedProps) {
-  const containerRef = useRef<HTMLDivElement | null>(null)
-  const initializedRef = useRef(false)
   const isValidCalendlyUrl = (url: string) => {
     try {
       const u = new URL(url)
@@ -36,44 +34,21 @@ export function CalendlyEmbed({ eventUrl, client, className }: CalendlyEmbedProp
       return false
     }
   }
+  // Build iframe src including embed parameters
+  const iframeSrc = useMemo(() => {
+    if (!isValidCalendlyUrl(eventUrl)) return null
+    try {
+      const u = new URL(buildUrl(eventUrl, client))
+      const domain = typeof window !== "undefined" ? window.location.hostname : undefined
+      if (domain) u.searchParams.set("embed_domain", domain)
+      u.searchParams.set("embed_type", "Inline")
+      return u.toString()
+    } catch {
+      return null
+    }
+  }, [eventUrl, client?.id, client?.name, client?.email])
 
   useEffect(() => {
-    const scriptId = "calendly-widget-script"
-    const cssId = "calendly-widget-css"
-    const ensureScript = () =>
-      new Promise<void>((resolve) => {
-        if (document.getElementById(scriptId)) return resolve()
-        const s = document.createElement("script")
-        s.id = scriptId
-        s.src = "https://assets.calendly.com/assets/external/widget.js"
-        s.onload = () => resolve()
-        document.body.appendChild(s)
-      })
-    const ensureCss = () => {
-      if (document.getElementById(cssId)) return
-      const l = document.createElement("link")
-      l.id = cssId
-      l.rel = "stylesheet"
-      l.href = "https://assets.calendly.com/assets/external/widget.css"
-      document.head.appendChild(l)
-    }
-
-    const setup = async () => {
-      if (initializedRef.current) return
-      if (!isValidCalendlyUrl(eventUrl)) {
-        if (containerRef.current) {
-          containerRef.current.innerHTML =
-            '<div class="rounded border p-3 text-sm text-muted-foreground">Config invalid: verificați adresa evenimentului Calendly.</div>'
-        }
-        return
-      }
-      await ensureScript()
-      ensureCss()
-      initializedRef.current = true
-    }
-
-    setup()
-
     const handler = async (e: MessageEvent) => {
       try {
         const data = e?.data
@@ -94,19 +69,21 @@ export function CalendlyEmbed({ eventUrl, client, className }: CalendlyEmbedProp
     window.addEventListener("message", handler)
     return () => {
       window.removeEventListener("message", handler)
-      initializedRef.current = false
     }
-  }, [eventUrl, client?.id, client?.name, client?.email])
+  }, [client?.id])
 
   return (
-    <div
-      ref={containerRef}
-      className={className ? `${className} calendly-inline-widget` : "calendly-inline-widget w-full"}
-      // @ts-ignore - Calendly auto-initializes using data-url
-      data-url={buildUrl(eventUrl, client)}
-      style={{ minWidth: "320px", height: "720px" }}
-      aria-label="Calendly scheduling widget"
-    />
+    iframeSrc ? (
+      <iframe
+        src={iframeSrc}
+        className={className || "w-full"}
+        style={{ minWidth: "320px", height: "720px" }}
+        frameBorder={0}
+        allowTransparency={true}
+      />
+    ) : (
+      <div className="rounded border p-3 text-sm text-muted-foreground">Config invalid: verificați adresa evenimentului Calendly.</div>
+    )
   )
 }
 
