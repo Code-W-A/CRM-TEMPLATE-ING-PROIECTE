@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Menu } from "lucide-react"
 // Adăugăm importul pentru Cog
-import { ClipboardList, Users, Settings, FileText, Home, LogOut, BarChart3, StickyNote, Archive, Calendar } from "lucide-react"
+import { ClipboardList, Users, Settings, FileText, Home, LogOut, BarChart3, StickyNote, Archive, Calendar, Plug } from "lucide-react"
 import { useAuth } from "@/contexts/AuthContext"
 import { signOut } from "@/lib/firebase/auth"
 
@@ -136,19 +136,36 @@ export function MobileNav({ className, ...props }: React.HTMLAttributes<HTMLDivE
                 </>
               )}
               {isAdmin && (
-                <Link
-                  href="/dashboard/contracte"
-                  onClick={() => setOpen(false)}
-                  className={cn(
-                    "flex items-center gap-2 rounded-md px-3 py-3 text-sm font-medium transition-colors",
-                    pathname === "/dashboard/contracte" || pathname.startsWith("/dashboard/contracte/")
-                      ? "bg-blue-100 text-blue-900"
-                      : "hover:bg-muted",
-                  )}
-                >
-                  <FileText className="h-5 w-5" />
-                  <span>Contracte</span>
-                </Link>
+                <>
+                  <Link
+                    href="/dashboard/contracte"
+                    onClick={() => setOpen(false)}
+                    className={cn(
+                      "flex items-center gap-2 rounded-md px-3 py-3 text-sm font-medium transition-colors",
+                      pathname === "/dashboard/contracte" || pathname.startsWith("/dashboard/contracte/")
+                        ? "bg-blue-100 text-blue-900"
+                        : "hover:bg-muted",
+                    )}
+                  >
+                    <FileText className="h-5 w-5" />
+                    <span>Contracte</span>
+                  </Link>
+                  {/* Integrări - simplu (mobile) */}
+                  <div className="mt-1">
+                    <div className="px-3 py-2 text-xs font-semibold text-muted-foreground uppercase">Integrări</div>
+                    <Link
+                      href="/dashboard/integrari"
+                      onClick={() => setOpen(false)}
+                      className={cn(
+                        "flex items-center gap-2 rounded-md px-3 py-3 text-sm font-medium transition-colors",
+                        pathname === "/dashboard/integrari" ? "bg-blue-100 text-blue-900" : "hover:bg-muted",
+                      )}
+                    >
+                      <Plug className="h-5 w-5" />
+                      <span>Programare întâlniri / consultanță</span>
+                    </Link>
+                  </div>
+                </>
               )}
               {!isTechnician && !isDispatcher && (
                 <Link
