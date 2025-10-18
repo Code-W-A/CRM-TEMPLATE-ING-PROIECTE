@@ -2070,7 +2070,7 @@ export default function Lucrari() {
       <DashboardShell>
         <DashboardHeader 
           heading="Proiecte" 
-          text="Gestionați toate Proiecte și intervențiile"
+          text="Gestionați toate Proiectele"
           headerAction={!isTechnician ? <LucrariNotificationsBell lucrari={rawLucrari || []} /> : undefined}
         >
         {!isTechnician && (

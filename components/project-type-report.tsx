@@ -217,7 +217,7 @@ export function ProjectTypeReport() {
                 </BarChart>
               </ResponsiveContainer>
             </div>
-          </TabsContent>
+          </TabsContent>    
 
           <TabsContent value="client" className="rounded-md border p-4 mt-4">
             <div className="h-80 w-full">
