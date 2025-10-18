@@ -58,7 +58,7 @@ export function CalendlyEmbed({ eventUrl, client, className }: CalendlyEmbedProp
       document.head.appendChild(l)
     }
 
-    const initWidget = async () => {
+    const setup = async () => {
       if (initializedRef.current) return
       if (!isValidCalendlyUrl(eventUrl)) {
         if (containerRef.current) {
@@ -69,33 +69,10 @@ export function CalendlyEmbed({ eventUrl, client, className }: CalendlyEmbedProp
       }
       await ensureScript()
       ensureCss()
-      // Retry loop until Calendly is available
-      const maxAttempts = 20
-      let attempts = 0
-      const tryInit = () => {
-        // @ts-ignore
-        if (window.Calendly && containerRef.current) {
-          // Clear any previous iframes to avoid duplicate widgets
-          containerRef.current.innerHTML = ""
-          // @ts-ignore
-          window.Calendly.initInlineWidget({
-            url: buildUrl(eventUrl, client),
-            parentElement: containerRef.current,
-            prefill: undefined,
-            utm: undefined,
-          })
-          initializedRef.current = true
-          return
-        }
-        if (attempts < maxAttempts) {
-          attempts += 1
-          setTimeout(tryInit, 300)
-        }
-      }
-      tryInit()
+      initializedRef.current = true
     }
 
-    initWidget()
+    setup()
 
     const handler = async (e: MessageEvent) => {
       try {
@@ -118,15 +95,15 @@ export function CalendlyEmbed({ eventUrl, client, className }: CalendlyEmbedProp
     return () => {
       window.removeEventListener("message", handler)
       initializedRef.current = false
-      // Clear on unmount/re-render
-      if (containerRef.current) containerRef.current.innerHTML = ""
     }
   }, [eventUrl, client?.id, client?.name, client?.email])
 
   return (
     <div
       ref={containerRef}
-      className={className || "w-full"}
+      className={className ? `${className} calendly-inline-widget` : "calendly-inline-widget w-full"}
+      // @ts-ignore - Calendly auto-initializes using data-url
+      data-url={buildUrl(eventUrl, client)}
       style={{ minWidth: "320px", height: "720px" }}
       aria-label="Calendly scheduling widget"
     />
