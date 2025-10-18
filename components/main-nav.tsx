@@ -30,6 +30,8 @@ import {
 export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElement>) {
   const pathname = usePathname()
   const { userData } = useAuth()
+  const [openClients, setOpenClients] = useState(false)
+  const [openIntegrations, setOpenIntegrations] = useState(false)
 
   // Verificăm dacă utilizatorul este admin pentru a afișa meniurile restricționate
   const role = userData?.role
@@ -106,46 +108,41 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
           </Link>
         )}
         {!isTechnician && (
-          (() => {
-            const [open, setOpen] = useState(false)
-            return (
-              <div onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
-                <DropdownMenu open={open} onOpenChange={setOpen}>
-                  <DropdownMenuTrigger asChild>
-                    <button
-                      className={cn(
-                        "flex items-center gap-1 text-sm font-medium transition-colors hover:text-primary",
-                        pathname === "/dashboard/clienti" || pathname.startsWith("/dashboard/clienti/") || pathname === "/dashboard/achizitii-client"
-                          ? "text-primary"
-                          : "text-muted-foreground",
-                      )}
-                    >
-                      <Users className="h-4 w-4" />
-                      <span>Clienți</span>
-                    </button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start">
-                    <DropdownMenuItem asChild>
-                      <Link href="/dashboard/clienti">
-                        <div className="flex items-center gap-2">
-                          <List className="h-4 w-4" />
-                          <span>Lista clienți</span>
-                        </div>
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link href="/dashboard/achizitii-client">
-                        <div className="flex items-center gap-2">
-                          <UserPlus className="h-4 w-4" />
-                          <span>Achiziții clienți</span>
-                        </div>
-                      </Link>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            )
-          })()
+          <div onMouseEnter={() => setOpenClients(true)} onMouseLeave={() => setOpenClients(false)}>
+            <DropdownMenu open={openClients} onOpenChange={setOpenClients}>
+              <DropdownMenuTrigger asChild>
+                <button
+                  className={cn(
+                    "flex items-center gap-1 text-sm font-medium transition-colors hover:text-primary",
+                    pathname === "/dashboard/clienti" || pathname.startsWith("/dashboard/clienti/") || pathname === "/dashboard/achizitii-client"
+                      ? "text-primary"
+                      : "text-muted-foreground",
+                  )}
+                >
+                  <Users className="h-4 w-4" />
+                  <span>Clienți</span>
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start">
+                <DropdownMenuItem asChild>
+                  <Link href="/dashboard/clienti">
+                    <div className="flex items-center gap-2">
+                      <List className="h-4 w-4" />
+                      <span>Lista clienți</span>
+                    </div>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/dashboard/achizitii-client">
+                    <div className="flex items-center gap-2">
+                      <UserPlus className="h-4 w-4" />
+                      <span>Achiziții clienți</span>
+                    </div>
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         )}
          
         {isAdmin && (
@@ -175,36 +172,31 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
           </Link>
         )}
         {isAdmin && (
-          (() => {
-            const [open, setOpen] = useState(false)
-            return (
-              <div onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
-                <DropdownMenu open={open} onOpenChange={setOpen}>
-                  <DropdownMenuTrigger asChild>
-                    <button
-                      className={cn(
-                        "flex items-center gap-1 text-sm font-medium transition-colors hover:text-primary",
-                        pathname === "/dashboard/integrari" ? "text-primary" : "text-muted-foreground",
-                      )}
-                    >
-                      <Plug className="h-4 w-4" />
-                      <span>Integrări</span>
-                    </button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start">
-                    <DropdownMenuItem asChild>
-                      <Link href="/dashboard/integrari">
-                        <div className="flex items-center gap-2">
-                          <Calendar className="h-4 w-4" />
-                          <span>Programare întâlniri / consultanță</span>
-                        </div>
-                      </Link>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            )
-          })()
+          <div onMouseEnter={() => setOpenIntegrations(true)} onMouseLeave={() => setOpenIntegrations(false)}>
+            <DropdownMenu open={openIntegrations} onOpenChange={setOpenIntegrations}>
+              <DropdownMenuTrigger asChild>
+                <button
+                  className={cn(
+                    "flex items-center gap-1 text-sm font-medium transition-colors hover:text-primary",
+                    pathname === "/dashboard/integrari" ? "text-primary" : "text-muted-foreground",
+                  )}
+                >
+                  <Plug className="h-4 w-4" />
+                  <span>Integrări</span>
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start">
+                <DropdownMenuItem asChild>
+                  <Link href="/dashboard/integrari">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-4 w-4" />
+                      <span>Programare întâlniri / consultanță</span>
+                    </div>
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         )}
       
     
