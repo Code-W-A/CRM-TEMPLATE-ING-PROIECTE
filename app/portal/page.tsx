@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Switch } from "@/components/ui/switch"
 import Link from "next/link"
-import { UserNav } from "@/components/user-nav"
+import { DashboardShell } from "@/components/dashboard-shell"
 import { useTablePersistence } from "@/hooks/use-table-persistence"
 
 export default function ClientPortalPage() {
@@ -150,18 +150,8 @@ export default function ClientPortalPage() {
   }
 
   const content = (
-    <div className="min-h-screen">
-      <div className="sticky top-0 z-40 border-b bg-background">
-        <div className="mx-auto max-w-7xl h-14 flex items-center justify-between px-4">
-          <div className="flex items-center gap-3">
-            <span className="text-xl font-bold tracking-tight">CRM</span>
-            <span className="text-sm text-muted-foreground">Portal Client</span>
-          </div>
-          <UserNav />
-        </div>
-      </div>
-
-      <div className="p-4 mx-auto max-w-7xl">
+    <DashboardShell>
+      <div className="mx-auto max-w-7xl">
         <h1 className="text-xl font-semibold mb-4">Proiectele mele</h1>
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 mb-4">
         <Input placeholder="Caută client/locație/tip" value={search} onChange={(e) => setSearch(e.target.value)} />
@@ -274,7 +264,7 @@ export default function ClientPortalPage() {
         </div>
       )}
       </div>
-    </div>
+    </DashboardShell>
   )
 
   return <ProtectedRoute allowedRoles={["client"]}>{content}</ProtectedRoute>
