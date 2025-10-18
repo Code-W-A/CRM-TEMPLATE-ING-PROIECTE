@@ -45,16 +45,28 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
       </Link>
       <nav className="hidden md:flex items-center space-x-4 lg:space-x-6">
         {isClient ? (
-          <Link
-            href="/portal"
-            className={cn(
-              "flex items-center gap-1 text-sm font-medium transition-colors hover:text-primary",
-              pathname === "/portal" ? "text-primary" : "text-muted-foreground",
-            )}
-          >
-            <ClipboardList className="h-4 w-4" />
-            <span>Proiectele mele</span>
-          </Link>
+          <>
+            <Link
+              href="/portal"
+              className={cn(
+                "flex items-center gap-1 text-sm font-medium transition-colors hover:text-primary",
+                pathname === "/portal" ? "text-primary" : "text-muted-foreground",
+              )}
+            >
+              <ClipboardList className="h-4 w-4" />
+              <span>Proiectele mele</span>
+            </Link>
+            <Link
+              href="/programari"
+              className={cn(
+                "flex items-center gap-1 text-sm font-medium transition-colors hover:text-primary",
+                pathname === "/programari" ? "text-primary" : "text-muted-foreground",
+              )}
+            >
+              <Calendar className="h-4 w-4" />
+              <span>Programări întâlniri / consultanță</span>
+            </Link>
+          </>
         ) : (
           <>
         <Link
@@ -163,36 +175,16 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
           </Link>
         )}
         {!isTechnician && (
-          (() => {
-            const [open, setOpen] = useState(false)
-            return (
-              <div onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
-                <DropdownMenu open={open} onOpenChange={setOpen}>
-                  <DropdownMenuTrigger asChild>
-                    <button
-                      className={cn(
-                        "flex items-center gap-1 text-sm font-medium transition-colors hover:text-primary",
-                        pathname === "/dashboard/integrari" ? "text-primary" : "text-muted-foreground",
-                      )}
-                    >
-                      <Plug className="h-4 w-4" />
-                      <span>Integrări</span>
-                    </button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start">
-                    <DropdownMenuItem asChild>
-                      <Link href="/dashboard/integrari">
-                        <div className="flex items-center gap-2">
-                          <Calendar className="h-4 w-4" />
-                          <span>Programare întâlniri / consultanță</span>
-                        </div>
-                      </Link>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            )
-          })()
+          <Link
+            href="/programari"
+            className={cn(
+              "flex items-center gap-1 text-sm font-medium transition-colors hover:text-primary",
+              pathname === "/programari" ? "text-primary" : "text-muted-foreground",
+            )}
+          >
+            <Calendar className="h-4 w-4" />
+            <span>Programări întâlniri / consultanță</span>
+          </Link>
         )}
       
     

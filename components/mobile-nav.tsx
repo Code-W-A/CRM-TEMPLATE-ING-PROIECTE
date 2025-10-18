@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Menu } from "lucide-react"
 // Adăugăm importul pentru Cog
-import { ClipboardList, Users, Settings, FileText, Home, LogOut, BarChart3, StickyNote, Archive } from "lucide-react"
+import { ClipboardList, Users, Settings, FileText, Home, LogOut, BarChart3, StickyNote, Archive, Calendar } from "lucide-react"
 import { useAuth } from "@/contexts/AuthContext"
 import { signOut } from "@/lib/firebase/auth"
 
@@ -42,17 +42,30 @@ export function MobileNav({ className, ...props }: React.HTMLAttributes<HTMLDivE
         </div>
         <nav className="flex flex-col gap-1 px-4 py-4 flex-1">
           {isClient ? (
-            <Link
-              href="/portal"
-              onClick={() => setOpen(false)}
-              className={cn(
-                "flex items-center gap-2 rounded-md px-3 py-3 text-sm font-medium transition-colors",
-                pathname === "/portal" ? "bg-blue-100 text-blue-900" : "hover:bg-muted",
-              )}
-            >
-              <ClipboardList className="h-5 w-5" />
-              <span>Proiectele mele</span>
-            </Link>
+            <>
+              <Link
+                href="/portal"
+                onClick={() => setOpen(false)}
+                className={cn(
+                  "flex items-center gap-2 rounded-md px-3 py-3 text-sm font-medium transition-colors",
+                  pathname === "/portal" ? "bg-blue-100 text-blue-900" : "hover:bg-muted",
+                )}
+              >
+                <ClipboardList className="h-5 w-5" />
+                <span>Proiectele mele</span>
+              </Link>
+              <Link
+                href="/programari"
+                onClick={() => setOpen(false)}
+                className={cn(
+                  "flex items-center gap-2 rounded-md px-3 py-3 text-sm font-medium transition-colors",
+                  pathname === "/programari" ? "bg-blue-100 text-blue-900" : "hover:bg-muted",
+                )}
+              >
+                <Calendar className="h-5 w-5" />
+                <span>Programări întâlniri / consultanță</span>
+              </Link>
+            </>
           ) : (
             <>
               <Link
@@ -95,6 +108,18 @@ export function MobileNav({ className, ...props }: React.HTMLAttributes<HTMLDivE
                 </Link>
               )}
               {!isTechnician && (
+                <>
+                <Link
+                  href="/programari"
+                  onClick={() => setOpen(false)}
+                  className={cn(
+                    "flex items-center gap-2 rounded-md px-3 py-3 text-sm font-medium transition-colors",
+                    pathname === "/programari" ? "bg-blue-100 text-blue-900" : "hover:bg-muted",
+                  )}
+                >
+                  <Calendar className="h-5 w-5" />
+                  <span>Programări întâlniri / consultanță</span>
+                </Link>
                 <Link
                   href="/dashboard/clienti"
                   onClick={() => setOpen(false)}
@@ -108,6 +133,7 @@ export function MobileNav({ className, ...props }: React.HTMLAttributes<HTMLDivE
                   <Users className="h-5 w-5" />
                   <span>Clienți</span>
                 </Link>
+                </>
               )}
               {isAdmin && (
                 <Link

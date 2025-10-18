@@ -57,6 +57,8 @@ export function CalendlyEmbed({ eventUrl, client, className }: CalendlyEmbedProp
       const tryInit = () => {
         // @ts-ignore
         if (window.Calendly && containerRef.current) {
+          // Clear any previous iframes to avoid duplicate widgets
+          containerRef.current.innerHTML = ""
           // @ts-ignore
           window.Calendly.initInlineWidget({
             url: buildUrl(eventUrl, client),
@@ -95,16 +97,18 @@ export function CalendlyEmbed({ eventUrl, client, className }: CalendlyEmbedProp
     }
 
     window.addEventListener("message", handler)
-    return () => window.removeEventListener("message", handler)
+    return () => {
+      window.removeEventListener("message", handler)
+      initializedRef.current = false
+      // Clear on unmount/re-render
+      if (containerRef.current) containerRef.current.innerHTML = ""
+    }
   }, [eventUrl, client?.id, client?.name, client?.email])
 
   return (
     <div
       ref={containerRef}
       className={className || "calendly-inline-widget w-full"}
-      // Provide data-url so Calendly can auto-initialize if the script loads later
-      // @ts-ignore
-      data-url={buildUrl(eventUrl, client)}
       style={{ minWidth: "320px", height: "720px" }}
       aria-label="Calendly scheduling widget"
     />
