@@ -1447,7 +1447,7 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
                           <p className="text-amber-700 mt-1">
                             {lucrare.statusLucrare === "Arhivată"
                               ? "Lucrarea este arhivată. Editorul de ofertă nu este disponibil."
-                              : "Lucrarea trebuie preluată de dispecer/admin pentru a edita oferta."}
+                              : "Lucrarea trebuie preluată de admin pentru a edita oferta."}
                           </p>
                         </div>
                       </div>
