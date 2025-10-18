@@ -55,10 +55,10 @@ export function ImageDefectViewer({ imaginiDefecte, userRole }: ImageDefectViewe
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Camera className="h-5 w-5" />
-            Imagini defecte constatate de tehnician
+            Imagini defecte constatate de specialist
           </CardTitle>
           <CardDescription>
-            Imagini încărcate de tehnician cu defectele identificate ({imaginiDefecte.length} imagini)
+            Imagini încărcate de specialist cu defectele identificate ({imaginiDefecte.length} imagini)
           </CardDescription>
         </CardHeader>
         <CardContent>

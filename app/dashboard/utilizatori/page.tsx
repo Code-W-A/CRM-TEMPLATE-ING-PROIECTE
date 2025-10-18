@@ -185,7 +185,7 @@ export default function Utilizatori() {
     // Extract unique roles for multiselect filter
     const roleOptions = Array.from(new Set(utilizatori.map((user) => user.role))).map((role) => ({
       value: role,
-      label: role === "admin" ? "Administrator" : role === "dispecer" ? "Dispecer" : "Tehnician",
+      label: role === "admin" ? "Administrator" : role === "dispecer" ? "Dispecer" : "Specialist",
     }))
 
     // Create a date range for last login
@@ -749,7 +749,7 @@ export default function Utilizatori() {
               : row.original.role === "dispecer"
                 ? "Dispecer"
                 : row.original.role === "tehnician"
-                  ? "Tehnician"
+                  ? "Specialist"
                   : "Client"}
           </Badge>
         ),
@@ -931,8 +931,7 @@ export default function Utilizatori() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="admin">Administrator</SelectItem>
-                      <SelectItem value="dispecer">Dispecer</SelectItem>
-                      <SelectItem value="tehnician">Tehnician</SelectItem>
+                      <SelectItem value="tehnician">Specialist</SelectItem>
                       <SelectItem value="client">Client</SelectItem>
                     </SelectContent>
                   </Select>
@@ -1399,7 +1398,7 @@ export default function Utilizatori() {
                       <p className="text-sm text-muted-foreground">{user.email}</p>
                     </div>
                     <Badge className={getRolColor(user.role)}>
-                      {user.role === "admin" ? "Administrator" : user.role === "dispecer" ? "Dispecer" : "Tehnician"}
+                      {user.role === "admin" ? "Administrator" : user.role === "dispecer" ? "Dispecer" : "Specialist"}
                     </Badge>
                   </div>
                   <div className="p-4">

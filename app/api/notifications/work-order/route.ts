@@ -238,7 +238,7 @@ export async function POST(request: NextRequest) {
     // Detect postponed event
     const isPostponed = details?.eventType === "postponed"
 
-    // Prepare email content for technicians - include all details and rename "Descriere" to "Sfaturi pt tehnician"
+    // Prepare email content for technicians - include all details and rename "Descriere" to "Sfaturi pt specialist"
     const technicianWorkOrderInfo = `
       <ul style="list-style-type: none; padding-left: 0;">
         <li><strong>Data începerii proiectului:</strong> ${(details?.issueDate || "N/A").split(' ')[0]}</li>
@@ -247,7 +247,7 @@ export async function POST(request: NextRequest) {
         <li><strong>Locație:</strong> ${details?.location || "N/A"}</li>
         <li><strong>Echipament:</strong> ${details?.equipment || "N/A"}</li>
         <li><strong>Model echipament:</strong> ${details?.equipmentModel || "N/A"}</li>
-        <li><strong>Sfaturi pt tehnician:</strong> ${details?.description || "N/A"}</li>
+        <li><strong>Sfaturi pt specialist:</strong> ${details?.description || "N/A"}</li>
         <li><strong>Detalii proiect:</strong> ${details?.reportedIssue || "N/A"}</li>
         <li><strong>Status:</strong> ${details?.status || "N/A"}</li>
       </ul>
@@ -318,7 +318,7 @@ export async function POST(request: NextRequest) {
       for (const tech of technicians) {
         if (tech.email) {
           try {
-            console.log(`[WORK-ORDER-API] [${requestId}] Trimitere email către tehnician: ${tech.name} <${tech.email}>`)
+            console.log(`[WORK-ORDER-API] [${requestId}] Trimitere email către specialist: ${tech.name} <${tech.email}>`)
 
             logInfo(
               "Sending email to technician",
@@ -395,7 +395,7 @@ export async function POST(request: NextRequest) {
             }
 
             // Log email details before sending
-            console.log(`[WORK-ORDER-API] [${requestId}] Detalii email pentru tehnician:`)
+            console.log(`[WORK-ORDER-API] [${requestId}] Detalii email pentru specialist:`)
             console.log(`- From: ${mailOptions.from}`)
             console.log(`- To: ${mailOptions.to}`)
             console.log(`- Subject: ${mailOptions.subject}`)
@@ -412,10 +412,10 @@ export async function POST(request: NextRequest) {
               { category: "email", context: logContext },
             )
 
-            console.log(`[WORK-ORDER-API] [${requestId}] Trimitere email către tehnician...`)
+            console.log(`[WORK-ORDER-API] [${requestId}] Trimitere email către specialist...`)
             const info = await transporter.sendMail(mailOptions)
 
-            console.log(`[WORK-ORDER-API] [${requestId}] Email trimis cu succes către tehnician!`)
+            console.log(`[WORK-ORDER-API] [${requestId}] Email trimis cu succes către specialist!`)
             console.log(`- MessageId: ${info.messageId}`)
             console.log(`- Response: ${info.response}`)
 
@@ -432,7 +432,7 @@ export async function POST(request: NextRequest) {
             technicianEmails.push({ name: tech.name, email: tech.email, success: true, messageId: info.messageId })
           } catch (error: any) {
             console.error(
-              `[WORK-ORDER-API] [${requestId}] EROARE la trimiterea email-ului către tehnician ${tech.name}:`,
+              `[WORK-ORDER-API] [${requestId}] EROARE la trimiterea email-ului către specialist ${tech.name}:`,
               error,
             )
             console.error(`- Mesaj: ${error.message || "N/A"}`)
@@ -454,7 +454,7 @@ export async function POST(request: NextRequest) {
             technicianEmails.push({ name: tech.name, email: tech.email, success: false, error: error.message })
           }
         } else {
-          console.log(`[WORK-ORDER-API] [${requestId}] Tehnicianul ${tech.name} nu are adresă de email`)
+          console.log(`[WORK-ORDER-API] [${requestId}] specialistul ${tech.name} nu are adresă de email`)
           logWarning(
             `Technician ${tech.name} has no email address`,
             { technician: tech },

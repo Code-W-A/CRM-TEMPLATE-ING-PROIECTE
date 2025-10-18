@@ -412,7 +412,7 @@ export default function ArchivedWorkDetailPage({ params }: ArchivedWorkDetailPag
                 <>
                   <Separator />
                   <div>
-                    <label className="text-sm font-medium text-gray-500 mb-2 block">Tehnicieni Atribuiți</label>
+                    <label className="text-sm font-medium text-gray-500 mb-2 block">Specialiști atribuiți</label>
                     <div className="flex flex-wrap gap-2">
                       {lucrare.tehnicieni.map((tehnician, index) => (
                         <Badge key={index} variant="secondary" className="flex items-center gap-1">
@@ -655,12 +655,12 @@ export default function ArchivedWorkDetailPage({ params }: ArchivedWorkDetailPag
                       </>
                     )}
 
-                    {/* Confirmarea tehnicianului la fața locului */}
+                    {/* Confirmarea specialistului la fața locului */}
                     {lucrare.tehnicianConfirmaGarantie !== undefined && (
                       <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-md">
                         <div className="flex items-center space-x-2">
                           <span className="font-medium text-sm text-yellow-800">
-                            Confirmarea tehnicianului la fața locului:
+                            Confirmarea specialistului la fața locului:
                           </span>
                           <Badge 
                             className={lucrare.tehnicianConfirmaGarantie 
@@ -672,7 +672,7 @@ export default function ArchivedWorkDetailPage({ params }: ArchivedWorkDetailPag
                           </Badge>
                         </div>
                         <p className="text-xs text-yellow-700 mt-1">
-                          Tehnicianul a verificat fizic echipamentul și a {lucrare.tehnicianConfirmaGarantie ? 'confirmat' : 'infirmat'} că este în garanție.
+                          Specialistul a verificat fizic echipamentul și a {lucrare.tehnicianConfirmaGarantie ? 'confirmat' : 'infirmat'} că este în garanție.
                         </p>
                       </div>
                     )}
@@ -688,7 +688,7 @@ export default function ArchivedWorkDetailPage({ params }: ArchivedWorkDetailPag
                     )}
                     {lucrare.esteInGarantie !== undefined && (
                       <div>
-                        <label className="text-sm font-medium text-gray-500">Tehnician Confirmă Garanție (vechi)</label>
+                        <label className="text-sm font-medium text-gray-500">Specialist Confirmă Garanție (vechi)</label>
                         <Badge variant={lucrare.esteInGarantie ? "default" : "destructive"}>
                           {lucrare.esteInGarantie ? "ÎN GARANȚIE" : "GARANȚIE EXPIRATĂ"}
                         </Badge>
@@ -874,17 +874,17 @@ export default function ArchivedWorkDetailPage({ params }: ArchivedWorkDetailPag
                   <div className="space-y-3">
                     {lucrare.numeTehnician && (
                       <div>
-                        <label className="text-sm font-medium text-gray-500">Nume Tehnician</label>
+                        <label className="text-sm font-medium text-gray-500">Nume Specialist</label>
                         <p className="text-sm">{lucrare.numeTehnician}</p>
                       </div>
                     )}
                     {lucrare.semnaturaTehnician && (
                       <div>
-                        <label className="text-sm font-medium text-gray-500">Semnătură Tehnician</label>
+                        <label className="text-sm font-medium text-gray-500">Semnătură Specialist</label>
                         <div className="border rounded p-2 bg-gray-50">
                           <img 
                             src={lucrare.semnaturaTehnician} 
-                            alt="Semnătură tehnician" 
+                            alt="Semnătură specialist" 
                             className="max-h-20 w-auto"
                           />
                         </div>

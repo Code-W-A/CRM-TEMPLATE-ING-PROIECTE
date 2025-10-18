@@ -317,8 +317,13 @@ const UserEditForm = forwardRef(({ user, onSuccess, onCancel }: UserEditFormProp
                   </FormControl>
                   <SelectContent>
                     <SelectItem value="admin">Administrator</SelectItem>
-                    <SelectItem value="dispecer">Dispecer</SelectItem>
-                    <SelectItem value="tehnician">Tehnician</SelectItem>
+                    {/* Dispecer eliminat din opțiuni noi; dacă utilizatorul are deja rolul, îl afișăm ca dezactivat */}
+                    {field.value === "dispecer" && (
+                      <SelectItem value="dispecer" disabled>
+                        Dispecer (dezactivat)
+                      </SelectItem>
+                    )}
+                    <SelectItem value="tehnician">Specialist</SelectItem>
                     <SelectItem value="client">Client</SelectItem>
                   </SelectContent>
                 </Select>

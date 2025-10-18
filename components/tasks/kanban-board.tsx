@@ -311,7 +311,7 @@ export function KanbanBoard() {
           <span className="text-sm text-muted-foreground">{visibleTasks.length} taskuri</span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-sm text-muted-foreground">Filtru tehnician:</span>
+          <span className="text-sm text-muted-foreground">Filtru specialist:</span>
           <Select value={filterAssigneeId} onValueChange={setFilterAssigneeId}>
             <SelectTrigger className="w-[200px]">
               <SelectValue placeholder="Toți" />

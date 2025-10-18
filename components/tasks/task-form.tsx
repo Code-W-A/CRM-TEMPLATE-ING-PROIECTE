@@ -67,7 +67,7 @@ export function TaskForm({ onCreated }: { onCreated?: (id: string) => void }) {
           </SelectContent>
         </Select>
         <Select value={assigneeId} onValueChange={setAssigneeId}>
-          <SelectTrigger className="w-56"><SelectValue placeholder="Atribuie tehnician" /></SelectTrigger>
+          <SelectTrigger className="w-56"><SelectValue placeholder="Atribuie specialist" /></SelectTrigger>
           <SelectContent>
             <SelectItem value="">Neatribuit</SelectItem>
             {technicians.map((t: any) => (

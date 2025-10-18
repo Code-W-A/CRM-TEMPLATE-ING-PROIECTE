@@ -300,7 +300,7 @@ export default function RaportPage({ params }: { params: { id: string } }) {
     fetchLucrare()
   }, [params.id, userData])
 
-  // Verificăm dacă tehnicianul are acces la această lucrare
+  // Verificăm dacă Specialistul are acces la această lucrare
   useEffect(() => {
     const checkAccess = async () => {
       if (
@@ -311,7 +311,7 @@ export default function RaportPage({ params }: { params: { id: string } }) {
         lucrare.tehnicieni &&
         !lucrare.tehnicieni.includes(userData.displayName)
       ) {
-        // Tehnicianul nu este alocat la această lucrare, redirecționăm la dashboard
+        // Specialistul nu este alocat la această lucrare, redirecționăm la dashboard
         alert("Nu aveți acces la raportul acestui proiect.")
         router.push("/dashboard")
       }
@@ -581,7 +581,7 @@ CRM by NRG`,
     if (!techSignatureData && (!techSignatureRef.current || techSignatureRef.current.isEmpty())) {
       toast({
         title: "Atenție",
-        description: "Raportul va fi generat fără semnătura tehnicianului.",
+        description: "Raportul va fi generat fără semnătura specialistului.",
       })
     }
 
@@ -1006,7 +1006,7 @@ CRM by NRG`,
 
       const fieldsUpdated = Object.keys(updateData).map(key => {
         const fieldNames: {[key: string]: string} = {
-          numeTehnician: 'Numele tehnicianului',
+          numeTehnician: 'Numele specialistului',
           numeBeneficiar: 'Numele beneficiarului', 
           constatareLaLocatie: 'Constatarea la locație',
           descriereInterventie: 'Descrierea intervenției'
@@ -1048,7 +1048,7 @@ CRM by NRG`,
     
     if (!lucrare?.timpSosire) missing.push("Timpul de sosire")
     if (!lucrare?.timpPlecare && !lucrare?.raportSnapshot?.timpPlecare) missing.push("Timpul de plecare")
-    if (!lucrare?.numeTehnician) missing.push("Numele tehnicianului")
+    if (!lucrare?.numeTehnician) missing.push("Numele specialistului")
     if (!lucrare?.numeBeneficiar) missing.push("Numele beneficiarului")
     if (!lucrare?.constatareLaLocatie) missing.push("Constatarea la locație")
     if (!lucrare?.descriereInterventie) missing.push("Descrierea intervenției")
@@ -1117,7 +1117,7 @@ CRM by NRG`,
                 <CardTitle className="text-xl sm:text-2xl font-bold text-blue-700">
                   Raport Finalizat #{params.id}
                 </CardTitle>
-                <CardDescription>Raport generat de tehnician - doar descărcare</CardDescription>
+                <CardDescription>Raport generat de specialist - doar descărcare</CardDescription>
               </div>
             </div>
           </CardHeader>
@@ -1133,7 +1133,7 @@ CRM by NRG`,
                 </div>
                 <div className="ml-3">
                   <h3 className="text-sm font-medium text-green-800">
-                    Raport Finalizat de Tehnician
+                    Raport Finalizat de Specialist
                   </h3>
                   <div className="mt-1 text-sm text-green-700">
                     <p>
@@ -1152,7 +1152,7 @@ CRM by NRG`,
                           }
                         }
                         return 'data necunoscută';
-                      })()}</strong> de către tehnician. 
+                      })()}</strong> de către specialist. 
                       Puteți descărca PDF-ul.
                     </p>
                   </div>
@@ -1176,7 +1176,7 @@ CRM by NRG`,
                 <p>{lucrare?.dataInterventie || "N/A"}</p>
               </div>
               <div>
-                <h3 className="font-medium text-gray-500">Tehnician</h3>
+                <h3 className="font-medium text-gray-500">Specialist</h3>
                 <p>{lucrare?.tehnicieni?.join(", ") || "N/A"}</p>
               </div>
             </div>
@@ -1265,7 +1265,7 @@ CRM by NRG`,
                         <p className="text-red-800 font-medium">⚠️ Lipsește timpul de sosire</p>
                       </div>
                       <p className="text-red-700 text-sm mb-3">
-                        Nu există înregistrare pentru sosirea tehnicianului la locație.
+                        Nu există înregistrare pentru sosirea specialistului la locație.
                         Durata intervenției nu poate fi calculată fără acest timp.
                       </p>
                       <Button 
@@ -1499,7 +1499,7 @@ CRM by NRG`,
                         {!lucrare?.numeTehnician && (
                           <li className="flex items-center gap-2">
                             <span className="w-1.5 h-1.5 bg-purple-600 rounded-full"></span>
-                            Numele tehnicianului
+                            Numele specialistului
                           </li>
                         )}
                         {!lucrare?.numeBeneficiar && (
@@ -1541,7 +1541,7 @@ CRM by NRG`,
                         {!lucrare?.numeTehnician && (
                           <div className="space-y-2">
                             <Label htmlFor="technicianName" className="text-sm font-medium">
-                              Numele complet al tehnicianului
+                              Numele complet al specialistului
                             </Label>
                             <Input
                               id="technicianName"
@@ -1836,7 +1836,7 @@ CRM by NRG`,
                 <FileDown className="h-8 w-8 text-blue-600" />
                 <div>
                   <h3 className="text-lg font-semibold text-blue-900">Raport Finalizat</h3>
-                  <p className="text-sm text-blue-700">Tehnicianul a generat raportul. Puteți descărca documentele.</p>
+                  <p className="text-sm text-blue-700">Specialistul a generat raportul. Puteți descărca documentele.</p>
                 </div>
               </div>
               
@@ -1880,7 +1880,7 @@ CRM by NRG`,
 
           {!showDownloadInterface && (
             <>
-              {/* Conținutul existent pentru tehnician */}
+              {/* Conținutul existent pentru specialist */}
               <div className="px-6 space-y-6">
                 <div className="grid gap-4 md:grid-cols-2">
                   <div>
@@ -1896,7 +1896,7 @@ CRM by NRG`,
                     <p>{lucrare?.dataInterventie || "N/A"}</p>
                   </div>
                   <div>
-                    <h3 className="font-medium text-gray-500">Tehnician</h3>
+                    <h3 className="font-medium text-gray-500">Specialist</h3>
                     <p>{lucrare?.tehnicieni?.join(", ") || "N/A"}</p>
                   </div>
                 </div>
@@ -1952,13 +1952,13 @@ CRM by NRG`,
                 <div className="grid gap-6 md:grid-cols-2">
                   {/* Semnătură Tehnician */}
                   <div className="space-y-2">
-                    <h3 className="font-medium text-gray-500">Semnătură Tehnician</h3>
+                    <h3 className="font-medium text-gray-500">Semnătură Specialist</h3>
                     <div className="space-y-2">
-                      <Label htmlFor="numeTehnician">Nume și prenume tehnician</Label>
+                      <Label htmlFor="numeTehnician">Nume și prenume specialist</Label>
                       <Input
                         id="numeTehnician"
                         type="text"
-                        placeholder="Numele complet al tehnicianului"
+                        placeholder="Numele complet al specialistului"
                         value={numeTehnician}
                         onChange={(e) => setNumeTehnician(e.target.value)}
                         disabled={isSubmitting || lucrare?.raportDataLocked}
@@ -1981,7 +1981,7 @@ CRM by NRG`,
                         Șterge
                       </Button>
                     </div>
-                    <p className="text-xs text-center text-gray-500">Semnătura tehnicianului</p>
+                    <p className="text-xs text-center text-gray-500">Semnătura specialistului</p>
                   </div>
 
                   {/* Semnătură Beneficiar */}

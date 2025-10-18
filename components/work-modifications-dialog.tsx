@@ -220,7 +220,7 @@ export function WorkModificationsDialog({ isOpen, onClose }: WorkModificationsDi
                             )}
                             {modification.tehnicieni && modification.tehnicieni.length > 0 && (
                               <p className="text-xs text-gray-600 mb-1">
-                                👥 Tehnicieni: {modification.tehnicieni.join(", ")}
+                                👥 Specialiști: {modification.tehnicieni.join(", ")}
                               </p>
                             )}
                           </div>

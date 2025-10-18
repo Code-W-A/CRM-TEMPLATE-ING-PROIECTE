@@ -1288,7 +1288,7 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
                         )}
                         {lucrare.notaInternaTehnician && (
                           <div>
-                            <span className="font-semibold text-base mr-2">Tehnician:</span>
+                            <span className="font-semibold text-base mr-2">Specialist:</span>
                             <span className="text-base text-gray-600">{lucrare.notaInternaTehnician}</span>
                           </div>
                         )}
@@ -1318,7 +1318,7 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
                           )}
                           {lucrare.notaInternaTehnician && (
                             <div>
-                              <span className="font-semibold text-base mr-2">Tehnician:</span>
+                              <span className="font-semibold text-base mr-2">Specialist:</span>
                               <span className="text-base text-gray-600">{lucrare.notaInternaTehnician}</span>
                             </div>
                           )}
@@ -1774,7 +1774,7 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
                   // confirmare garanție eliminată din UI
                   // Adăugăm imaginile defectelor
                   imaginiDefecte: lucrare.imaginiDefecte,
-                  // Notă internă tehnician
+                  // Notă internă specialist
                   notaInternaTehnician: lucrare.notaInternaTehnician
                 }}
                 onUpdate={(preserveActiveTab) => refreshLucrare(preserveActiveTab)}

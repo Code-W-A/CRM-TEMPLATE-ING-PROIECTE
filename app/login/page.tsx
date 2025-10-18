@@ -117,7 +117,7 @@ export default function Login() {
                 <ul className="mt-2 list-disc list-inside">
                   <li>Email: admin@example.com, Parolă: password</li>
                   <li>Email: dispecer@example.com, Parolă: password</li>
-                  <li>Email: tehnician@example.com, Parolă: password</li>
+                  <li>Email: specialist@example.com, Parolă: password</li>
                 </ul>
               </AlertDescription>
             </Alert>

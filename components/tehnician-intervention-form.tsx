@@ -568,7 +568,7 @@ export function TehnicianInterventionForm({
                   {/* Confirmarea garanției de către tehnician */}
                     <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-md">
                     <Label className="font-medium text-sm text-yellow-800 mb-3 block">
-                      Confirmarea tehnicianului la fața locului:
+                      Confirmarea specialistului la fața locului:
                     </Label>
                     <div className="flex items-center space-x-2">
                       <Checkbox

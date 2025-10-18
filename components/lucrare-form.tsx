@@ -1925,7 +1925,7 @@ export const LucrareForm = forwardRef<LucrareFormRef, LucrareFormProps>(
             </div>
             <Select onValueChange={handleTehnicieniChange}>
               <SelectTrigger id="tehnicieni">
-                <SelectValue placeholder="selectați specialistii" />
+                <SelectValue placeholder="Selectați specialiștii" />
               </SelectTrigger>
               <SelectContent>
                 {loadingTehnicieni ? (
@@ -1941,12 +1941,12 @@ export const LucrareForm = forwardRef<LucrareFormRef, LucrareFormProps>(
                   ))
                 ) : (
                   <div className="p-2 text-center text-sm text-muted-foreground">
-                    Nu există tehnicieni disponibili
+                    Nu există specialiști disponibili
                   </div>
                 )}
               </SelectContent>
             </Select>
-            <p className="text-xs text-muted-foreground">Puteți selecta mai mulți tehnicieni</p>
+            <p className="text-xs text-muted-foreground">Puteți selecta mai mulți specialiști</p>
           </div>
 
           {/* 8. Detalii proiect */}
@@ -1977,7 +1977,7 @@ export const LucrareForm = forwardRef<LucrareFormRef, LucrareFormProps>(
             </div>
             <Textarea
               id="descriere"
-              placeholder="Adăugați sfaturi sau instrucțiuni pentru tehnician (nu vor apărea în raportul final)"
+              placeholder="Adăugați sfaturi sau instrucțiuni pentru specialist (nu vor apărea în raportul final)"
               value={formData.descriere}
               onChange={handleInputChange}
               className="min-h-[100px] resize-y"
@@ -2098,7 +2098,7 @@ export const LucrareForm = forwardRef<LucrareFormRef, LucrareFormProps>(
                 <span className="ml-2 text-xs text-muted-foreground">Status automatizat</span>
               </div>
               <p className="text-xs text-muted-foreground">
-                Statusul proiectului este actualizat automat în funcție de atribuirea tehnicienilor și progresul proiectului
+                Statusul proiectului este actualizat automat în funcție de atribuirea specialiștilor și progresul proiectului
               </p>
               <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-md">
                 <p className="text-xs text-blue-700">

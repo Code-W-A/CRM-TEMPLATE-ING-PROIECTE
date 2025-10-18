@@ -996,7 +996,7 @@ export function QRCodeScanner({
 
                   <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-md">
                     <h4 className="font-medium text-sm mb-3 text-yellow-800">
-                      Declarație tehnician (după verificarea fizică):
+                      Declarație specialist (după verificarea fizică):
                     </h4>
                     <p className="text-xs text-yellow-700 mb-3">
                       Pe baza verificării fizice a echipamentului, confirmați dacă acesta este sau nu în garanție:
@@ -1042,9 +1042,9 @@ export function QRCodeScanner({
                         <span className="font-medium text-sm text-amber-800">Discrepanță detectată</span>
                       </div>
                       <p className="text-xs text-amber-700 mt-1">
-                        Declarația tehnicianului ({technicianWarrantyDeclaration ? "în garanție" : "nu este în garanție"}) 
+                        Declarația specialistului ({technicianWarrantyDeclaration ? "în garanție" : "nu este în garanție"}) 
                         diferă de calculul automat ({warrantyInfo.isInWarranty ? "în garanție" : "nu este în garanție"}).
-                        Declarația tehnicianului va fi folosită în raport.
+                        Declarația specialistului va fi folosită în raport.
                       </p>
                     </div>
                   )}
