@@ -1161,7 +1161,7 @@ export function EquipmentReport({ className = "", reportType = "detailed" }: Equ
                           )}
                           {order.descriereInterventie && (
                             <div>
-                              <p className="text-sm font-medium text-muted-foreground">Descriere intervenție:</p>
+                              <p className="text-sm font-medium text-muted-foreground">Descriere Proiect:</p>
                               <p className="text-sm">{order.descriereInterventie}</p>
                             </div>
                           )}

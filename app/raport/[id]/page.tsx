@@ -1918,7 +1918,7 @@ CRM by NRG`,
                 <Separator />
 
                 <div>
-                  <h3 className="font-medium text-gray-500">Descriere Intervenție</h3>
+                  <h3 className="font-medium text-gray-500">Descriere Proiect</h3>
                   <p className="whitespace-pre-line">{lucrare?.descriereInterventie || "Nu a fost specificată"}</p>
                 </div>
 

@@ -850,7 +850,7 @@ export const ReportGenerator = forwardRef<HTMLButtonElement, ReportGeneratorProp
       )}
       {lucrare?.descriereInterventie && (
         <div className="mb-4">
-          <h3 className="text-lg font-semibold mb-2">Descriere intervenție</h3>
+          <h3 className="text-lg font-semibold mb-2">Descriere Proiect</h3>
           <p className="whitespace-pre-line">{lucrare.descriereInterventie}</p>
         </div>
       )}

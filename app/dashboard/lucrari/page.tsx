@@ -41,7 +41,7 @@ import { ColumnSelectionModal } from "@/components/column-selection-modal"
 import { sendWorkOrderNotifications } from "@/components/work-order-notification-service"
 import { getCurrentReportNumber, updateReportNumber, getNextReportNumber } from "@/lib/firebase/firestore"
 import { LucrariNotificationsBell } from "@/components/lucrari-notifications-bell"
-import { ReinterventionReasonDialog } from "@/components/reintervention-reason-dialog"
+// import { ReinterventionReasonDialog } from "@/components/reintervention-reason-dialog"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -119,9 +119,7 @@ export default function Lucrari() {
   const [originalWorkOrderId, setOriginalWorkOrderId] = useState(null)
   const [dataEmiterii, setDataEmiterii] = useState<Date | undefined>(new Date())
   
-  // State pentru dialogul de motive reintervenție
-  const [isReinterventionReasonDialogOpen, setIsReinterventionReasonDialogOpen] = useState(false)
-  const [selectedLucrareForReintervention, setSelectedLucrareForReintervention] = useState<any>(null)
+  // Reintervenție eliminată
   const [dataInterventie, setDataInterventie] = useState<Date | undefined>(new Date())
   const [activeTab, setActiveTab] = useState("tabel")
   const [selectedLucrare, setSelectedLucrare] = useState(null)
@@ -1468,46 +1466,10 @@ export default function Lucrari() {
     }
   }, [toast])
   
-  // Funcție pentru gestionarea reintervenției după selectarea motivelor
-  const handleReinterventionAfterReasons = useCallback(async () => {
-    if (!selectedLucrareForReintervention) return
-    
-    // Apelăm handleReassign cu lucrarea selectată
-    await handleReassign(selectedLucrareForReintervention)
-    
-    // Resetăm starea
-    setSelectedLucrareForReintervention(null)
-    setIsReinterventionReasonDialogOpen(false)
-  }, [selectedLucrareForReintervention, handleReassign])
+  // Reintervenție eliminată
 
   // Verificăm dacă avem un ID de lucrare pentru reintervenție din URL
-  useEffect(() => {
-    const fetchLucrareForReintervention = async () => {
-      if (reinterventionId) {
-        try {
-          // Dacă utilizatorul este tehnician, nu permitem reintervenția
-          if (isTechnician) {
-            toast({
-              title: "Acces restricționat",
-              description: "Nu aveți permisiunea de a crea reintervenții.",
-              variant: "destructive",
-            })
-            router.push("/dashboard/lucrari")
-            return
-          }
-
-          const lucrare = await getLucrareById(reinterventionId)
-          if (lucrare) {
-            handleReassign(lucrare)
-          }
-        } catch (err) {
-          console.error("Eroare la încărcarea proiectului pentru reintervenție:", err)
-        }
-      }
-    }
-
-    fetchLucrareForReintervention()
-  }, [reinterventionId, isTechnician, router, handleReassign, toast])
+  // Eliminat fluxul URL de reintervenție
 
   // Funcție pentru a verifica dacă o lucrare necesită reatribuire (bazat pe status finalizare intervenție)
   const needsReassignment = useCallback((lucrare: any) => {
@@ -1953,27 +1915,7 @@ export default function Lucrari() {
         
               <TooltipContent>Raport</TooltipContent>
             </Tooltip>
-            {/* Buton de reatribuire pentru dispeceri/admini când lucrarea are situații critice */}
-            {!isTechnician && needsReassignment(row.original) && (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="h-8 w-8 text-orange-600 border-orange-200 hover:bg-orange-50"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      setSelectedLucrareForReintervention(row.original)
-                      setIsReinterventionReasonDialogOpen(true)
-                    }}
-                    aria-label="Reatribuie lucrarea"
-                  >
-                    <RefreshCw className="h-4 w-4" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Reintervenție</TooltipContent>
-              </Tooltip>
-            )}
+            {/* Reintervenție eliminată */}
             {/* Buton de arhivare pentru admin și dispecer - doar pentru lucrări finalizate */}
             {(userData?.role === "admin" || userData?.role === "dispecer") && row.original.statusLucrare === "Finalizat" && (
               <Tooltip>
@@ -2522,18 +2464,7 @@ export default function Lucrari() {
                                   </DropdownMenuItem>
                                 )}
                              
-                                {/* Opțiune de reatribuire pentru dispeceri/admini când lucrarea are situații critice */}
-                                {!isTechnician && needsReassignment(lucrare) && (
-                                  <DropdownMenuItem
-                                    onClick={(e) => {
-                                      e.stopPropagation()
-                                      setSelectedLucrareForReintervention(lucrare)
-                                      setIsReinterventionReasonDialogOpen(true)
-                                    }}
-                                  >
-                                    <RefreshCw className="mr-2 h-4 w-4" /> Reintervenție
-                                  </DropdownMenuItem>
-                                )}
+                                {/* Reintervenție eliminată */}
                                 {/* Opțiune de arhivare pentru admin și dispecer - doar pentru lucrări finalizate */}
                                 {(userData?.role === "admin" || userData?.role === "dispecer") && lucrare.statusLucrare === "Finalizat" && (
                                   <DropdownMenuItem
@@ -2676,16 +2607,7 @@ export default function Lucrari() {
         </AlertDialogContent>
       </AlertDialog>
       
-      {/* Dialog pentru selectarea motivelor reintervenției */}
-      <ReinterventionReasonDialog
-        isOpen={isReinterventionReasonDialogOpen}
-        onClose={() => {
-          setIsReinterventionReasonDialogOpen(false)
-          setSelectedLucrareForReintervention(null)
-        }}
-        lucrareId={selectedLucrareForReintervention?.id || ""}
-        onSuccess={handleReinterventionAfterReasons}
-      />
+      {/* Reintervenție eliminată */}
     </DashboardShell>
     </TooltipProvider>
   )

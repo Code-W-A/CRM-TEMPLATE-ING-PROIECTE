@@ -764,7 +764,7 @@ export default function ArchivedWorkDetailPage({ params }: ArchivedWorkDetailPag
 
               {lucrare.descriereInterventie && (
                 <div>
-                  <label className="text-sm font-medium text-gray-500">Descriere Intervenție</label>
+                  <label className="text-sm font-medium text-gray-500">Descriere Proiect</label>
                   <p className="text-sm mt-1 whitespace-pre-line border rounded p-3 bg-blue-50">
                     {lucrare.descriereInterventie}
                   </p>

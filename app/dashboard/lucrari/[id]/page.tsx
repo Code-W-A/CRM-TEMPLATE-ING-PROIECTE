@@ -766,17 +766,7 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
             </Button>
           )}
 
-          {/* Buton pentru reintervenție - doar pentru admin/dispecer și dacă îndeplinește condițiile */}
-          {isAdminOrDispatcher && needsReintervention(lucrare) && (
-            <Button
-              variant="outline"
-              className="text-orange-600 border-orange-200 hover:bg-orange-50"
-              onClick={handleReintervention}
-            >
-              <RefreshCw className="mr-2 h-4 w-4" />
-              Reintervenție
-            </Button>
-          )}
+          {/* Reintervenție eliminată */}
 
           {/* Buton pentru arhivare - doar pentru admin/dispecer și lucrări finalizate, cu condiții de activare */}
           {isAdminOrDispatcher && lucrare.statusLucrare === "Finalizat" && (() => {
@@ -1267,13 +1257,7 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
                     </div>
                   )}
 
-                  {/* Descriere intervenție */}
-                  {lucrare.descriereInterventie && (
-                    <div>
-                      <p className="text-base font-semibold mb-2">Descriere intervenție:</p>
-                      <p className="text-base text-gray-600">{lucrare.descriereInterventie}</p>
-                    </div>
-                  )}
+              
 
                   {/* Notă internă – fallback dacă nu există raport (vizibilă pentru non-clienți) */}
                   {role !== "client" && !(lucrare.raportGenerat && lucrare.numarRaport) && (lucrare.descriere || lucrare.notaInternaTehnician) && (
