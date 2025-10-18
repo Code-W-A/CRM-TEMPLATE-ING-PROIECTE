@@ -387,7 +387,7 @@ export default function ArchivedWorkDetailPage({ params }: ArchivedWorkDetailPag
                   )}
                   {lucrare.preluatDispecer !== undefined && (
                     <div>
-                      <label className="text-sm font-medium text-gray-500">Preluat Dispecer</label>
+                      <label className="text-sm font-medium text-gray-500">Preluat</label>
                       <Badge variant={lucrare.preluatDispecer ? "default" : "secondary"}>
                         {lucrare.preluatDispecer ? "DA" : "NU"}
                       </Badge>

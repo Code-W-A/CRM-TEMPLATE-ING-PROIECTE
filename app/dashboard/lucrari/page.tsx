@@ -1782,7 +1782,7 @@ export default function Lucrari() {
     },
     {
       accessorKey: "preluatDispecer",
-      header: "Preluat Dispecer",
+      header: "Preluat",
       enableHiding: true,
       enableFiltering: true,
       cell: ({ row }) => {
