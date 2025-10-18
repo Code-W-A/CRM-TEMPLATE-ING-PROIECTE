@@ -25,6 +25,17 @@ function buildUrl(base: string, client?: { id: string; name?: string; email?: st
 export function CalendlyEmbed({ eventUrl, client, className }: CalendlyEmbedProps) {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const initializedRef = useRef(false)
+  const isValidCalendlyUrl = (url: string) => {
+    try {
+      const u = new URL(url)
+      const hostOk = u.hostname === "calendly.com" || u.hostname.endsWith(".calendly.com")
+      const pathParts = u.pathname.split("/").filter(Boolean)
+      // Expect at least account and event-type: /{account}/{event}
+      return hostOk && pathParts.length >= 2
+    } catch {
+      return false
+    }
+  }
 
   useEffect(() => {
     const scriptId = "calendly-widget-script"
@@ -49,6 +60,13 @@ export function CalendlyEmbed({ eventUrl, client, className }: CalendlyEmbedProp
 
     const initWidget = async () => {
       if (initializedRef.current) return
+      if (!isValidCalendlyUrl(eventUrl)) {
+        if (containerRef.current) {
+          containerRef.current.innerHTML =
+            '<div class="rounded border p-3 text-sm text-muted-foreground">Config invalid: verificați adresa evenimentului Calendly.</div>'
+        }
+        return
+      }
       await ensureScript()
       ensureCss()
       // Retry loop until Calendly is available
