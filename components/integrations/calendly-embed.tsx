@@ -108,7 +108,7 @@ export function CalendlyEmbed({ eventUrl, client, className }: CalendlyEmbedProp
   return (
     <div
       ref={containerRef}
-      className={className || "calendly-inline-widget w-full"}
+      className={className || "w-full"}
       style={{ minWidth: "320px", height: "720px" }}
       aria-label="Calendly scheduling widget"
     />
