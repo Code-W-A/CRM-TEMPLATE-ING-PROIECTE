@@ -6,6 +6,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { CalendlyEmbed } from "@/components/integrations/calendly-embed"
+import { DashboardShell } from "@/components/dashboard-shell"
+import { DashboardHeader } from "@/components/dashboard-header"
 import { useFirebaseCollection } from "@/hooks/use-firebase-collection"
 import type { Client } from "@/lib/firebase/firestore"
 
@@ -15,7 +17,7 @@ export default function IntegrariPage() {
   const [opt, setOpt] = useState<string>(OPTIONS[0].value)
   const eventUrl = process.env.NEXT_PUBLIC_CALENDLY_EVENT_URL || ""
   const { data: clienti } = useFirebaseCollection<Client>("clienti")
-  const [selectedClientId, setSelectedClientId] = useState<string>("")
+  const [selectedClientId, setSelectedClientId] = useState<string>("none")
   const selectedClient = useMemo(() => (clienti || []).find((c: any) => c.id === selectedClientId) || null, [clienti, selectedClientId])
   const [name, setName] = useState<string>("")
   const [email, setEmail] = useState<string>("")
@@ -31,7 +33,8 @@ export default function IntegrariPage() {
   }, [selectedClientId])
 
   return (
-    <div className="p-4">
+    <DashboardShell>
+      <DashboardHeader heading="Integrări" text="Programare întâlniri / consultanță" />
       <Card>
         <CardHeader>
           <CardTitle>Integrări</CardTitle>
@@ -62,7 +65,7 @@ export default function IntegrariPage() {
                       <SelectValue placeholder="Selectează client (opțional)" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Fără asociere</SelectItem>
+                      <SelectItem value="none">Fără asociere</SelectItem>
                       {(clienti || []).map((c: any) => (
                         <SelectItem key={c.id} value={c.id}>{c.nume || c.id}</SelectItem>
                       ))}
@@ -82,7 +85,7 @@ export default function IntegrariPage() {
               {eventUrl ? (
                 <CalendlyEmbed
                   eventUrl={eventUrl}
-                  client={selectedClientId ? { id: selectedClientId, name: name || undefined, email: email || undefined } : undefined}
+                  client={selectedClientId !== "none" ? { id: selectedClientId, name: name || undefined, email: email || undefined } : undefined}
                 />
               ) : (
                 <div className="rounded border p-4 text-sm text-muted-foreground">
@@ -93,7 +96,7 @@ export default function IntegrariPage() {
           )}
         </CardContent>
       </Card>
-    </div>
+    </DashboardShell>
   )
 }
 

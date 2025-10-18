@@ -28,6 +28,7 @@ export function CalendlyEmbed({ eventUrl, client, className }: CalendlyEmbedProp
 
   useEffect(() => {
     const scriptId = "calendly-widget-script"
+    const cssId = "calendly-widget-css"
     const ensureScript = () =>
       new Promise<void>((resolve) => {
         if (document.getElementById(scriptId)) return resolve()
@@ -37,21 +38,41 @@ export function CalendlyEmbed({ eventUrl, client, className }: CalendlyEmbedProp
         s.onload = () => resolve()
         document.body.appendChild(s)
       })
+    const ensureCss = () => {
+      if (document.getElementById(cssId)) return
+      const l = document.createElement("link")
+      l.id = cssId
+      l.rel = "stylesheet"
+      l.href = "https://assets.calendly.com/assets/external/widget.css"
+      document.head.appendChild(l)
+    }
 
     const initWidget = async () => {
       if (initializedRef.current) return
       await ensureScript()
-      // @ts-ignore
-      if (window.Calendly && containerRef.current) {
+      ensureCss()
+      // Retry loop until Calendly is available
+      const maxAttempts = 20
+      let attempts = 0
+      const tryInit = () => {
         // @ts-ignore
-        window.Calendly.initInlineWidget({
-          url: buildUrl(eventUrl, client),
-          parentElement: containerRef.current,
-          prefill: undefined,
-          utm: undefined,
-        })
-        initializedRef.current = true
+        if (window.Calendly && containerRef.current) {
+          // @ts-ignore
+          window.Calendly.initInlineWidget({
+            url: buildUrl(eventUrl, client),
+            parentElement: containerRef.current,
+            prefill: undefined,
+            utm: undefined,
+          })
+          initializedRef.current = true
+          return
+        }
+        if (attempts < maxAttempts) {
+          attempts += 1
+          setTimeout(tryInit, 300)
+        }
       }
+      tryInit()
     }
 
     initWidget()
@@ -81,6 +102,9 @@ export function CalendlyEmbed({ eventUrl, client, className }: CalendlyEmbedProp
     <div
       ref={containerRef}
       className={className || "calendly-inline-widget w-full"}
+      // Provide data-url so Calendly can auto-initialize if the script loads later
+      // @ts-ignore
+      data-url={buildUrl(eventUrl, client)}
       style={{ minWidth: "320px", height: "720px" }}
       aria-label="Calendly scheduling widget"
     />

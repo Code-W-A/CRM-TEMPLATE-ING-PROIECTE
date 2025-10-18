@@ -22,7 +22,8 @@ import {
   Archive,
   List,
   UserPlus,
-  Plug
+  Plug,
+  Calendar
 } from "lucide-react"
 
 // Actualizăm componenta MainNav pentru a include iconițele și logo-ul CRM
@@ -162,16 +163,36 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
           </Link>
         )}
         {!isTechnician && (
-          <Link
-            href="/dashboard/integrari"
-            className={cn(
-              "flex items-center gap-1 text-sm font-medium transition-colors hover:text-primary",
-              pathname === "/dashboard/integrari" ? "text-primary" : "text-muted-foreground",
-            )}
-          >
-            <Plug className="h-4 w-4" />
-            <span>Integrări</span>
-          </Link>
+          (() => {
+            const [open, setOpen] = useState(false)
+            return (
+              <div onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
+                <DropdownMenu open={open} onOpenChange={setOpen}>
+                  <DropdownMenuTrigger asChild>
+                    <button
+                      className={cn(
+                        "flex items-center gap-1 text-sm font-medium transition-colors hover:text-primary",
+                        pathname === "/dashboard/integrari" ? "text-primary" : "text-muted-foreground",
+                      )}
+                    >
+                      <Plug className="h-4 w-4" />
+                      <span>Integrări</span>
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start">
+                    <DropdownMenuItem asChild>
+                      <Link href="/dashboard/integrari">
+                        <div className="flex items-center gap-2">
+                          <Calendar className="h-4 w-4" />
+                          <span>Programare întâlniri / consultanță</span>
+                        </div>
+                      </Link>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            )
+          })()
         )}
       
     
