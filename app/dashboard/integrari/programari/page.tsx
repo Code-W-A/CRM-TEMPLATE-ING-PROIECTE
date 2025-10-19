@@ -1,7 +1,7 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import { collectionGroup, orderBy, query } from "firebase/firestore"
+import { collectionGroup, orderBy, query, collection } from "firebase/firestore"
 import { db } from "@/lib/firebase/config"
 import { useFirebaseCollection } from "@/hooks/use-firebase-collection"
 import { DashboardShell } from "@/components/dashboard-shell"
@@ -14,19 +14,22 @@ import type { Client } from "@/lib/firebase/firestore"
 
 export default function ProgramariAdminPage() {
   const cg = query(collectionGroup(db, "appointments"), orderBy("scheduledAt", "desc"))
-  const { data } = useFirebaseCollection<any>("appointments", [], cg)
+  const global = query(collection(db, "appointments_global"), orderBy("createdAt", "desc"))
+  const { data: dataClientSub } = useFirebaseCollection<any>("appointments", [], cg)
+  const { data: dataGlobal } = useFirebaseCollection<any>("appointments_global", [], global)
+  const all = [...(dataClientSub || []), ...(dataGlobal || [])]
   const { data: clients } = useFirebaseCollection<Client>("clienti")
 
   const [clientFilter, setClientFilter] = useState<string>("all")
 
   const filtered = useMemo(() => {
-    const list = clientFilter === "all" ? data : data.filter((a: any) => a?.clientId === clientFilter)
+    const list = clientFilter === "all" ? all : all.filter((a: any) => a?.clientId === clientFilter)
     return [...list].sort((a: any, b: any) => {
       const ta = a?.scheduledAt ? new Date(a.scheduledAt).getTime() : 0
       const tb = b?.scheduledAt ? new Date(b.scheduledAt).getTime() : 0
       return tb - ta
     })
-  }, [data, clientFilter])
+  }, [all, clientFilter])
 
   const clientName = (id?: string) => clients.find((c) => c.id === id)?.nume || id || "—"
 

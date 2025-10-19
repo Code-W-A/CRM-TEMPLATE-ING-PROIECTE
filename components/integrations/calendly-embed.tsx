@@ -6,6 +6,8 @@ type CalendlyEmbedProps = {
   eventUrl: string
   client?: { id: string; name?: string; email?: string }
   className?: string
+  // Optional metadata to capture who created the booking (admin/client)
+  captureMetadata?: { createdByUserId?: string; createdByRole?: string }
 }
 
 function buildUrl(base: string, client?: { id: string; name?: string; email?: string }) {
@@ -22,7 +24,7 @@ function buildUrl(base: string, client?: { id: string; name?: string; email?: st
   }
 }
 
-export function CalendlyEmbed({ eventUrl, client, className }: CalendlyEmbedProps) {
+export function CalendlyEmbed({ eventUrl, client, className, captureMetadata }: CalendlyEmbedProps) {
   const isValidCalendlyUrl = (url: string) => {
     try {
       const u = new URL(url)
@@ -54,12 +56,16 @@ export function CalendlyEmbed({ eventUrl, client, className }: CalendlyEmbedProp
         const data = e?.data
         if (!data || typeof data !== "object") return
         if (data.event !== "calendly.event_scheduled") return
-        if (!client?.id) return
         // Capture minimal payload to backend
         await fetch("/api/integrations/calendly/capture", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ clientId: client.id, payload: data?.payload || null }),
+          body: JSON.stringify({
+            clientId: client?.id,
+            payload: data?.payload || null,
+            createdByUserId: captureMetadata?.createdByUserId,
+            createdByRole: captureMetadata?.createdByRole,
+          }),
         })
       } catch {
         // no-op
@@ -70,7 +76,7 @@ export function CalendlyEmbed({ eventUrl, client, className }: CalendlyEmbedProp
     return () => {
       window.removeEventListener("message", handler)
     }
-  }, [client?.id])
+  }, [client?.id, captureMetadata?.createdByUserId, captureMetadata?.createdByRole])
 
   return (
     iframeSrc ? (

@@ -8,10 +8,9 @@ export async function POST(req: Request) {
   try {
     const body = await req.json()
     const clientId: string | undefined = body?.clientId
+    const createdByUserId: string | undefined = body?.createdByUserId
+    const createdByRole: string | undefined = body?.createdByRole
     const payload = body?.payload || null
-    if (!clientId) {
-      return NextResponse.json({ error: "Missing clientId" }, { status: 400 })
-    }
 
     const db = getAdminDb()
     const now = new Date()
@@ -20,18 +19,22 @@ export async function POST(req: Request) {
     const inviteeUri = payload?.invitee?.uri || null
     const scheduledAt = payload?.event?.start_time || null
 
-    await db
-      .collection("clienti")
-      .doc(clientId)
-      .collection("appointments")
-      .add({
-        clientId,
-        eventUri,
-        inviteeUri,
-        scheduledAt,
-        raw: payload || null,
-        createdAt: now,
-      })
+    const docData = {
+      clientId: clientId || null,
+      eventUri,
+      inviteeUri,
+      scheduledAt,
+      raw: payload || null,
+      createdAt: now,
+      createdByUserId: createdByUserId || null,
+      createdByRole: createdByRole || null,
+    }
+
+    if (clientId) {
+      await db.collection("clienti").doc(clientId).collection("appointments").add(docData)
+    }
+    // Always also store in a global collection for cross-viewing
+    await db.collection("appointments_global").add(docData)
 
     return NextResponse.json({ ok: true })
   } catch (err: any) {
