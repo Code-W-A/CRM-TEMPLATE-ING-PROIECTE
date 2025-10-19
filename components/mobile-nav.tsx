@@ -175,6 +175,17 @@ export function MobileNav({ className, ...props }: React.HTMLAttributes<HTMLDivE
                       <Plug className="h-5 w-5" />
                       <span>Programări (admin)</span>
                     </Link>
+                  {/* <Link
+                    href="/dashboard/integrari/typeform"
+                    onClick={() => setOpen(false)}
+                    className={cn(
+                      "flex items-center gap-2 rounded-md px-3 py-3 text-sm font-medium transition-colors",
+                      pathname === "/dashboard/integrari/typeform" ? "bg-blue-100 text-blue-900" : "hover:bg-muted",
+                    )}
+                  >
+                    <Plug className="h-5 w-5" />
+                    <span>Formular (Typeform)</span>
+                  </Link> */}
                   </div>
                 </>
               )}

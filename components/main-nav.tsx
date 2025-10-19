@@ -202,6 +202,14 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
                     </div>
                   </Link>
                 </DropdownMenuItem>
+                  {/* <DropdownMenuItem asChild>
+                    <Link href="/dashboard/integrari/typeform">
+                      <div className="flex items-center gap-2">
+                        <Calendar className="h-4 w-4" />
+                        <span>Formular (Typeform)</span>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem> */}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
