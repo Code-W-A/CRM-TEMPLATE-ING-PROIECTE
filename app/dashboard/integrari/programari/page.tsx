@@ -81,11 +81,18 @@ export default function ProgramariAdminPage() {
             </TableHeader>
             <TableBody>
               {filtered.map((a: any, idx: number) => {
-                const when = a?.scheduledAt ? new Date(a.scheduledAt) : null
+                const scheduled = a?.scheduledAt || a?.raw?.event?.start_time || null
+                const when = scheduled ? new Date(scheduled) : null
                 const clientId = a?.clientId
+                const inviteeName = a?.inviteeName || a?.raw?.invitee?.name || null
+                const inviteeEmail = a?.inviteeEmail || a?.raw?.invitee?.email || null
+                const tz = a?.timezone || a?.raw?.invitee?.timezone || null
+                const eventHref = a?.eventUri || a?.raw?.event?.uri || null
+                const rescheduleHref = a?.rescheduleUrl || a?.raw?.invitee?.reschedule_url || null
+                const cancelHref = a?.cancelUrl || a?.raw?.invitee?.cancel_url || null
                 return (
                   <TableRow key={a.id || idx}>
-                    <TableCell>{when ? when.toLocaleString("ro-RO") : "—"}{a?.timezone ? ` (${a.timezone})` : ""}</TableCell>
+                    <TableCell>{when ? when.toLocaleString("ro-RO") : "—"}{tz ? ` (${tz})` : ""}</TableCell>
                     <TableCell>
                       {clientId ? (
                         <Link className="text-blue-600 hover:underline" href={`/dashboard/clienti/${clientId}`}>{clientName(clientId)}</Link>
@@ -93,19 +100,19 @@ export default function ProgramariAdminPage() {
                         "—"
                       )}
                     </TableCell>
-                    <TableCell>{a?.inviteeName || "—"}</TableCell>
-                    <TableCell>{a?.inviteeEmail || "—"}</TableCell>
+                    <TableCell>{inviteeName || "—"}</TableCell>
+                    <TableCell>{inviteeEmail || "—"}</TableCell>
                     <TableCell>
-                      {a?.eventUri ? (
-                        <a className="text-blue-600 hover:underline break-all" href={a.eventUri} target="_blank" rel="noreferrer">Eveniment</a>
+                      {eventHref ? (
+                        <a className="text-blue-600 hover:underline break-all" href={eventHref} target="_blank" rel="noreferrer">Eveniment</a>
                       ) : "—"}
                     </TableCell>
                     <TableCell className="space-x-2">
-                      {a?.rescheduleUrl && (
-                        <a className="text-blue-600 hover:underline" href={a.rescheduleUrl} target="_blank" rel="noreferrer">Reprogramează</a>
+                      {rescheduleHref && (
+                        <a className="text-blue-600 hover:underline" href={rescheduleHref} target="_blank" rel="noreferrer">Reprogramează</a>
                       )}
-                      {a?.cancelUrl && (
-                        <a className="text-red-600 hover:underline" href={a.cancelUrl} target="_blank" rel="noreferrer">Anulează</a>
+                      {cancelHref && (
+                        <a className="text-red-600 hover:underline" href={cancelHref} target="_blank" rel="noreferrer">Anulează</a>
                       )}
                     </TableCell>
                   </TableRow>
