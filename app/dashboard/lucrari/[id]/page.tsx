@@ -1289,7 +1289,7 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
                 {lucrare.raportGenerat && lucrare.numarRaport && (
                   <div className="mt-2">
               
-                    {/* Afișare Notă internă: Dispecer/Tehnician */}
+                    {/* Afișare Notă internă: Dispecer/Specialist */}
                     {role !== "client" && (lucrare.descriere || lucrare.notaInternaTehnician) && (
                       <div className="mt-4">
                         <p className="text-base font-semibold mb-2">Notă internă:</p>

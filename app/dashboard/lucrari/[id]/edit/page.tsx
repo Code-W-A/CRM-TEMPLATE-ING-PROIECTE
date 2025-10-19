@@ -269,9 +269,9 @@ export default function EditLucrarePage({ params }: { params: { id: string } }) 
             }
 
             if (successfulTechEmails.length > 0) {
-              emailMessage += `Tehnicieni: ${successfulTechEmails.join(", ")}`
+            emailMessage += `Specialiști: ${successfulTechEmails.join(", ")}`
             } else {
-              emailMessage += "Tehnicieni: Email-uri indisponibile sau netrimise"
+            emailMessage += "Specialiști: Email-uri indisponibile sau netrimise"
             }
 
             // Afișăm toast de succes pentru email-uri

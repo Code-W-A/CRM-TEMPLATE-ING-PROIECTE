@@ -204,8 +204,8 @@ export default function LucrariArhivate() {
          value: [],
        },
        {
-         id: "tehnicieni",
-         label: "Tehnicieni",
+        id: "tehnicieni",
+        label: "Specialiști",
          type: "multiselect" as const,
          options: tehnicieniOptions,
          value: [],
@@ -468,7 +468,7 @@ export default function LucrariArhivate() {
     },
     {
       accessorKey: "tehnicieni",
-      header: "Tehnicieni",
+      header: "Specialiști",
       enableSorting: false,
       enableHiding: true,
       cell: ({ row }: { row: any }) => {

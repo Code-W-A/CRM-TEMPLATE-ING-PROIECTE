@@ -1006,7 +1006,7 @@ CRM by NRG`,
 
       const fieldsUpdated = Object.keys(updateData).map(key => {
         const fieldNames: {[key: string]: string} = {
-          numeTehnician: 'Numele specialistului',
+            numeTehnician: 'Numele specialistului',
           numeBeneficiar: 'Numele beneficiarului', 
           constatareLaLocatie: 'Constatarea la locație',
           descriereInterventie: 'Descrierea intervenției'
@@ -1950,11 +1950,11 @@ CRM by NRG`,
                 <Separator />
 
                 <div className="grid gap-6 md:grid-cols-2">
-                  {/* Semnătură Tehnician */}
+      {/* Semnătură Specialist */}
                   <div className="space-y-2">
                     <h3 className="font-medium text-gray-500">Semnătură Specialist</h3>
                     <div className="space-y-2">
-                      <Label htmlFor="numeTehnician">Nume și prenume specialist</Label>
+                    <Label htmlFor="numeTehnician">Nume și prenume specialist</Label>
                       <Input
                         id="numeTehnician"
                         type="text"

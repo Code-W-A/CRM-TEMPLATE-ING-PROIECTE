@@ -63,7 +63,7 @@ export function UserNav() {
       case "dispecer":
         return "Dispecer"
       case "tehnician":
-        return "Tehnician"
+        return "Specialist"
       default:
         return "Utilizator"
     }

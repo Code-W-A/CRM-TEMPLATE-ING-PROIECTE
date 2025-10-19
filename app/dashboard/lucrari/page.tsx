@@ -371,7 +371,7 @@ export default function Lucrari() {
       },
       {
         id: "tehnicieni",
-        label: "Tehnicieni",
+        label: "Specialiști",
         type: "multiselect",
         options: tehnicieniOptions,
         value: [],
@@ -1101,9 +1101,9 @@ export default function Lucrari() {
           }
 
           if (successfulTechEmails.length > 0) {
-            emailMessage += `Tehnicieni: ${successfulTechEmails.join(", ")}`
+            emailMessage += `Specialiști: ${successfulTechEmails.join(", ")}`
           } else {
-            emailMessage += "Tehnicieni: Email-uri indisponibile sau netrimise"
+            emailMessage += "Specialiști: Email-uri indisponibile sau netrimise"
           }
 
           // Afișăm toast de succes pentru email-uri
@@ -1649,7 +1649,7 @@ export default function Lucrari() {
     },
     {
       accessorKey: "dataInterventie",
-      header: "Data solicitată",
+      header: "termen de finalizare",
       enableHiding: true,
       enableFiltering: true,
       sortingFn: (rowA: any, rowB: any, columnId: any) => {
@@ -1710,7 +1710,7 @@ export default function Lucrari() {
     },
     {
       accessorKey: "tehnicieni",
-      header: "Tehnicieni",
+      header: "Specialiști",
       enableHiding: true,
       enableFiltering: true,
       cell: ({ row }) => (
@@ -2347,11 +2347,11 @@ export default function Lucrari() {
                           <span className="text-sm">{lucrare.dataEmiterii}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-sm font-medium text-muted-foreground">Data solicitată:</span>
+                          <span className="text-sm font-medium text-muted-foreground">termen de finalizare:</span>
                           <span className="text-sm">{lucrare.dataInterventie}</span>
                         </div>
                         <div>
-                          <span className="text-sm font-medium text-muted-foreground">Tehnicieni:</span>
+                          <span className="text-sm font-medium text-muted-foreground">Specialiști:</span>
                           <div className="flex flex-wrap gap-1 mt-1">
                             {lucrare.tehnicieni.map((tehnician, index) => (
                               <Badge key={index} variant="secondary" className="bg-gray-100">

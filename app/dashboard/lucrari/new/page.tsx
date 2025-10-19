@@ -225,9 +225,9 @@ export default function NewLucrarePage() {
           }
 
           if (techEmails.length > 0) {
-            emailMessage += `Tehnicieni: ${techEmails.join(", ")}`
+            emailMessage += `Specialiști: ${techEmails.join(", ")}`
           } else {
-            emailMessage += "Tehnicieni: Email-uri indisponibile"
+            emailMessage += "Specialiști: Email-uri indisponibile"
           }
 
           // Afișăm toast cu informații despre email-urile trimise
