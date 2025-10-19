@@ -173,7 +173,7 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
                 notificationRead: true
               }, undefined, undefined, true) // silent = true
               
-              console.log(`✅ Lucrare ${paramsId} marcată ca citită automat pentru ${userData.uid}`)
+              console.log(`✅ Proiect ${paramsId} marcată ca citită automat pentru ${userData.uid}`)
             } catch (error) {
               // Nu afișăm eroarea utilizatorului - e o operațiune de background
               console.warn("Nu s-a putut marca lucrarea ca citită:", error)
@@ -332,7 +332,7 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
     try {
       await deleteLucrare(lucrare.id)
       toast({
-        title: "Lucrare ștearsă",
+        title: "Proiect ștearsă",
         description: "Lucrarea a fost ștearsă cu succes.",
       })
       router.push("/dashboard/lucrari")
@@ -644,7 +644,7 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
       setLucrare((prev) => (prev ? { ...prev, preluatDispecer: true, preluatDe: userData?.displayName || userData?.email || "Dispecer" } : null))
 
       toast({
-        title: "Lucrare preluată",
+        title: "Proiect preluată",
         description: "Lucrarea a fost marcată ca preluată de dispecer.",
         variant: "default",
       })
@@ -681,7 +681,7 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
   if (!lucrare) {
     return (
       <DashboardShell>
-        <DashboardHeader heading="Lucrare negăsită" text="Lucrarea nu a fost găsită în sistem" />
+        <DashboardHeader heading="Proiect negăsit" text="Proiectul nu a fost găsit în sistem" />
         <Button onClick={() => router.push(userData?.role === "client" ? "/portal" : "/dashboard/lucrari")}>
           <ChevronLeft className="mr-2 h-4 w-4" /> Înapoi la lucrări
         </Button>
@@ -719,13 +719,13 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
       <DashboardHeader 
         heading={
           <span className="flex items-center gap-2">
-            Lucrare: 
+            Proiect: 
             {lucrare.numarRaport && (
               <Badge className="bg-purple-100 text-purple-800 border border-purple-200 hover:bg-purple-100 text-base font-semibold px-3 py-1 rounded-md">
                 {lucrare.numarRaport}
               </Badge>
             )}
-            {" - "}
+            {lucrare.numarRaport &&" - "}
             {lucrare.tipLucrare}
           </span>
         } 
@@ -898,7 +898,7 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
       {role === "tehnician" && lucrare.statusLucrare === "Finalizat" && lucrare.raportGenerat === true && (
         <Alert variant="default" className="mb-4 bg-blue-50 border-blue-200">
           <Info className="h-4 w-4 text-blue-500" />
-          <AlertTitle>Lucrare finalizată</AlertTitle>
+          <AlertTitle>Proiect finalizat</AlertTitle>
           <AlertDescription>
             Această lucrare este finalizată și raportul a fost generat. Nu mai puteți face modificări.
             {lucrare.preluatDispecer
@@ -919,7 +919,7 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
         >
           {/* ------------ 1. Detalii (50 %) ------------------------------- */}
           <TabsTrigger value="detalii" className="flex-1 basis-1/2 text-center whitespace-normal">
-            Detalii&nbsp;Lucrare
+            Detalii&nbsp;Proiect
           </TabsTrigger>
 
           {/* Tab verificare echipament eliminat */}
@@ -1003,7 +1003,7 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
                   <div className="p-3 bg-blue-50 border border-blue-200 rounded-md mb-4">
                     <div className="flex items-center space-x-2 mb-1">
                       <RefreshCw className="h-4 w-4 text-blue-600" />
-                      <p className="text-sm font-medium text-blue-800">Lucrare reatribuită:</p>
+                      <p className="text-sm font-medium text-blue-800">Proiect reatribuită:</p>
                     </div>
                     <p className="text-sm text-blue-700">{lucrare.mesajReatribuire}</p>
                     {lucrare.lucrareOriginala && (
@@ -1024,7 +1024,7 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
                   <div className="p-3 bg-purple-50 border border-purple-200 rounded-md mb-4">
                     <div className="flex items-center space-x-2 mb-2">
                       <Clock className="h-4 w-4 text-purple-600" />
-                      <p className="text-sm font-medium text-purple-800">Lucrare amânată</p>
+                      <p className="text-sm font-medium text-purple-800">Proiect amânată</p>
                     </div>
                     <div className="space-y-2">
                       <div>
@@ -1385,7 +1385,7 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
       <div className="text-base font-semibold mb-2">Statusuri</div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 w-full">
         <div className="flex flex-col">
-          <span className="text-xs text-muted-foreground">Lucrare:</span>
+          <span className="text-xs text-muted-foreground">Proiect:</span>
           <span className="mt-0.5"><Badge className="rounded-md">{lucrare.statusLucrare}</Badge></span>
         </div>
         <div className="flex flex-col">
@@ -1725,15 +1725,15 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
                 <CardHeader>
                   <CardTitle>Intervenție finalizată</CardTitle>
                   <CardDescription>
-                    Această lucrare este finalizată și raportul a fost generat. Nu mai puteți face modificări.
+                    Această proiect este finalizată și raportul a fost generat. Nu mai puteți face modificări.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <Alert variant="default" className="bg-blue-50 border-blue-200">
                     <CheckCircle className="h-4 w-4 text-blue-500" />
-                    <AlertTitle>Lucrare încheiată</AlertTitle>
+                    <AlertTitle>Proiect încheiată</AlertTitle>
                     <AlertDescription>
-                      Ați finalizat această lucrare și ați generat raportul. Lucrarea așteaptă să fie preluată de
+                      Ați finalizat acest proiect și ați generat raportul. Proiectul așteaptă să fie preluată de
                       dispecer.
                       {lucrare.preluatDispecer
                         ? " Lucrarea a fost preluată de dispecer."
@@ -1789,8 +1789,8 @@ export default function LucrarePage({ params }: { params: Promise<{ id: string }
                         lucrareId={lucrare.id!}
                         onSuccess={() => {
                           toast({
-                            title: "Lucrare amânată",
-                            description: "Vei fi redirecționat către lista de lucrări.",
+                            title: "Proiect amânat",
+                            description: "Vei fi redirecționat către lista de proiecte.",
                           })
                           setTimeout(() => {
                             router.push("/dashboard/lucrari")

@@ -80,7 +80,7 @@ export default function EditLucrarePage({ params }: { params: { id: string } }) 
         setIsLoading(true)
         const lucrare = await getLucrareById(id)
         if (lucrare) {
-          console.log("Lucrare încărcată pentru editare:", lucrare)
+          console.log("Proiectul încărcat pentru editare:", lucrare)
           setInitialData(lucrare)
 
           // Set dates
@@ -223,8 +223,8 @@ export default function EditLucrarePage({ params }: { params: { id: string } }) 
 
       // Afișăm un mesaj de succes
       toast({
-        title: "Lucrare actualizată",
-        description: "Lucrarea a fost actualizată cu succes.",
+        title: "Proiectul actualizat",
+        description: "Proiectul a fost actualizat cu succes.",
       })
 
       // Trimitem notificări dacă s-a schimbat data intervenției, tehnicienii, locația sau statusul
@@ -355,7 +355,7 @@ export default function EditLucrarePage({ params }: { params: { id: string } }) 
           <div className="w-full mx-auto py-6">
       <Card>
         <CardHeader>
-          <CardTitle>Editare Lucrare</CardTitle>
+          <CardTitle>Editare Proiect</CardTitle>
           <CardDescription>Actualizați detaliile proiectului</CardDescription>
         </CardHeader>
         <CardContent>

@@ -89,7 +89,7 @@ export const ReportGenerator = forwardRef<HTMLButtonElement, ReportGeneratorProp
     }
     
     console.log("🚀 PORNIRE GENERARE RAPORT")
-    console.log("📋 Lucrare inițială:", {
+    console.log("📋 Proiect inițială:", {
       id: lucrare.id,
       raportGenerat: lucrare.raportGenerat,
       raportDataLocked: lucrare.raportDataLocked,

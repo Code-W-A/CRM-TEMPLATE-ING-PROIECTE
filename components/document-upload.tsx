@@ -529,7 +529,7 @@ export function DocumentUpload({ lucrareId, lucrare, onLucrareUpdate, hideOferta
         {/* <div className="text-xs text-gray-500 p-3 bg-gray-50 rounded-lg">
           <p><strong>Condiții pentru încărcare:</strong></p>
           <ul className="list-disc list-inside mt-1 space-y-1">
-            <li>Lucrarea trebuie să fie preluată de dispecer</li>
+            <li>Proiectulea trebuie să fie preluată de dispecer</li>
             <li>Pentru ofertă: specialistul trebuie să marcheze "Necesită ofertă"</li>
             <li>Orice tip de fișier este acceptat (fără restricții de dimensiune)</li>
             <li>Completarea numărului și datei este obligatorie</li>

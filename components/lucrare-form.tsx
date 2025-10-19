@@ -1763,7 +1763,7 @@ export const LucrareForm = forwardRef<LucrareFormRef, LucrareFormProps>(
                 )}
               </div>
               <p className="text-xs text-muted-foreground">
-                Selectați locația clientului pentru această lucrare. Toate persoanele de contact vor fi asociate
+                Selectați locația clientului pentru acest proiect. Toate persoanele de contact vor fi asociate
                 automat.
               </p>
             </div>

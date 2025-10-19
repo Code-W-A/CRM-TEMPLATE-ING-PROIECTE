@@ -172,7 +172,7 @@ export default function NewLucrarePage() {
         : "Lucrarea a fost adăugată cu succes."
       
       toast({
-        title: isReassignment ? "Re-intervenție adăugată" : "Lucrare adăugată",
+        title: isReassignment ? "Re-intervenție adăugată" : "Proiect adăugat",
         description: successMessage,
       })
 

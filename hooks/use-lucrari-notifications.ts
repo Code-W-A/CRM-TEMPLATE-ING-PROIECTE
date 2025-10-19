@@ -151,22 +151,22 @@ export function useLucrariNotifications(lucrari: Lucrare[]) {
           // Analiză pe baza statusului și datelor proiectului
           if (!lucrare.tehnicieni || lucrare.tehnicieni.length === 0) {
             modificationType = 'tehnician'
-            description = `Lucrare neatribuită: ${lucrare.client || ''} - ${lucrare.locatie || ''}`
+            description = `Proiect neatribuit: ${lucrare.client || ''} - ${lucrare.locatie || ''}`
             priority = 'high'
           } else if (lucrare.statusLucrare === 'Finalizat' && !lucrare.facturaDocument) {
             modificationType = 'other'
-            description = `Lucrare finalizată fără factură: ${lucrare.client || ''}`
+            description = `Proiect finalizat fără factură: ${lucrare.client || ''}`
             priority = 'high'
           } else if (lucrare.statusLucrare === 'Amânată') {
             modificationType = 'other'
-            description = `Lucrare amânată: ${lucrare.client || ''} - ${lucrare.locatie || ''}`
+            description = `Proiect amânată: ${lucrare.client || ''} - ${lucrare.locatie || ''}`
             priority = 'high'
           } else if (lucrare.statusLucrare) {
             modificationType = 'status'
             description = `${lucrare.statusLucrare}: ${lucrare.client || ''} - ${lucrare.locatie || ''}`
             priority = lucrare.statusLucrare === 'Finalizat' ? 'high' : 'medium'
           } else {
-            description = `Lucrare nouă: ${lucrare.client || ''} - ${lucrare.locatie || ''}`
+            description = `Proiect nouă: ${lucrare.client || ''} - ${lucrare.locatie || ''}`
           }
 
           notifications.push({
@@ -231,7 +231,7 @@ export function useLucrariNotifications(lucrari: Lucrare[]) {
               lucrareTitle: `${lucrare.client || ''} - ${lucrare.locatie || ''}`.trim(),
               modificationType: 'other',
               modifiedAt: dataInterventie, // Folosim data intervenției pentru sortare
-              description: `Lucrare întârziată cu ${daysOverdue} ${daysOverdue === 1 ? 'zi' : 'zile'} - data planificată: ${lucrare.dataInterventie}`,
+              description: `Proiect întârziată cu ${daysOverdue} ${daysOverdue === 1 ? 'zi' : 'zile'} - data planificată: ${lucrare.dataInterventie}`,
               read: false,
               priority: daysOverdue >= 3 ? 'high' : daysOverdue >= 1 ? 'medium' : 'low',
               modifiedBy: 'system',

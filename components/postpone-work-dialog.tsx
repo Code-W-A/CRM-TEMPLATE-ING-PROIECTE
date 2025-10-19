@@ -89,8 +89,8 @@ export function PostponeWorkDialog({ lucrareId, onSuccess, className }: Postpone
       }
 
       toast({
-        title: "Lucrare amânată",
-        description: "Lucrarea a fost amânată cu succes. Nu va mai apărea în lista ta de lucrări.",
+        title: "Proiect amânat",
+        description: "Proiectul a fost amânat cu succes. Nu va mai apărea în lista ta de lucrări.",
       })
 
       setIsOpen(false)

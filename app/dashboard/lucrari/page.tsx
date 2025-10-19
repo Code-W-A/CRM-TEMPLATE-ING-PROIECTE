@@ -1399,8 +1399,8 @@ export default function Lucrari() {
       await updateLucrare(lucrare.id, { preluatDispecer: true, preluatDe: userData?.displayName || userData?.email || "Dispecer" })
 
       toast({
-        title: "Lucrare preluată",
-        description: "Lucrarea a fost marcată ca preluată de dispecer.",
+        title: "Proiect preluată",
+        description: "Proiectul a fost marcată ca preluată de dispecer.",
         variant: "default",
         icon: <Check className="h-4 w-4" />,
       })
@@ -1863,7 +1863,7 @@ export default function Lucrari() {
                   </div>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>Lucrarea este finalizată și în așteptare de preluare de către dispecer</p>
+                  <p>Proiectulea este finalizată și în așteptare de preluare de către dispecer</p>
                 </TooltipContent>
               </Tooltip>
 
@@ -1882,7 +1882,7 @@ export default function Lucrari() {
                   </div>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>Lucrarea este finalizată și în așteptare de preluare de către dispecer</p>
+                  <p>Proiectulea este finalizată și în așteptare de preluare de către dispecer</p>
                 </TooltipContent>
               </Tooltip>
             </div>
@@ -2441,7 +2441,7 @@ export default function Lucrari() {
                             {/* For technicians, if the work order is completed with report but not picked up, disable actions */}
                             {isTechnician && isCompletedNotPickedUp ? (
                               <DropdownMenuItem disabled className="text-gray-400 cursor-not-allowed">
-                                <Info className="mr-2 h-4 w-4" /> Lucrare în așteptare de preluare
+                                <Info className="mr-2 h-4 w-4" /> Proiect în așteptare de preluare
                               </DropdownMenuItem>
                             ) : (
                               <>

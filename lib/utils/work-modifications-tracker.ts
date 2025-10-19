@@ -60,7 +60,7 @@ export function generateModificationDescription(
       if (oldValue && newValue) {
         return `Atribuirea a fost schimbată din "${oldValue}" în "${newValue}"`
       } else if (newValue) {
-        return `Lucrarea a fost atribuită: ${newValue}`
+        return `Proiecta a fost atribuită: ${newValue}`
       }
       return "Atribuirea proiectului a fost modificată"
       

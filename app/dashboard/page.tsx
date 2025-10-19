@@ -95,12 +95,11 @@ export default function Dashboard() {
   useEffect(() => {
     if (!loadingLucrari && !loadingClienti && !loadingUtilizatori && !loadingToateLogurile && !loadingLoguriAstazi) {
       // Calculăm statisticile pentru lucrări
-      const lucrariAsteptare = lucrari.filter(
-        (l) => l.statusLucrare.toLowerCase() === WORK_STATUS.WAITING.toLowerCase(),
-      ).length
-      const lucrariInCurs = lucrari.filter(
-        (l) => l.statusLucrare.toLowerCase() === WORK_STATUS.IN_PROGRESS.toLowerCase(),
-      ).length
+      const lucrariAsteptare = lucrari.filter((l) => l.statusLucrare.toLowerCase() === WORK_STATUS.WAITING.toLowerCase()).length
+      const lucrariInCurs = lucrari.filter((l) => {
+        const s = l.statusLucrare.toLowerCase()
+        return s !== WORK_STATUS.WAITING.toLowerCase() && s !== WORK_STATUS.COMPLETED.toLowerCase()
+      }).length
       const lucrariFinalizate = lucrari.filter(
         (l) => l.statusLucrare.toLowerCase() === WORK_STATUS.COMPLETED.toLowerCase(),
       ).length
@@ -185,11 +184,7 @@ export default function Dashboard() {
     // Filtrăm Proiecte în așteptare
     const filteredLucrari =
       role === "tehnician" && userData?.displayName
-        ? lucrari.filter(
-            (l) =>
-              l.statusLucrare.toLowerCase() === WORK_STATUS.WAITING.toLowerCase() &&
-              l.tehnicieni.includes(userData.displayName!),
-          )
+        ? lucrari.filter((l) => l.statusLucrare.toLowerCase() === WORK_STATUS.WAITING.toLowerCase() && l.tehnicieni.includes(userData.displayName!))
         : lucrari.filter((l) => l.statusLucrare.toLowerCase() === WORK_STATUS.WAITING.toLowerCase())
 
     return filteredLucrari.slice(0, 5)
@@ -199,12 +194,14 @@ export default function Dashboard() {
     // Filtrăm Proiecte în curs
     const filteredLucrari =
       role === "tehnician" && userData?.displayName
-        ? lucrari.filter(
-            (l) =>
-              l.statusLucrare.toLowerCase() === WORK_STATUS.IN_PROGRESS.toLowerCase() &&
-              l.tehnicieni.includes(userData.displayName!),
-          )
-        : lucrari.filter((l) => l.statusLucrare.toLowerCase() === WORK_STATUS.IN_PROGRESS.toLowerCase())
+        ? lucrari.filter((l) => {
+            const s = l.statusLucrare.toLowerCase()
+            return s !== WORK_STATUS.WAITING.toLowerCase() && s !== WORK_STATUS.COMPLETED.toLowerCase() && l.tehnicieni.includes(userData.displayName!)
+          })
+        : lucrari.filter((l) => {
+            const s = l.statusLucrare.toLowerCase()
+            return s !== WORK_STATUS.WAITING.toLowerCase() && s !== WORK_STATUS.COMPLETED.toLowerCase()
+          })
 
     return filteredLucrari.slice(0, 5)
   }
@@ -296,20 +293,19 @@ export default function Dashboard() {
           <Tabs defaultValue="recent" className="mt-6">
             <TabsList className="w-full sm:w-auto">
               <TabsTrigger value="recent" className="flex-1 sm:flex-none">
-                Proiecte Recente
+                Proiecte Recente ({getLucrariRecente().length})
               </TabsTrigger>
               <TabsTrigger value="pending" className="flex-1 sm:flex-none">
-                În Așteptare
+                În Așteptare ({getLucrariAsteptare().length})
               </TabsTrigger>
               <TabsTrigger value="progress" className="flex-1 sm:flex-none">
-                În Curs
+                În Curs ({getLucrariInCurs().length})
               </TabsTrigger>
             </TabsList>
             <TabsContent value="recent" className="space-y-4">
               <Card>
                 <CardHeader>
                   <CardTitle>Proiecte Recente</CardTitle>
-                  <CardDescription>Ultimele 5 proiecte adăugate în sistem</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">

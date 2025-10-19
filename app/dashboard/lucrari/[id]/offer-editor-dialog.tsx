@@ -474,7 +474,7 @@ useEffect(() => {
         utilizator: userData?.displayName || userData?.email || "Utilizator",
         utilizatorId: userData?.uid || "system",
         actiune: "Trimitere ofertă",
-        detalii: `Lucrare: ${String(currentWork?.numarRaport || lucrareId)}; Către: ${recipient}; Versiune: ${String(currentSnapshot.savedAt)}`,
+        detalii: `Proiect: ${String(currentWork?.numarRaport || lucrareId)}; Către: ${recipient}; Versiune: ${String(currentSnapshot.savedAt)}`,
         tip: "Informație",
         categorie: "Email",
       })
@@ -490,7 +490,7 @@ useEffect(() => {
         utilizator: userData?.displayName || userData?.email || "Utilizator",
         utilizatorId: userData?.uid || "system",
         actiune: "Trimitere ofertă eșuată",
-        detalii: `Lucrare: ${String(currentWork?.numarRaport || lucrareId)}; Motiv: ${msg}`,
+        detalii: `Proiect: ${String(currentWork?.numarRaport || lucrareId)}; Motiv: ${msg}`,
         tip: "Eroare",
         categorie: "Email",
       })
