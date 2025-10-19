@@ -10,6 +10,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import Link from "next/link"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Label } from "@/components/ui/label"
+import { useAuth } from "@/contexts/AuthContext"
 import type { Client } from "@/lib/firebase/firestore"
 
 export default function ProgramariAdminPage() {
@@ -19,17 +22,20 @@ export default function ProgramariAdminPage() {
   const { data: dataGlobal } = useFirebaseCollection<any>("appointments_global", [], global)
   const all = [...(dataClientSub || []), ...(dataGlobal || [])]
   const { data: clients } = useFirebaseCollection<Client>("clienti")
+  const { user } = useAuth()
 
   const [clientFilter, setClientFilter] = useState<string>("all")
+  const [myOnly, setMyOnly] = useState(false)
 
   const filtered = useMemo(() => {
-    const list = clientFilter === "all" ? all : all.filter((a: any) => a?.clientId === clientFilter)
+    let list = clientFilter === "all" ? all : all.filter((a: any) => a?.clientId === clientFilter)
+    if (myOnly && user?.uid) list = list.filter((a: any) => a?.createdByUserId === user.uid)
     return [...list].sort((a: any, b: any) => {
       const ta = a?.scheduledAt ? new Date(a.scheduledAt).getTime() : 0
       const tb = b?.scheduledAt ? new Date(b.scheduledAt).getTime() : 0
       return tb - ta
     })
-  }, [all, clientFilter])
+  }, [all, clientFilter, myOnly, user?.uid])
 
   const clientName = (id?: string) => clients.find((c) => c.id === id)?.nume || id || "—"
 
@@ -56,15 +62,21 @@ export default function ProgramariAdminPage() {
                 </SelectContent>
               </Select>
             </div>
+            <div className="flex items-center gap-2">
+              <Checkbox id="my-only" checked={myOnly} onCheckedChange={(v) => setMyOnly(Boolean(v))} />
+              <Label htmlFor="my-only" className="text-sm">Doar ale mele</Label>
+            </div>
           </div>
 
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Data/Ora</TableHead>
+                <TableHead>Data/Ora (tz)</TableHead>
                 <TableHead>Client</TableHead>
-                <TableHead>Invitee</TableHead>
+                <TableHead>Invitat</TableHead>
+                <TableHead>Email</TableHead>
                 <TableHead>Eveniment</TableHead>
+                <TableHead>Acțiuni</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -73,7 +85,7 @@ export default function ProgramariAdminPage() {
                 const clientId = a?.clientId
                 return (
                   <TableRow key={a.id || idx}>
-                    <TableCell>{when ? when.toLocaleString("ro-RO") : "—"}</TableCell>
+                    <TableCell>{when ? when.toLocaleString("ro-RO") : "—"}{a?.timezone ? ` (${a.timezone})` : ""}</TableCell>
                     <TableCell>
                       {clientId ? (
                         <Link className="text-blue-600 hover:underline" href={`/dashboard/clienti/${clientId}`}>{clientName(clientId)}</Link>
@@ -81,15 +93,20 @@ export default function ProgramariAdminPage() {
                         "—"
                       )}
                     </TableCell>
-                    <TableCell>
-                      {a?.inviteeUri ? (
-                        <a className="text-blue-600 hover:underline break-all" href={a.inviteeUri} target="_blank" rel="noreferrer">invitee</a>
-                      ) : "—"}
-                    </TableCell>
+                    <TableCell>{a?.inviteeName || "—"}</TableCell>
+                    <TableCell>{a?.inviteeEmail || "—"}</TableCell>
                     <TableCell>
                       {a?.eventUri ? (
-                        <a className="text-blue-600 hover:underline break-all" href={a.eventUri} target="_blank" rel="noreferrer">event</a>
+                        <a className="text-blue-600 hover:underline break-all" href={a.eventUri} target="_blank" rel="noreferrer">Eveniment</a>
                       ) : "—"}
+                    </TableCell>
+                    <TableCell className="space-x-2">
+                      {a?.rescheduleUrl && (
+                        <a className="text-blue-600 hover:underline" href={a.rescheduleUrl} target="_blank" rel="noreferrer">Reprogramează</a>
+                      )}
+                      {a?.cancelUrl && (
+                        <a className="text-red-600 hover:underline" href={a.cancelUrl} target="_blank" rel="noreferrer">Anulează</a>
+                      )}
                     </TableCell>
                   </TableRow>
                 )

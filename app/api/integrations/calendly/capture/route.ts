@@ -18,12 +18,24 @@ export async function POST(req: Request) {
     const eventUri = payload?.event?.uri || null
     const inviteeUri = payload?.invitee?.uri || null
     const scheduledAt = payload?.event?.start_time || null
+    const eventEnd = payload?.event?.end_time || null
+    const inviteeName = payload?.invitee?.name || null
+    const inviteeEmail = payload?.invitee?.email || null
+    const cancelUrl = payload?.invitee?.cancel_url || null
+    const rescheduleUrl = payload?.invitee?.reschedule_url || null
+    const timezone = payload?.invitee?.timezone || null
 
     const docData = {
       clientId: clientId || null,
       eventUri,
       inviteeUri,
       scheduledAt,
+      eventEnd,
+      inviteeName,
+      inviteeEmail,
+      cancelUrl,
+      rescheduleUrl,
+      timezone,
       raw: payload || null,
       createdAt: now,
       createdByUserId: createdByUserId || null,
